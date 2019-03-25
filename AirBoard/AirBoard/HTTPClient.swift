@@ -47,6 +47,8 @@ class URLSessionHTTPClient: HTTPClient {
                 return
             }
             
+//            try? JSONDecoder().decode(AirportModel.self, from: data)
+            
             // parse the result as Array of [String: Any]
             do {
                 guard let json = try JSONSerialization.jsonObject(with: responseData, options: []) as? [[String: Any]] else {
@@ -55,12 +57,12 @@ class URLSessionHTTPClient: HTTPClient {
                 
                 print(json)
                 
+                callback(json, nil)
+                
             } catch {
                 print(error)
             }
         }.resume()
-        
-        // из json сделать массив своих моделек и передать в замыкание
     }
     
     

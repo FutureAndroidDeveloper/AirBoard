@@ -23,3 +23,11 @@ class Flight {
         self.arrivalTime = arrivalTime
     }
 }
+
+
+struct AirportModel: Decodable {
+    let name: String
+    let city: String?
+    let code: String
+    
+}
