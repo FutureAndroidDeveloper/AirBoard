@@ -13,6 +13,8 @@
 		D1A483F3224515F90035E852 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A483F2224515F90035E852 /* Assets.xcassets */; };
 		D1A483F6224515F90035E852 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1A483F4224515F90035E852 /* LaunchScreen.storyboard */; };
 		D1A48401224515F90035E852 /* AirBoardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A48400224515F90035E852 /* AirBoardTests.swift */; };
+		D1B430F0224546480050D48F /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B430EF224546480050D48F /* HTTPClient.swift */; };
+		D1EE7B1B2248B496008931A8 /* HTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EE7B1A2248B496008931A8 /* HTTPClientTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		D1A483FC224515F90035E852 /* AirBoardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirBoardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A48400224515F90035E852 /* AirBoardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirBoardTests.swift; sourceTree = "<group>"; };
 		D1A48402224515F90035E852 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D1B430EF224546480050D48F /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		D1EE7B1A2248B496008931A8 /* HTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,7 @@
 			children = (
 				D1A483EB224515F80035E852 /* AppDelegate.swift */,
 				D1A483ED224515F80035E852 /* ViewController.swift */,
+				D1B430EF224546480050D48F /* HTTPClient.swift */,
 				D1A483EF224515F80035E852 /* Main.storyboard */,
 				D1A483F2224515F90035E852 /* Assets.xcassets */,
 				D1A483F4224515F90035E852 /* LaunchScreen.storyboard */,
@@ -91,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				D1A48400224515F90035E852 /* AirBoardTests.swift */,
+				D1EE7B1A2248B496008931A8 /* HTTPClientTests.swift */,
 				D1A48402224515F90035E852 /* Info.plist */,
 			);
 			path = AirBoardTests;
@@ -199,6 +205,7 @@
 			files = (
 				D1A483EE224515F80035E852 /* ViewController.swift in Sources */,
 				D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */,
+				D1B430F0224546480050D48F /* HTTPClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1EE7B1B2248B496008931A8 /* HTTPClientTests.swift in Sources */,
 				D1A48401224515F90035E852 /* AirBoardTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
