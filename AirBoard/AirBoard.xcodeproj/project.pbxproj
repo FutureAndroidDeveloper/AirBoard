@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D12BF1B02248F2E500A5FA76 /* Flights.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1AF2248F2E500A5FA76 /* Flights.swift */; };
+		D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B12248F40D00A5FA76 /* FlightService.swift */; };
 		D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A483EB224515F80035E852 /* AppDelegate.swift */; };
 		D1A483EE224515F80035E852 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A483ED224515F80035E852 /* ViewController.swift */; };
 		D1A483F1224515F80035E852 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1A483EF224515F80035E852 /* Main.storyboard */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		D12BF1AF2248F2E500A5FA76 /* Flights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flights.swift; sourceTree = "<group>"; };
+		D12BF1B12248F40D00A5FA76 /* FlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightService.swift; sourceTree = "<group>"; };
 		D1A483E8224515F80035E852 /* AirBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A483EB224515F80035E852 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D1A483ED224515F80035E852 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				D1A483ED224515F80035E852 /* ViewController.swift */,
 				D1B430EF224546480050D48F /* HTTPClient.swift */,
 				D12BF1AF2248F2E500A5FA76 /* Flights.swift */,
+				D12BF1B12248F40D00A5FA76 /* FlightService.swift */,
 				D1A483EF224515F80035E852 /* Main.storyboard */,
 				D1A483F2224515F90035E852 /* Assets.xcassets */,
 				D1A483F4224515F90035E852 /* LaunchScreen.storyboard */,
@@ -210,6 +213,7 @@
 				D12BF1B02248F2E500A5FA76 /* Flights.swift in Sources */,
 				D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */,
 				D1B430F0224546480050D48F /* HTTPClient.swift in Sources */,
+				D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
