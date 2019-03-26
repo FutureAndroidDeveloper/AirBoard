@@ -47,7 +47,16 @@ class URLSessionHTTPClient: HTTPClient {
                 return
             }
             
-//            try? JSONDecoder().decode(AirportModel.self, from: data)
+//            do {
+//                let posts = try JSONDecoder().decode([Flight].self, from: responseData)
+//                print(posts)
+//            } catch {
+//                print(error)
+//                //prints "No value associated with key title (\"title\")."
+//            }
+            
+    
+            
             
             // parse the result as Array of [String: Any]
             do {

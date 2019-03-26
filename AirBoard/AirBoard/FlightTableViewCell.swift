@@ -27,13 +27,4 @@ class FlightTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    func bind(obj: airport) {
-        if let depature = airport.depature {
-            departureTimeLabel = depature
-        } else {
-            departureTimeLabel = "none"
-        }
-    }
-
 }

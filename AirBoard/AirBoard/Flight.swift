@@ -7,27 +7,20 @@
 //
 
 import Foundation
-class Flight {
-    
-    // MARK: Properties
-    
-    var departure: String?
-    var arrival: String?
-    var departureTime: Int?
-    var arrivalTime: Int?
-    
-    init(departure: String?, arrival: String?, departureTime: Int?, arrivalTime: Int?) {
-        self.departure = departure
-        self.arrival = arrival
-        self.departureTime = departureTime
-        self.arrivalTime = arrivalTime
-    }
+
+struct Flight {
+    let departure: String?
+    let arrival: String?
+    let departureTime: Int?
+    let arrivalTime: Int?
 }
 
-
-struct AirportModel: Decodable {
-    let name: String
-    let city: String?
-    let code: String
+extension Flight: Decodable {
     
+    enum CodingKeys: String, CodingKey {
+        case departure = "estDepartureAirport"
+        case arrival = "estArrivalAirport"
+        case departureTime = "firstSeen"
+        case arrivalTime = "lastSeen"
+    }
 }

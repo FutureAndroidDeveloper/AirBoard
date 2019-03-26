@@ -11,86 +11,48 @@ import UIKit
 class FlightTableViewController: UITableViewController {
     
     // MARK: Properties
-    var flights: [Flight]?
     
     private let service = FlightService()
+    var flights = [Flight]()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        tableView.rowHeight = 100
         
         loadFlights()
     }
 
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return self.flights?.count ?? 0
+        return self.flights.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellIdentifier = "FlightCell"
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? FlightTableViewCell else {
             fatalError("cell error")
         }
         
-        let fligth = flights![indexPath.row]
+        let fligth = flights[indexPath.row]
         
         cell.arrivalICAOLabel.text = fligth.arrival
         cell.departureICAOLabel.text = fligth.departure
-        cell.arrivalTimeLabel.text = String(fligth.arrivalTime!)
-        cell.departureTimeLabel.text = String(fligth.departureTime!)
+        cell.arrivalTimeLabel.text = "\(fligth.arrivalTime ?? 0)"
+        cell.departureTimeLabel.text = "\(fligth.departureTime ?? 0)"
 
         return cell
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     /*
     // MARK: - Navigation
@@ -102,12 +64,14 @@ class FlightTableViewController: UITableViewController {
     }
     */
     
+    
     // MARK: Private Methods
     
     private func loadFlights() {
-        service.getFlights { (flights, eror) in
+        service.getDepartureFlights(parameters: ["airport": "EGLL", "begin": 1553202020, "end": 1553202600]) { [weak self] (flights, error) in
             
-            self.flights = flights
+            self?.flights = flights
+            self?.tableView.reloadData()
         }
     }
 }
