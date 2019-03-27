@@ -68,7 +68,8 @@ class FlightTableViewController: UITableViewController {
     // MARK: Private Methods
     
     private func loadFlights() {
-        service.getDepartureFlights(parameters: ["airport": "EGLL", "begin": 1553202020, "end": 1553202600]) { [weak self] (flights, error) in
+        
+        service.getDepartureFlights(parameters: (icao: "EGLL", begin: 1553202020, end: 1553202600)) { [weak self] (flights, error) in
             
             self?.flights = flights
             self?.tableView.reloadData()

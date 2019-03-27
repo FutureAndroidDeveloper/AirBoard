@@ -16,11 +16,27 @@ class FlightService {
     private let session = URLSession.shared
     
     
-    func getDepartureFlights(parameters: [String: Any], callback: @escaping (_ flights: [Flight], Error?) -> Void) {
+    func getDepartureFlights(parameters: (icao: String, begin: Int, end: Int), callback: @escaping (_ flights: [Flight], Error?) -> Void) {
         
         let path = "flights/departure"
+        var components = URLComponents()
         
-        guard let url = URL(string: baseUrl + path + getParamPath(parameters: parameters)) else {
+        // build parameter path
+        
+        let queryItemArport = URLQueryItem(name: "airport", value: parameters.icao)
+        let queryItemBegin = URLQueryItem(name: "begin", value: parameters.begin.description)
+        let queryItemEnd = URLQueryItem(name: "end", value: parameters.end.description)
+
+        components.queryItems = [queryItemArport, queryItemBegin, queryItemEnd]
+        
+        guard let paramPath = components.url else {
+            fatalError("Parameter generation error")
+        }
+        
+        
+        // create full URL
+        
+        guard let url = URL(string: baseUrl + path + paramPath.description) else {
             callback([], nil)
             return
         }
@@ -46,33 +62,41 @@ class FlightService {
     }
     
     
-    // MARK: Private Methods
-    
-    private func getParamPath(parameters: [String: Any]) -> String {
-        var resultString = "?"
+    func getAirports(callback: @escaping ([Airport], Error?) -> Void) {
         
-        if parameters.isEmpty {
-            resultString = ""
+        guard let url = URL(string: "https://raw.githubusercontent.com/ram-nadella/airport-codes/master/airports.json") else {
+            callback([], nil)
+            return
         }
         
-        if let airportICAO = parameters["airport"] as? String {
-            resultString += "airport=" + airportICAO + "&"
-        } else {
-            print("Can not get ICAO")
-        }
+//        let urlRequest = URLRequest(url: url)
         
-        if let begin = parameters["begin"] as? Int {
-            resultString += "begin=" + String(begin) + "&"
-        } else {
-            print("Can not get begin time")
-        }
-        
-        if let end = parameters["end"] as? Int {
-            resultString += "end=" + String(end)
-        } else {
-            print("Can not get end time")
-        }
-        
-        return resultString
+        session.dataTask(with: url) { (data, response, error) in
+            
+            guard response != nil else {
+                DispatchQueue.main.async {
+                    callback([], nil)
+                }
+                
+                print("NIL RESPONSE")
+                return
+            }
+            
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    callback([], nil)
+                }
+                
+                print("INVALID  DATA")
+                return
+            }
+            
+            if let airports = try? JSONDecoder().decode([String: Airport].self, from: data) {
+                DispatchQueue.main.async {
+                    callback(airports.compactMap{ $0.value }, nil)
+                }
+            }
+        }.resume()
     }
 }
