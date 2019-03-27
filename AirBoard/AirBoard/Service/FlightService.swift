@@ -69,8 +69,6 @@ class FlightService {
             return
         }
         
-//        let urlRequest = URLRequest(url: url)
-        
         session.dataTask(with: url) { (data, response, error) in
             
             guard response != nil else {

@@ -20,7 +20,6 @@
 		D1A483F3224515F90035E852 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A483F2224515F90035E852 /* Assets.xcassets */; };
 		D1A483F6224515F90035E852 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1A483F4224515F90035E852 /* LaunchScreen.storyboard */; };
 		D1A48401224515F90035E852 /* AirBoardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A48400224515F90035E852 /* AirBoardTests.swift */; };
-		D1B430F0224546480050D48F /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B430EF224546480050D48F /* HTTPClient.swift */; };
 		D1EE7B1B2248B496008931A8 /* HTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EE7B1A2248B496008931A8 /* HTTPClientTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,7 +51,6 @@
 		D1A483FC224515F90035E852 /* AirBoardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirBoardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A48400224515F90035E852 /* AirBoardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirBoardTests.swift; sourceTree = "<group>"; };
 		D1A48402224515F90035E852 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D1B430EF224546480050D48F /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		D1EE7B1A2248B496008931A8 /* HTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,6 +72,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D1038130224BB302009BE46B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D12BF1AF2248F2E500A5FA76 /* Flight.swift */,
+				D103812A224B8AFC009BE46B /* Airport.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D1038131224BB32A009BE46B /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				D12BF1B12248F40D00A5FA76 /* FlightService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		D1A483DF224515F80035E852 = {
 			isa = PBXGroup;
 			children = (
@@ -95,12 +110,10 @@
 		D1A483EA224515F80035E852 /* AirBoard */ = {
 			isa = PBXGroup;
 			children = (
+				D1038131224BB32A009BE46B /* Service */,
+				D1038130224BB302009BE46B /* Model */,
 				D1A483EB224515F80035E852 /* AppDelegate.swift */,
 				D1A483ED224515F80035E852 /* ViewController.swift */,
-				D1B430EF224546480050D48F /* HTTPClient.swift */,
-				D12BF1AF2248F2E500A5FA76 /* Flight.swift */,
-				D103812A224B8AFC009BE46B /* Airport.swift */,
-				D12BF1B12248F40D00A5FA76 /* FlightService.swift */,
 				D12BF1B32248FC6300A5FA76 /* FlightTableViewCell.swift */,
 				D103812C224BAB02009BE46B /* AirportTableViewCell.swift */,
 				D12BF1B52249008900A5FA76 /* FlightTableViewController.swift */,
@@ -231,7 +244,6 @@
 				D103812F224BABBD009BE46B /* AirportTableViewController.swift in Sources */,
 				D12BF1B02248F2E500A5FA76 /* Flight.swift in Sources */,
 				D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */,
-				D1B430F0224546480050D48F /* HTTPClient.swift in Sources */,
 				D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */,
 				D12BF1B62249008900A5FA76 /* FlightTableViewController.swift in Sources */,
 			);

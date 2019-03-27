@@ -10,10 +10,14 @@ import UIKit
 
 class AirportTableViewController: UITableViewController {
     
+    
     // MARK: Properties
     
     private let service = FlightService()
     var airports = [Airport]()
+    
+    var airportDict = [String: [Airport]]()
+    var airportSectionTitles = [String]()
 
     
     override func viewDidLoad() {
@@ -26,15 +30,27 @@ class AirportTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return airportSectionTitles.count
     }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return airportSectionTitles[section]
+    }
+    
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return self.airports.count
+        
+        let airportKey = airportSectionTitles[section]
+        guard let airportValues = airportDict[airportKey] else { return 0 }
+        
+        return airportValues.count
     }
-
+    
+    
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return airportSectionTitles
+    }
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -44,11 +60,13 @@ class AirportTableViewController: UITableViewController {
             fatalError("cell error")
         }
 
-        let airport = airports[indexPath.row]
+        let airportKey = airportSectionTitles[indexPath.section]
         
-        cell.airportNameLabel.text = airport.name
-        cell.cityLabel.text = "\(airport.city ?? "Undefined")"
-        cell.codeLabel.text = airport.code
+        if let airportValues = airportDict[airportKey] {
+            cell.airportNameLabel.text = airportValues[indexPath.row].name
+            cell.cityLabel.text = "\(airportValues[indexPath.row].city ?? "Undefined")"
+            cell.codeLabel.text = airportValues[indexPath.row].code
+        }
 
         return cell
     }
@@ -105,8 +123,30 @@ class AirportTableViewController: UITableViewController {
     private func loadAirports() {
         service.getAirports { [weak self] (airports, error) in
             self?.airports = airports
-            self?.tableView.reloadData()
+            self?.createAirportsDict()
         }
     }
 
+    private func createAirportsDict() {
+        
+        for airport in airports {
+            
+            // Get the first letter of airport name and build the dictionary
+            let firstLetterIndex = airport.name.index(airport.name.startIndex, offsetBy: 1)
+            let airportKey = String(airport.name[..<firstLetterIndex])
+            
+            if var airportValues = airportDict[airportKey] {
+                airportValues.append(airport)
+                airportDict[airportKey] = airportValues
+            } else {
+                airportDict[airportKey] = [airport]
+            }
+        }
+        
+        // Get the section titlesfrom the dictionary's keys and sort them in ascending order
+        airportSectionTitles = [String](airportDict.keys)
+        airportSectionTitles = airportSectionTitles.sorted(by: { $0 < $1 })
+        
+        tableView.reloadData()
+    }
 }

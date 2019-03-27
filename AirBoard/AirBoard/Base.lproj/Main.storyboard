@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QVi-Rs-yjK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ecf-eU-oE9">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -24,9 +24,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VJu-t4-xo1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1891" y="19"/>
+            <point key="canvasLocation" x="2829.5999999999999" y="18.440779610194905"/>
         </scene>
-        <!--Airport Table View Controller-->
+        <!--Airports-->
         <scene sceneID="Lwm-bo-lWG">
             <objects>
                 <tableViewController id="QVi-Rs-yjK" customClass="AirportTableViewController" customModule="AirBoard" customModuleProvider="target" sceneMemberID="viewController">
@@ -34,6 +34,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Qqr-sf-Rbr"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AirportCell" id="uqM-2R-yH0" customClass="AirportTableViewCell" customModule="AirBoard" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -42,8 +43,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="xpM-5j-I4g">
-                                            <rect key="frame" x="52" y="11.5" width="271.5" height="20.5"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xpM-5j-I4g">
+                                            <rect key="frame" x="97" y="11.5" width="181.5" height="20.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Airport name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qsw-37-Fok">
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="20.5"/>
@@ -52,13 +53,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ibc-vn-tt9">
-                                                    <rect key="frame" x="150" y="0.0" width="30.5" height="20.5"/>
+                                                    <rect key="frame" x="105" y="0.0" width="30.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnb-wb-P8p">
-                                                    <rect key="frame" x="230.5" y="0.0" width="41" height="20.5"/>
+                                                    <rect key="frame" x="140.5" y="0.0" width="41" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -67,8 +68,8 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="xpM-5j-I4g" firstAttribute="centerY" secondItem="IEG-GY-uj3" secondAttribute="centerY" id="Zpe-gt-L2c"/>
-                                        <constraint firstItem="xpM-5j-I4g" firstAttribute="centerX" secondItem="IEG-GY-uj3" secondAttribute="centerX" id="qa7-Kh-cf1"/>
+                                        <constraint firstItem="xpM-5j-I4g" firstAttribute="centerY" secondItem="IEG-GY-uj3" secondAttribute="centerY" id="ejI-f9-WaS"/>
+                                        <constraint firstItem="xpM-5j-I4g" firstAttribute="centerX" secondItem="IEG-GY-uj3" secondAttribute="centerX" id="z5F-C9-hrH"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -83,10 +84,22 @@
                             <outlet property="delegate" destination="QVi-Rs-yjK" id="zLh-Mi-2Hz"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Airports" id="kot-ct-ONq"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="oBQ-8c-NvT" id="NiW-fA-e0b"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NBx-iF-h1c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="oBQ-8c-NvT">
+                    <connections>
+                        <outlet property="delegate" destination="QVi-Rs-yjK" id="dZ4-vh-CLO"/>
+                        <outlet property="searchContentsController" destination="QVi-Rs-yjK" id="pZE-Q2-6vR"/>
+                        <outlet property="searchResultsDataSource" destination="QVi-Rs-yjK" id="saR-Tk-SbX"/>
+                        <outlet property="searchResultsDelegate" destination="QVi-Rs-yjK" id="qpW-4t-5dY"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-100" y="-314.39280359820094"/>
+            <point key="canvasLocation" x="839.20000000000005" y="-314.39280359820094"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="MYo-JH-68v">
@@ -104,7 +117,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tge-rm-F4p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="889" y="-314"/>
+            <point key="canvasLocation" x="1828" y="-314.39280359820094"/>
         </scene>
         <!--Item 1-->
         <scene sceneID="qbO-Uc-4U0">
@@ -123,7 +136,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bfn-Cq-vag" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1890.4000000000001" y="-646.32683658170924"/>
+            <point key="canvasLocation" x="2829.5999999999999" y="-646.32683658170924"/>
         </scene>
         <!--Flight Table View Controller-->
         <scene sceneID="36m-UU-H5h">
@@ -229,7 +242,25 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H3L-hM-Z3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2768.8000000000002" y="-646.32683658170924"/>
+            <point key="canvasLocation" x="3708" y="-646.32683658170924"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="oVP-ox-t4B">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ecf-eU-oE9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FGo-28-hj4">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="QVi-Rs-yjK" kind="relationship" relationship="rootViewController" id="vls-tu-rtb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rcq-S6-vLL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-100" y="-314.39280359820094"/>
         </scene>
     </scenes>
 </document>
