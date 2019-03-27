@@ -10,37 +10,69 @@ import Foundation
 
 class FlightService {
     
-    var flights: [Flight]?
+    // MARK: Properties
+    
+    private let baseUrl: String = "https://opensky-network.org/api/"
+    private let session = URLSession.shared
     
     
-    init() {
-        flights = []
+    func getDepartureFlights(parameters: [String: Any], callback: @escaping (_ flights: [Flight], Error?) -> Void) {
+        
+        let path = "flights/departure"
+        
+        guard let url = URL(string: baseUrl + path + getParamPath(parameters: parameters)) else {
+            callback([], nil)
+            return
+        }
+        
+        let urlRequest = URLRequest(url: url)
+        
+        // make the request
+        session.dataTask(with: urlRequest) { (data, response, error) in
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    callback([], nil)
+                }
+                return
+            }
+            
+            if let flights = try? JSONDecoder().decode([Flight].self, from: data) {
+                DispatchQueue.main.async {
+                    callback(flights, nil)
+                }
+            }
+        }.resume()
     }
     
-    func getFlights(jsonFlights: [[String: Any]]) {
+    
+    // MARK: Private Methods
+    
+    private func getParamPath(parameters: [String: Any]) -> String {
+        var resultString = "?"
         
-        for flight in jsonFlights {
-            guard let departure = flight["estDepartureAirport"] as? String  else {
-                print("Could not get departure from JSON")
-                return
-            }
-            
-            guard let arrival = flight["estArrivalAirport"] as? String  else {
-                print("Could not get arrival from JSON")
-                return
-            }
-            
-            guard let departureTime = flight["firstSeen"] as? Int?  else {
-                print("Could not get firstSeen from JSON")
-                return
-            }
-            
-            guard let arrivalTime = flight["lastSeen"] as? Int?  else {
-                print("Could not get lastSeen from JSON")
-                return
-            }
-            
-            flights?.append(Flight(departure: departure, arrival: arrival, departureTime: departureTime, arrivalTime: arrivalTime))
+        if parameters.isEmpty {
+            resultString = ""
         }
+        
+        if let airportICAO = parameters["airport"] as? String {
+            resultString += "airport=" + airportICAO + "&"
+        } else {
+            print("Can not get ICAO")
+        }
+        
+        if let begin = parameters["begin"] as? Int {
+            resultString += "begin=" + String(begin) + "&"
+        } else {
+            print("Can not get begin time")
+        }
+        
+        if let end = parameters["end"] as? Int {
+            resultString += "end=" + String(end)
+        } else {
+            print("Can not get end time")
+        }
+        
+        return resultString
     }
 }
