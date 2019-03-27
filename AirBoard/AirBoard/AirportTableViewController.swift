@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AirportTableViewController: UITableViewController {
+class AirportTableViewController: UITableViewController, UISearchResultsUpdating {
     
     
     // MARK: Properties
@@ -18,37 +18,81 @@ class AirportTableViewController: UITableViewController {
     
     var airportDict = [String: [Airport]]()
     var airportSectionTitles = [String]()
+    
+    var filteredAirports = [Airport]()
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    let IndexList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        tableView.rowHeight = 100
+        
         loadAirports()
+
+        
+        filteredAirports = airports
+        
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+        
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+
+//        loadAirports()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        // If we haven't typed anything into the search bar then do not filter the results
+        if searchController.searchBar.text! == "" {
+            filteredAirports = airports
+        } else {
+            // Filter the results
+            filteredAirports = airports.filter { $0.name.lowercased().contains(searchController.searchBar.text!.lowercased()) }
+        }
+        
+        tableView.reloadData()
     }
 
     
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
+        if searchController.isActive {
+            return 1
+        }
+        
         return airportSectionTitles.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if searchController.isActive {
+            return "Found airports"
+        }
+        
         return airportSectionTitles[section]
     }
     
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        if searchController.isActive {
+            return self.filteredAirports.count
+        }
+        
         let airportKey = airportSectionTitles[section]
         guard let airportValues = airportDict[airportKey] else { return 0 }
-        
+
         return airportValues.count
     }
     
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return airportSectionTitles
+//        return airportSectionTitles
+        return IndexList
     }
     
     
@@ -58,6 +102,14 @@ class AirportTableViewController: UITableViewController {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AirportTableViewCell else {
             fatalError("cell error")
+        }
+        
+        if searchController.isActive {
+            cell.airportNameLabel.text = filteredAirports[indexPath.row].name
+            cell.cityLabel.text = "\(filteredAirports[indexPath.row].city ?? "Undefined")"
+            cell.codeLabel.text = filteredAirports[indexPath.row].code
+            
+            return cell
         }
 
         let airportKey = airportSectionTitles[indexPath.section]
@@ -122,7 +174,7 @@ class AirportTableViewController: UITableViewController {
     
     private func loadAirports() {
         service.getAirports { [weak self] (airports, error) in
-            self?.airports = airports
+            self?.airports = airports.sorted(by: { $0.name < $1.name })
             self?.createAirportsDict()
         }
     }
