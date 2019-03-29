@@ -10,10 +10,12 @@
 		D103812B224B8AFC009BE46B /* Airport.swift in Sources */ = {isa = PBXBuildFile; fileRef = D103812A224B8AFC009BE46B /* Airport.swift */; };
 		D103812D224BAB02009BE46B /* AirportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D103812C224BAB02009BE46B /* AirportTableViewCell.swift */; };
 		D103812F224BABBD009BE46B /* AirportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D103812E224BABBD009BE46B /* AirportTableViewController.swift */; };
+		D11E95C9224E11AB007E536F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11E95C8224E11AB007E536F /* CoreDataManager.swift */; };
 		D12BF1B02248F2E500A5FA76 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1AF2248F2E500A5FA76 /* Flight.swift */; };
 		D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B12248F40D00A5FA76 /* FlightService.swift */; };
 		D12BF1B42248FC6300A5FA76 /* FlightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B32248FC6300A5FA76 /* FlightTableViewCell.swift */; };
 		D12BF1B62249008900A5FA76 /* FlightTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B52249008900A5FA76 /* FlightTableViewController.swift */; };
+		D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D1490E8E224CB987008F3576 /* AirBoard.xcdatamodeld */; };
 		D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A483EB224515F80035E852 /* AppDelegate.swift */; };
 		D1A483EE224515F80035E852 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A483ED224515F80035E852 /* ViewController.swift */; };
 		D1A483F1224515F80035E852 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1A483EF224515F80035E852 /* Main.storyboard */; };
@@ -37,10 +39,12 @@
 		D103812A224B8AFC009BE46B /* Airport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Airport.swift; sourceTree = "<group>"; };
 		D103812C224BAB02009BE46B /* AirportTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportTableViewCell.swift; sourceTree = "<group>"; };
 		D103812E224BABBD009BE46B /* AirportTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportTableViewController.swift; sourceTree = "<group>"; };
+		D11E95C8224E11AB007E536F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		D12BF1AF2248F2E500A5FA76 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flight.swift; sourceTree = "<group>"; };
 		D12BF1B12248F40D00A5FA76 /* FlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightService.swift; sourceTree = "<group>"; };
 		D12BF1B32248FC6300A5FA76 /* FlightTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightTableViewCell.swift; sourceTree = "<group>"; };
 		D12BF1B52249008900A5FA76 /* FlightTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightTableViewController.swift; sourceTree = "<group>"; };
+		D1490E8F224CB987008F3576 /* AirBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AirBoard.xcdatamodel; sourceTree = "<group>"; };
 		D1A483E8224515F80035E852 /* AirBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A483EB224515F80035E852 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D1A483ED224515F80035E852 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +93,15 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		D1490E95224CC179008F3576 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				D1490E8E224CB987008F3576 /* AirBoard.xcdatamodeld */,
+				D11E95C8224E11AB007E536F /* CoreDataManager.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
 		D1A483DF224515F80035E852 = {
 			isa = PBXGroup;
 			children = (
@@ -110,10 +123,11 @@
 		D1A483EA224515F80035E852 /* AirBoard */ = {
 			isa = PBXGroup;
 			children = (
+				D1490E95224CC179008F3576 /* Core Data */,
 				D1038131224BB32A009BE46B /* Service */,
 				D1038130224BB302009BE46B /* Model */,
-				D1A483EB224515F80035E852 /* AppDelegate.swift */,
 				D1A483ED224515F80035E852 /* ViewController.swift */,
+				D1A483EB224515F80035E852 /* AppDelegate.swift */,
 				D12BF1B32248FC6300A5FA76 /* FlightTableViewCell.swift */,
 				D103812C224BAB02009BE46B /* AirportTableViewCell.swift */,
 				D12BF1B52249008900A5FA76 /* FlightTableViewController.swift */,
@@ -242,10 +256,12 @@
 				D103812D224BAB02009BE46B /* AirportTableViewCell.swift in Sources */,
 				D12BF1B42248FC6300A5FA76 /* FlightTableViewCell.swift in Sources */,
 				D103812F224BABBD009BE46B /* AirportTableViewController.swift in Sources */,
+				D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */,
 				D12BF1B02248F2E500A5FA76 /* Flight.swift in Sources */,
 				D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */,
 				D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */,
 				D12BF1B62249008900A5FA76 /* FlightTableViewController.swift in Sources */,
+				D11E95C9224E11AB007E536F /* CoreDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +529,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D1490E8E224CB987008F3576 /* AirBoard.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D1490E8F224CB987008F3576 /* AirBoard.xcdatamodel */,
+			);
+			currentVersion = D1490E8F224CB987008F3576 /* AirBoard.xcdatamodel */;
+			path = AirBoard.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D1A483E0224515F80035E852 /* Project object */;
 }

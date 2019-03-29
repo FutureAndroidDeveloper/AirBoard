@@ -75,17 +75,14 @@ class FlightService {
                 DispatchQueue.main.async {
                     callback([], nil)
                 }
-                
                 print("NIL RESPONSE")
                 return
             }
-            
             
             guard let data = data else {
                 DispatchQueue.main.async {
                     callback([], nil)
                 }
-                
                 print("INVALID  DATA")
                 return
             }

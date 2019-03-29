@@ -10,47 +10,57 @@ import UIKit
 
 class AirportTableViewController: UITableViewController, UISearchResultsUpdating {
     
-    
     // MARK: Properties
     
     private let service = FlightService()
-    var airports = [Airport]()
-    
-    var airportDict = [String: [Airport]]()
-    var airportSectionTitles = [String]()
-    
-    var filteredAirports = [Airport]()
-    let searchController = UISearchController(searchResultsController: nil)
-    
-    let IndexList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
+    private var airports = [Airport]()
+    private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
 
+    
+    // Sections and index list
+    private var airportDict = [String: [Airport]]()
+    private var airportSectionTitles = [String]()
+    private let indexList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
+    
+    // Search
+    private var filteredAirports = [Airport]()
+    private let searchController = UISearchController(searchResultsController: nil)
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.rowHeight = 100
         
-        loadAirports()
+        airports = coreDataManager.loadDataFromDB()
+        createAirportsDict()
+        
+        if airports.isEmpty {
+            loadAirports()
+            tableView.reloadData()
+        } else {
+            tableView.reloadData()
+        }
 
-        
         filteredAirports = airports
-        
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
         
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-
-//        loadAirports()
+        
+        tableView.reloadData()
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        // If we haven't typed anything into the search bar then do not filter the results
-        if searchController.searchBar.text! == "" {
+        
+        // If search bar is empty then do not filter the results
+        if searchController.searchBar.text!.isEmpty {
             filteredAirports = airports
         } else {
-            // Filter the results
             filteredAirports = airports.filter { $0.name.lowercased().contains(searchController.searchBar.text!.lowercased()) }
         }
         
@@ -91,8 +101,7 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        return airportSectionTitles
-        return IndexList
+        return indexList
     }
     
     
@@ -124,78 +133,38 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
-    
     // MARK: Private Methods
     
     private func loadAirports() {
         service.getAirports { [weak self] (airports, error) in
             self?.airports = airports.sorted(by: { $0.name < $1.name })
             self?.createAirportsDict()
+            self?.coreDataManager.saveAirports(airports: self!.airports)
         }
     }
 
     private func createAirportsDict() {
+        if airports.isEmpty {
+            return
+        }
         
+        // Get the first letter in airport name and create dictionary
         for airport in airports {
+
+            guard let firstChar = airport.name.first else {
+                fatalError("cant get first char - \(airport.name)")
+            }
             
-            // Get the first letter of airport name and build the dictionary
-            let firstLetterIndex = airport.name.index(airport.name.startIndex, offsetBy: 1)
-            let airportKey = String(airport.name[..<firstLetterIndex])
+            let airportKey = String(firstChar)
             
-            if var airportValues = airportDict[airportKey] {
-                airportValues.append(airport)
-                airportDict[airportKey] = airportValues
+            if var _ = airportDict[airportKey] {
+                airportDict[airportKey]?.append(airport)
             } else {
                 airportDict[airportKey] = [airport]
             }
         }
         
-        // Get the section titlesfrom the dictionary's keys and sort them in ascending order
+        // Get the section titles from the dictionary's keys and sort them in ascending order
         airportSectionTitles = [String](airportDict.keys)
         airportSectionTitles = airportSectionTitles.sorted(by: { $0 < $1 })
         
