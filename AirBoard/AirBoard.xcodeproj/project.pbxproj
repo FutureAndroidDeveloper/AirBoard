@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D1014F522251E915006CE5FC /* ListIndexBackLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1014F512251E915006CE5FC /* ListIndexBackLightView.xib */; };
+		D1014F542251EABD006CE5FC /* ListIndexBacklightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1014F532251EABD006CE5FC /* ListIndexBacklightView.swift */; };
 		D103812B224B8AFC009BE46B /* Airport.swift in Sources */ = {isa = PBXBuildFile; fileRef = D103812A224B8AFC009BE46B /* Airport.swift */; };
 		D103812D224BAB02009BE46B /* AirportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D103812C224BAB02009BE46B /* AirportTableViewCell.swift */; };
 		D103812F224BABBD009BE46B /* AirportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D103812E224BABBD009BE46B /* AirportTableViewController.swift */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D1014F512251E915006CE5FC /* ListIndexBackLightView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListIndexBackLightView.xib; sourceTree = "<group>"; };
+		D1014F532251EABD006CE5FC /* ListIndexBacklightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListIndexBacklightView.swift; sourceTree = "<group>"; };
 		D103812A224B8AFC009BE46B /* Airport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Airport.swift; sourceTree = "<group>"; };
 		D103812C224BAB02009BE46B /* AirportTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportTableViewCell.swift; sourceTree = "<group>"; };
 		D103812E224BABBD009BE46B /* AirportTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportTableViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +80,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D1014F502251E85B006CE5FC /* Custom View */ = {
+			isa = PBXGroup;
+			children = (
+				D1014F512251E915006CE5FC /* ListIndexBackLightView.xib */,
+				D1014F532251EABD006CE5FC /* ListIndexBacklightView.swift */,
+			);
+			path = "Custom View";
+			sourceTree = "<group>";
+		};
 		D1038130224BB302009BE46B /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +136,7 @@
 		D1A483EA224515F80035E852 /* AirBoard */ = {
 			isa = PBXGroup;
 			children = (
+				D1014F502251E85B006CE5FC /* Custom View */,
 				D1490E95224CC179008F3576 /* Core Data */,
 				D1038131224BB32A009BE46B /* Service */,
 				D1038130224BB302009BE46B /* Model */,
@@ -234,6 +248,7 @@
 				D1A483F6224515F90035E852 /* LaunchScreen.storyboard in Resources */,
 				D1A483F3224515F90035E852 /* Assets.xcassets in Resources */,
 				D1A483F1224515F80035E852 /* Main.storyboard in Resources */,
+				D1014F522251E915006CE5FC /* ListIndexBackLightView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +273,7 @@
 				D103812F224BABBD009BE46B /* AirportTableViewController.swift in Sources */,
 				D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */,
 				D12BF1B02248F2E500A5FA76 /* Flight.swift in Sources */,
+				D1014F542251EABD006CE5FC /* ListIndexBacklightView.swift in Sources */,
 				D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */,
 				D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */,
 				D12BF1B62249008900A5FA76 /* FlightTableViewController.swift in Sources */,

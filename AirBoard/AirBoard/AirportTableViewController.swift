@@ -15,6 +15,8 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     private let service = FlightService()
     private var airports = [Airport]()
     private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
+    
+    private var aiportCode = ""
 
     
     // Sections and index list
@@ -25,8 +27,6 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     // Search
     private var filteredAirports = [Airport]()
     private let searchController = UISearchController(searchResultsController: nil)
-    
-    
     
     
     override func viewDidLoad() {
@@ -53,7 +53,21 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
         tableView.reloadData()
+        
+        test()
     }
+    
+    func test() {
+        guard let view = self.navigationController?.view else {
+            fatalError("cant get nav controller as view")
+        }
+        
+        let myCustomView = ListIndexBacklightView(frame: CGRect(x: 100, y: 100, width: 50, height: 50))
+        
+
+        view.addSubview(myCustomView)
+    }
+
     
     func updateSearchResults(for searchController: UISearchController) {
         
@@ -86,7 +100,6 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         return airportSectionTitles[section]
     }
     
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if searchController.isActive {
@@ -104,7 +117,6 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         return indexList
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellIdentifier = "AirportCell"
@@ -117,6 +129,7 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
             cell.airportNameLabel.text = filteredAirports[indexPath.row].name
             cell.cityLabel.text = "\(filteredAirports[indexPath.row].city ?? "Undefined")"
             cell.codeLabel.text = filteredAirports[indexPath.row].code
+            cell.accessoryType = .disclosureIndicator
             
             return cell
         }
@@ -127,9 +140,42 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
             cell.airportNameLabel.text = airportValues[indexPath.row].name
             cell.cityLabel.text = "\(airportValues[indexPath.row].city ?? "Undefined")"
             cell.codeLabel.text = airportValues[indexPath.row].code
+            cell.accessoryType = .disclosureIndicator
         }
 
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        switch segue.identifier ?? "" {
+        case "ShowFlights":
+            guard let tabBarController = segue.destination as? UITabBarController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            guard let navController = tabBarController.viewControllers?[0] as? UINavigationController else {
+                fatalError("Unexpected navController: \(tabBarController.description)")
+            }
+            
+            guard let viewController = navController.topViewController as?FlightTableViewController else {
+                print("cant find controller")
+                return
+            }
+
+            guard let selectedAirportCell = sender as? AirportTableViewCell else {
+                fatalError("Unexpected sender: \(String(describing: sender))")
+            }
+
+            //getting the airport code
+            if let code = selectedAirportCell.codeLabel.text {
+                viewController.airportCode = code
+            }
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
+        }
     }
     
     
