@@ -13,39 +13,35 @@ extension Double {
         let date = Date(timeIntervalSince1970: self)
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        dateFormatter.dateFormat = "MMM d, h:mm a"
         return dateFormatter.string(from: date)
     }
 }
 
-class FlightTableViewController: UITableViewController {
+class DepartureTableViewController: UITableViewController {
     
     // MARK: Properties
     
     private let service = FlightService()
-    var airportCode = "" {
+    var airportCode = String() {
         didSet {
-            print("Установил новое занчение")
-//            loadFlights()
+            print("Departure get code = \(airportCode)")
         }
     }
-    var flights = [Flight]()
+    var flights = [Flight]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.rowHeight = 100
-        
         loadFlights()
-        tableView.reloadData()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        print("AIRPORT CODE = \(airportCode)")
-    }
-
     
     // MARK: - Table view data source
 
@@ -54,24 +50,21 @@ class FlightTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.flights.count
+        return flights.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cellIdentifier = "FlightCell"
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? FlightTableViewCell else {
+        let cellIdentifier = "DepartureCell"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? DepartureTableViewCell else {
             fatalError("cell error")
         }
         
         let fligth = flights[indexPath.row]
         
-        cell.arrivalICAOLabel.text = fligth.arrival
-        cell.departureICAOLabel.text = fligth.departure        
-        cell.arrivalTimeLabel.text = Double(fligth.arrivalTime!).getDateFromUTC()
-        cell.departureTimeLabel.text = Double(fligth.departureTime!).getDateFromUTC()
+        cell.arrivalCityLabel.text = fligth.arrival ?? "Unkown"
+        cell.departureTimeLabel.text = Double(fligth.departureTime!).getDateFromUTC() 
 
         return cell
     }
@@ -87,16 +80,25 @@ class FlightTableViewController: UITableViewController {
     */
     
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        guard let currentCell = tableView.cellForRow(at: indexPath) as? DepartureTableViewCell else {
+            fatalError("I AM BATMAN")
+        }
+        
+        print(currentCell.departureTimeLabel.text!)
+    }
+    
+    
     // MARK: Private Methods
     
     private func loadFlights() {
         
-        print("начал загрузку")
+        print("departure начал загрузку")
         
-        service.getDepartureFlights(parameters: (icao: airportCode, begin: 1553202020, end: 1553202600)) { [weak self] (flights, error) in
+        service.getDepartureFlights(parameters: (icao: airportCode, begin: 1553990400, end: 1554076800)) { [weak self] (flights, error) in
             
-            self?.flights = flights
-            self?.tableView.reloadData()
+            self?.flights = flights.sorted(by: {$0.departureTime! < $1.departureTime!})
         }
     }
 }

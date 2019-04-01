@@ -19,24 +19,10 @@ class FlightService {
     func getDepartureFlights(parameters: (icao: String, begin: Int, end: Int), callback: @escaping (_ flights: [Flight], Error?) -> Void) {
         
         let path = "flights/departure"
-        var components = URLComponents()
-        
-        // build parameter path
-        
-        let queryItemArport = URLQueryItem(name: "airport", value: parameters.icao)
-        let queryItemBegin = URLQueryItem(name: "begin", value: parameters.begin.description)
-        let queryItemEnd = URLQueryItem(name: "end", value: parameters.end.description)
-
-        components.queryItems = [queryItemArport, queryItemBegin, queryItemEnd]
-        
-        guard let paramPath = components.url else {
-            fatalError("Parameter generation error")
-        }
-        
+        let paramPath = buildParamPath(with: parameters)
         
         // create full URL
-        
-        guard let url = URL(string: baseUrl + path + paramPath.description) else {
+        guard let url = URL(string: baseUrl + path + paramPath) else {
             callback([], nil)
             return
         }
@@ -46,6 +32,35 @@ class FlightService {
         // make the request
         session.dataTask(with: urlRequest) { (data, response, error) in
             
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    callback([], nil)
+                }
+                return
+            }
+            
+            if let flights = try? JSONDecoder().decode([Flight].self, from: data) {
+                DispatchQueue.main.async {
+                    callback(flights, nil)
+                }
+            }
+        }.resume()
+    }
+    
+    func getArrivalFlights(parameters: (icao: String, begin: Int, end: Int), callback: @escaping ([Flight], Error?) -> Void) {
+        
+        let path = "flights/arrival"
+        let paramPath = buildParamPath(with: parameters)
+        
+        // create full URL
+        guard let url = URL(string: baseUrl + path + paramPath) else {
+            callback([], nil)
+            return
+        }
+        
+        let urlRequest = URLRequest(url: url)
+        
+        session.dataTask(with: urlRequest) { (data, response, error) in
             guard let data = data else {
                 DispatchQueue.main.async {
                     callback([], nil)
@@ -93,5 +108,25 @@ class FlightService {
                 }
             }
         }.resume()
+    }
+    
+    
+    // MARK: Private Methods
+    
+    private func buildParamPath(with parameters: (icao: String, begin: Int, end: Int)) -> String {
+        var components = URLComponents()
+        
+        // build parameter path
+        let queryItemArport = URLQueryItem(name: "airport", value: parameters.icao)
+        let queryItemBegin = URLQueryItem(name: "begin", value: parameters.begin.description)
+        let queryItemEnd = URLQueryItem(name: "end", value: parameters.end.description)
+        
+        components.queryItems = [queryItemArport, queryItemBegin, queryItemEnd]
+        
+        guard let paramPath = components.url else {
+            fatalError("Parameter generation error")
+        }
+        
+        return paramPath.description
     }
 }

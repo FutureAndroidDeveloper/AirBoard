@@ -15,8 +15,8 @@
 		D11E95C9224E11AB007E536F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11E95C8224E11AB007E536F /* CoreDataManager.swift */; };
 		D12BF1B02248F2E500A5FA76 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1AF2248F2E500A5FA76 /* Flight.swift */; };
 		D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B12248F40D00A5FA76 /* FlightService.swift */; };
-		D12BF1B42248FC6300A5FA76 /* FlightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B32248FC6300A5FA76 /* FlightTableViewCell.swift */; };
-		D12BF1B62249008900A5FA76 /* FlightTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B52249008900A5FA76 /* FlightTableViewController.swift */; };
+		D12BF1B42248FC6300A5FA76 /* DepartureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B32248FC6300A5FA76 /* DepartureTableViewCell.swift */; };
+		D12BF1B62249008900A5FA76 /* DepartureTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B52249008900A5FA76 /* DepartureTableViewController.swift */; };
 		D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D1490E8E224CB987008F3576 /* AirBoard.xcdatamodeld */; };
 		D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A483EB224515F80035E852 /* AppDelegate.swift */; };
 		D1A483EE224515F80035E852 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A483ED224515F80035E852 /* ViewController.swift */; };
@@ -24,6 +24,9 @@
 		D1A483F3224515F90035E852 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A483F2224515F90035E852 /* Assets.xcassets */; };
 		D1A483F6224515F90035E852 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1A483F4224515F90035E852 /* LaunchScreen.storyboard */; };
 		D1A48401224515F90035E852 /* AirBoardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A48400224515F90035E852 /* AirBoardTests.swift */; };
+		D1BE063B2252371600FC0640 /* ArrivalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BE063A2252371600FC0640 /* ArrivalTableViewCell.swift */; };
+		D1BE063D225237C200FC0640 /* ArrivalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BE063C225237C200FC0640 /* ArrivalTableViewController.swift */; };
+		D1BE063F225245C000FC0640 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BE063E225245C000FC0640 /* ScheduleViewController.swift */; };
 		D1EE7B1B2248B496008931A8 /* HTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EE7B1A2248B496008931A8 /* HTTPClientTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,8 +49,8 @@
 		D11E95C8224E11AB007E536F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		D12BF1AF2248F2E500A5FA76 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flight.swift; sourceTree = "<group>"; };
 		D12BF1B12248F40D00A5FA76 /* FlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightService.swift; sourceTree = "<group>"; };
-		D12BF1B32248FC6300A5FA76 /* FlightTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightTableViewCell.swift; sourceTree = "<group>"; };
-		D12BF1B52249008900A5FA76 /* FlightTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightTableViewController.swift; sourceTree = "<group>"; };
+		D12BF1B32248FC6300A5FA76 /* DepartureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartureTableViewCell.swift; sourceTree = "<group>"; };
+		D12BF1B52249008900A5FA76 /* DepartureTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartureTableViewController.swift; sourceTree = "<group>"; };
 		D1490E8F224CB987008F3576 /* AirBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AirBoard.xcdatamodel; sourceTree = "<group>"; };
 		D1A483E8224515F80035E852 /* AirBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A483EB224515F80035E852 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +62,9 @@
 		D1A483FC224515F90035E852 /* AirBoardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirBoardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A48400224515F90035E852 /* AirBoardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirBoardTests.swift; sourceTree = "<group>"; };
 		D1A48402224515F90035E852 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D1BE063A2252371600FC0640 /* ArrivalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivalTableViewCell.swift; sourceTree = "<group>"; };
+		D1BE063C225237C200FC0640 /* ArrivalTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivalTableViewController.swift; sourceTree = "<group>"; };
+		D1BE063E225245C000FC0640 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		D1EE7B1A2248B496008931A8 /* HTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,10 +148,13 @@
 				D1038130224BB302009BE46B /* Model */,
 				D1A483ED224515F80035E852 /* ViewController.swift */,
 				D1A483EB224515F80035E852 /* AppDelegate.swift */,
-				D12BF1B32248FC6300A5FA76 /* FlightTableViewCell.swift */,
+				D12BF1B32248FC6300A5FA76 /* DepartureTableViewCell.swift */,
 				D103812C224BAB02009BE46B /* AirportTableViewCell.swift */,
-				D12BF1B52249008900A5FA76 /* FlightTableViewController.swift */,
+				D1BE063A2252371600FC0640 /* ArrivalTableViewCell.swift */,
 				D103812E224BABBD009BE46B /* AirportTableViewController.swift */,
+				D1BE063E225245C000FC0640 /* ScheduleViewController.swift */,
+				D12BF1B52249008900A5FA76 /* DepartureTableViewController.swift */,
+				D1BE063C225237C200FC0640 /* ArrivalTableViewController.swift */,
 				D1A483EF224515F80035E852 /* Main.storyboard */,
 				D1A483F2224515F90035E852 /* Assets.xcassets */,
 				D1A483F4224515F90035E852 /* LaunchScreen.storyboard */,
@@ -266,17 +275,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1BE063F225245C000FC0640 /* ScheduleViewController.swift in Sources */,
+				D1BE063D225237C200FC0640 /* ArrivalTableViewController.swift in Sources */,
 				D1A483EE224515F80035E852 /* ViewController.swift in Sources */,
 				D103812B224B8AFC009BE46B /* Airport.swift in Sources */,
 				D103812D224BAB02009BE46B /* AirportTableViewCell.swift in Sources */,
-				D12BF1B42248FC6300A5FA76 /* FlightTableViewCell.swift in Sources */,
+				D12BF1B42248FC6300A5FA76 /* DepartureTableViewCell.swift in Sources */,
 				D103812F224BABBD009BE46B /* AirportTableViewController.swift in Sources */,
 				D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */,
 				D12BF1B02248F2E500A5FA76 /* Flight.swift in Sources */,
+				D1BE063B2252371600FC0640 /* ArrivalTableViewCell.swift in Sources */,
 				D1014F542251EABD006CE5FC /* ListIndexBacklightView.swift in Sources */,
 				D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */,
 				D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */,
-				D12BF1B62249008900A5FA76 /* FlightTableViewController.swift in Sources */,
+				D12BF1B62249008900A5FA76 /* DepartureTableViewController.swift in Sources */,
 				D11E95C9224E11AB007E536F /* CoreDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

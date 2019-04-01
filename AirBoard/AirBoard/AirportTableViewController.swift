@@ -151,26 +151,18 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         
         switch segue.identifier ?? "" {
         case "ShowFlights":
-            guard let tabBarController = segue.destination as? UITabBarController else {
+            
+            guard let tabBarController = segue.destination as? ScheduleViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
-            guard let navController = tabBarController.viewControllers?[0] as? UINavigationController else {
-                fatalError("Unexpected navController: \(tabBarController.description)")
-            }
-            
-            guard let viewController = navController.topViewController as?FlightTableViewController else {
-                print("cant find controller")
-                return
-            }
-
             guard let selectedAirportCell = sender as? AirportTableViewCell else {
                 fatalError("Unexpected sender: \(String(describing: sender))")
             }
-
+            
             //getting the airport code
             if let code = selectedAirportCell.codeLabel.text {
-                viewController.airportCode = code
+                tabBarController.airportCode = code
             }
             
         default:
