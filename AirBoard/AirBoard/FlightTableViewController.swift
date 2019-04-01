@@ -8,11 +8,28 @@
 
 import UIKit
 
+extension Double {
+    func getDateFromUTC() -> String {
+        let date = Date(timeIntervalSince1970: self)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        
+        return dateFormatter.string(from: date)
+    }
+}
+
 class FlightTableViewController: UITableViewController {
     
     // MARK: Properties
     
     private let service = FlightService()
+    var airportCode = "" {
+        didSet {
+            print("Установил новое занчение")
+//            loadFlights()
+        }
+    }
     var flights = [Flight]()
     
 
@@ -22,6 +39,11 @@ class FlightTableViewController: UITableViewController {
         tableView.rowHeight = 100
         
         loadFlights()
+        tableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("AIRPORT CODE = \(airportCode)")
     }
 
     
@@ -47,9 +69,9 @@ class FlightTableViewController: UITableViewController {
         let fligth = flights[indexPath.row]
         
         cell.arrivalICAOLabel.text = fligth.arrival
-        cell.departureICAOLabel.text = fligth.departure
-        cell.arrivalTimeLabel.text = "\(fligth.arrivalTime ?? 0)"
-        cell.departureTimeLabel.text = "\(fligth.departureTime ?? 0)"
+        cell.departureICAOLabel.text = fligth.departure        
+        cell.arrivalTimeLabel.text = Double(fligth.arrivalTime!).getDateFromUTC()
+        cell.departureTimeLabel.text = Double(fligth.departureTime!).getDateFromUTC()
 
         return cell
     }
@@ -68,7 +90,10 @@ class FlightTableViewController: UITableViewController {
     // MARK: Private Methods
     
     private func loadFlights() {
-        service.getDepartureFlights(parameters: ["airport": "EGLL", "begin": 1553202020, "end": 1553202600]) { [weak self] (flights, error) in
+        
+        print("начал загрузку")
+        
+        service.getDepartureFlights(parameters: (icao: airportCode, begin: 1553202020, end: 1553202600)) { [weak self] (flights, error) in
             
             self?.flights = flights
             self?.tableView.reloadData()
