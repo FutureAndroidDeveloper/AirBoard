@@ -15,7 +15,6 @@ class DepartureTableViewCell: UITableViewCell {
     @IBOutlet weak var departureTimeLabel: UILabel!
     @IBOutlet weak var arrivalCityLabel: UILabel!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

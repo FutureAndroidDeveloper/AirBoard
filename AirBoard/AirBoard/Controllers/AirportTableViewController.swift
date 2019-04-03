@@ -54,19 +54,19 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         
         tableView.reloadData()
         
-        test()
+//        test()
     }
-    
-    func test() {
-        guard let view = self.navigationController?.view else {
-            fatalError("cant get nav controller as view")
-        }
-        
-        let myCustomView = ListIndexBacklightView(frame: CGRect(x: 100, y: 100, width: 50, height: 50))
-        
-
-        view.addSubview(myCustomView)
-    }
+//
+//    func test() {
+//        guard let view = self.navigationController?.view else {
+//            fatalError("cant get nav controller as view")
+//        }
+//
+//        let myCustomView = ListIndexBacklightView(frame: CGRect(x: 100, y: 100, width: 50, height: 50))
+//
+//
+//        view.addSubview(myCustomView)
+//    }
 
     
     func updateSearchResults(for searchController: UISearchController) {

@@ -9,6 +9,10 @@
 import Foundation
 
 class FlightService {
+    enum Path: String {
+        case departure = "flights/departure"
+        case arrival = "flights/arrival"
+    }
     
     // MARK: Properties
     
@@ -18,11 +22,10 @@ class FlightService {
     
     func getDepartureFlights(parameters: (icao: String, begin: Int, end: Int), callback: @escaping (_ flights: [Flight], Error?) -> Void) {
         
-        let path = "flights/departure"
         let paramPath = buildParamPath(with: parameters)
         
         // create full URL
-        guard let url = URL(string: baseUrl + path + paramPath) else {
+        guard let url = URL(string: baseUrl + Path.departure.rawValue + paramPath) else {
             callback([], nil)
             return
         }
@@ -49,11 +52,10 @@ class FlightService {
     
     func getArrivalFlights(parameters: (icao: String, begin: Int, end: Int), callback: @escaping ([Flight], Error?) -> Void) {
         
-        let path = "flights/arrival"
         let paramPath = buildParamPath(with: parameters)
         
         // create full URL
-        guard let url = URL(string: baseUrl + path + paramPath) else {
+        guard let url = URL(string: baseUrl + Path.arrival.rawValue + paramPath) else {
             callback([], nil)
             return
         }

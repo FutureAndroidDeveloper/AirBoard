@@ -146,15 +146,11 @@
 				D1490E95224CC179008F3576 /* Core Data */,
 				D1038131224BB32A009BE46B /* Service */,
 				D1038130224BB302009BE46B /* Model */,
-				D1A483ED224515F80035E852 /* ViewController.swift */,
+				D1E16A412254C46F00D00AB2 /* Controllers */,
 				D1A483EB224515F80035E852 /* AppDelegate.swift */,
-				D12BF1B32248FC6300A5FA76 /* DepartureTableViewCell.swift */,
 				D103812C224BAB02009BE46B /* AirportTableViewCell.swift */,
+				D12BF1B32248FC6300A5FA76 /* DepartureTableViewCell.swift */,
 				D1BE063A2252371600FC0640 /* ArrivalTableViewCell.swift */,
-				D103812E224BABBD009BE46B /* AirportTableViewController.swift */,
-				D1BE063E225245C000FC0640 /* ScheduleViewController.swift */,
-				D12BF1B52249008900A5FA76 /* DepartureTableViewController.swift */,
-				D1BE063C225237C200FC0640 /* ArrivalTableViewController.swift */,
 				D1A483EF224515F80035E852 /* Main.storyboard */,
 				D1A483F2224515F90035E852 /* Assets.xcassets */,
 				D1A483F4224515F90035E852 /* LaunchScreen.storyboard */,
@@ -171,6 +167,18 @@
 				D1A48402224515F90035E852 /* Info.plist */,
 			);
 			path = AirBoardTests;
+			sourceTree = "<group>";
+		};
+		D1E16A412254C46F00D00AB2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D1A483ED224515F80035E852 /* ViewController.swift */,
+				D103812E224BABBD009BE46B /* AirportTableViewController.swift */,
+				D1BE063E225245C000FC0640 /* ScheduleViewController.swift */,
+				D12BF1B52249008900A5FA76 /* DepartureTableViewController.swift */,
+				D1BE063C225237C200FC0640 /* ArrivalTableViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

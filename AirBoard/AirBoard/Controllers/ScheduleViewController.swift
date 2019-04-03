@@ -70,5 +70,31 @@ class ScheduleViewController: UITabBarController {
         // sending the airport code
         departureViewController.airportCode = self.airportCode
         arrivalViewController.airportCode = self.airportCode
+        
+        // get current Date
+        let currentDate = getCurrentDate()
+        
+        // get start and end Date
+        let beginDate = subract(from: currentDate, days: 2)
+        let endDate = currentDate.addingTimeInterval(24 * 60 * 60 - 1)
+        
+        // pass Unix timestamp
+        departureViewController.beginUnix = Int(beginDate.timeIntervalSince1970)
+        departureViewController.endUnix = Int(endDate.timeIntervalSince1970)
+        
+        arrivalViewController.beginUnix = Int(beginDate.timeIntervalSince1970)
+        arrivalViewController.endUnix = Int(endDate.timeIntervalSince1970)
+    }
+    
+    private func getCurrentDate() -> Date {
+        var calendar = Calendar(identifier: .gregorian)
+        let currentDay = Date()
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        
+        return calendar.startOfDay(for: currentDay)
+    }
+    
+    private func subract(from date: Date, days: Int) -> Date {
+        return date.addingTimeInterval(TimeInterval(-days * 24 * 60 * 60))
     }
 }

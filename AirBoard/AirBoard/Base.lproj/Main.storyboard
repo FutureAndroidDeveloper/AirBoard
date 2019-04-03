@@ -103,90 +103,13 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Ytb-qU-0sG" kind="relationship" relationship="viewControllers" id="CnW-HG-eKz"/>
+                        <segue destination="l6h-CS-t98" kind="relationship" relationship="viewControllers" id="ZdN-HJ-8bS"/>
                         <segue destination="m39-Ge-6vY" kind="relationship" relationship="viewControllers" id="iDx-B0-JNE"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tge-rm-F4p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2767.1999999999998" y="-314.39280359820094"/>
-        </scene>
-        <!--Departures-->
-        <scene sceneID="qbO-Uc-4U0">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ytb-qU-0sG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Departures" id="9Pm-1v-fwx"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="b0F-l2-MP8">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="CAR-mD-hds" kind="relationship" relationship="rootViewController" id="xRS-j2-9Sm"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Bfn-Cq-vag" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3768.8000000000002" y="-646.32683658170924"/>
-        </scene>
-        <!--Departures-->
-        <scene sceneID="36m-UU-H5h">
-            <objects>
-                <tableViewController id="CAR-mD-hds" customClass="DepartureTableViewController" customModule="AirBoard" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="G1y-cV-Zci">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DepartureCell" rowHeight="100" id="Y0f-Mi-fjJ" customClass="DepartureTableViewCell" customModule="AirBoard" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="100"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y0f-Mi-fjJ" id="Tnx-tV-zZx" customClass="FlightTableViewCell" customModule="AirBoard" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="100" translatesAutoresizingMaskIntoConstraints="NO" id="wHV-GI-NZa">
-                                            <rect key="frame" x="16" y="39.5" width="343" height="20.5"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Departure Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pfh-WL-7Dm">
-                                                    <rect key="frame" x="0.0" y="0.0" width="119.5" height="20.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arrival City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1aV-vD-sGI">
-                                                    <rect key="frame" x="259.5" y="0.0" width="83.5" height="20.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="wHV-GI-NZa" firstAttribute="leading" secondItem="Tnx-tV-zZx" secondAttribute="leading" constant="16" id="HaD-vV-A59"/>
-                                        <constraint firstItem="wHV-GI-NZa" firstAttribute="centerX" secondItem="Tnx-tV-zZx" secondAttribute="centerX" id="NU1-w7-K0i"/>
-                                        <constraint firstItem="wHV-GI-NZa" firstAttribute="centerY" secondItem="Tnx-tV-zZx" secondAttribute="centerY" id="Y3k-lB-kwK"/>
-                                        <constraint firstAttribute="trailing" secondItem="wHV-GI-NZa" secondAttribute="trailing" constant="16" id="hzZ-DI-mvR"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="arrivalCityLabel" destination="1aV-vD-sGI" id="NQI-yV-ubS"/>
-                                    <outlet property="departureTimeLabel" destination="Pfh-WL-7Dm" id="5Ap-pi-f49"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="CAR-mD-hds" id="XE3-32-v2f"/>
-                            <outlet property="delegate" destination="CAR-mD-hds" id="9Nu-bh-NoA"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Departures" id="jcx-DZ-brL"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="H3L-hM-Z3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4645.6000000000004" y="-648.12593703148434"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="PU7-j6-3QM">
@@ -209,11 +132,10 @@
         <!--Arrivals-->
         <scene sceneID="7A8-y8-8DC">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="m39-Ge-6vY" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="m39-Ge-6vY" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Arrivals" id="CoC-Ma-tb2"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wwb-b2-aFT">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -280,6 +202,83 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AAs-rW-N6x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4645.6000000000004" y="17.541229385307346"/>
+        </scene>
+        <!--Departures-->
+        <scene sceneID="Ekz-hh-Bp9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" hidesBarsOnSwipe="YES" id="l6h-CS-t98" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Departures" id="B9J-qh-5O0"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="YmK-RC-BHR">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="BQx-rV-S3C">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="UBR-N0-g3n" kind="relationship" relationship="rootViewController" id="oFn-bU-7pe"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k0m-2Y-p3x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3769" y="-687"/>
+        </scene>
+        <!--Departures-->
+        <scene sceneID="AtD-GW-gjw">
+            <objects>
+                <tableViewController id="UBR-N0-g3n" customClass="DepartureTableViewController" customModule="AirBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="sK1-Nn-DHu">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DepartureCell" id="taI-Q8-A8z" customClass="DepartureTableViewCell" customModule="AirBoard" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="taI-Q8-A8z" id="9zI-ml-YRR">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="135" translatesAutoresizingMaskIntoConstraints="NO" id="RQS-ib-hD5">
+                                            <rect key="frame" x="18.5" y="11.5" width="338" height="20.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Departure Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7zf-SC-vnI">
+                                                    <rect key="frame" x="0.0" y="0.0" width="119.5" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arrival City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLZ-Ez-qFw">
+                                                    <rect key="frame" x="254.5" y="0.0" width="83.5" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="RQS-ib-hD5" firstAttribute="centerY" secondItem="9zI-ml-YRR" secondAttribute="centerY" id="RX2-ha-dl2"/>
+                                        <constraint firstItem="RQS-ib-hD5" firstAttribute="centerX" secondItem="9zI-ml-YRR" secondAttribute="centerX" id="srk-l0-hKj"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="arrivalCityLabel" destination="YLZ-Ez-qFw" id="CbK-Ao-OBv"/>
+                                    <outlet property="departureTimeLabel" destination="7zf-SC-vnI" id="o7a-U7-MLI"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="UBR-N0-g3n" id="CDp-M9-TFU"/>
+                            <outlet property="delegate" destination="UBR-N0-g3n" id="1Ht-BD-Yff"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Departures" id="m2O-bz-ifm"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Aqg-e0-HBa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4645.6000000000004" y="-688.60569715142435"/>
         </scene>
     </scenes>
 </document>
