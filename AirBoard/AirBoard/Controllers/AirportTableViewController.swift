@@ -11,14 +11,19 @@ import UIKit
 class AirportTableViewController: UITableViewController, UISearchResultsUpdating {
     
     // MARK: Properties
+    var activityIndicatorView: UIActivityIndicatorView!
     
     private let service = FlightService()
-    private var airports = [Airport]()
     private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
     
-    private var aiportCode = ""
+    private var aiportCode = String()
+    private var airports = [Airport]() {
+        didSet {
+            createAirportsDict()
+            tableView.reloadData()
+        }
+    }
 
-    
     // Sections and index list
     private var airportDict = [String: [Airport]]()
     private var airportSectionTitles = [String]()
@@ -29,20 +34,17 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     private let searchController = UISearchController(searchResultsController: nil)
     
     
+    override func loadView() {
+        super.loadView()
+        
+        activityIndicatorView = UIActivityIndicatorView(style: .gray)
+        tableView.backgroundView = activityIndicatorView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.rowHeight = 100
-        
-        airports = coreDataManager.loadDataFromDB()
-        createAirportsDict()
-        
-        if airports.isEmpty {
-            loadAirports()
-            tableView.reloadData()
-        } else {
-            tableView.reloadData()
-        }
 
         filteredAirports = airports
         searchController.searchResultsUpdater = self
@@ -51,11 +53,19 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         tableView.tableHeaderView = searchController.searchBar
         
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        
-        tableView.reloadData()
-        
-//        test()
+
+        loadDataFromDB()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if airports.isEmpty {
+            activityIndicatorView.startAnimating()
+            tableView.separatorStyle = .none
+        }
+    }
+    
 //
 //    func test() {
 //        guard let view = self.navigationController?.view else {
@@ -111,8 +121,7 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
 
         return airportValues.count
     }
-    
-    
+        
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return indexList
     }
@@ -176,8 +185,8 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     private func loadAirports() {
         service.getAirports { [weak self] (airports, error) in
             self?.airports = airports.sorted(by: { $0.name < $1.name })
-            self?.createAirportsDict()
             self?.coreDataManager.saveAirports(airports: self!.airports)
+            self?.stopIndicator()
         }
     }
 
@@ -207,5 +216,22 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         airportSectionTitles = airportSectionTitles.sorted(by: { $0 < $1 })
         
         tableView.reloadData()
+    }
+    
+    private func loadDataFromDB() {
+        coreDataManager.loadAirportsFromDB { (dataBaseAirports) in
+            
+            if !dataBaseAirports.isEmpty {
+                self.airports = dataBaseAirports
+                self.stopIndicator()
+            } else {
+                self.loadAirports()
+            }
+        }
+    }
+    
+    private func stopIndicator () {
+        self.activityIndicatorView.stopAnimating()
+        self.tableView.separatorStyle = .singleLine
     }
 }

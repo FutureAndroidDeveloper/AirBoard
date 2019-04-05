@@ -12,63 +12,59 @@ import CoreData
 class CoreDataManager {
     
     private let appDelegate: AppDelegate
+    private let backContext: NSManagedObjectContext
     
     init(appDelegate: AppDelegate) {
         self.appDelegate = appDelegate
+        self.backContext = appDelegate.persistentContainer.newBackgroundContext()
     }
     
-    func loadDataFromDB() -> [Airport] {
+    func loadAirportsFromDB(callback: @escaping ([Airport]) -> Void) {
         
-        print("load Data from DB")
-        
-        var downloadedAirports = [Airport]()
-        let context = appDelegate.persistentContainer.viewContext
-        
-        do {
-            let result = try context.fetch(CDAirport.fetchRequest())
+        backContext.perform {
+            print("load Data from DB")
             
-            guard let airports = result as? [CDAirport] else {
-                print("Can not load airports info from Core Data")
-                return downloadedAirports
+            var downloadedAirports = [Airport]()
+            
+            do {
+                let result = try self.backContext.fetch(CDAirport.fetchRequest())
+                
+                guard let airports = result as? [CDAirport] else {
+                    print("Can not load airports info from Core Data")
+                    DispatchQueue.main.async {
+                        callback(downloadedAirports)
+                    }
+                    
+                    return
+                }
+                
+                for airport in airports {
+                    downloadedAirports.append(Airport(name: airport.name ?? "Unkown", city: airport.city, code: airport.code ?? "Unkown"))
+                }
+                
+            } catch let error as NSError {
+                print("Could not save \(error)")
             }
             
-            for airport in airports {
-                downloadedAirports.append(Airport(name: airport.name ?? "Unkown", city: airport.city, code: airport.code ?? "Unkown"))
+            DispatchQueue.main.async {
+                callback(downloadedAirports)
             }
-            
-        } catch let error as NSError {
-            print("Could not save \(error)")
         }
-        
-        return downloadedAirports
     }
-    
     
     func saveAirports(airports: [Airport]) {
-        let backContext = appDelegate.persistentContainer.newBackgroundContext()
-        
-        appDelegate.persistentContainer.performBackgroundTask { (context) in
-            self.backgroundSaveAirports(airports: airports, context: backContext)
-        }
-    }
-    
-    
-    // MARK: Private Methods
-    
-    private func backgroundSaveAirports(airports: [Airport], context: NSManagedObjectContext) {
-        
-        context.perform {
+        backContext.perform {
             print("Start save data to DB")
             
             for airport in airports {
-                let cdAirport = CDAirport(context:  context)
+                let cdAirport = CDAirport(context:  self.backContext)
                 
                 cdAirport.setValue(airport.name, forKey: "name")
                 cdAirport.setValue(airport.city, forKey: "city")
                 cdAirport.setValue(airport.code, forKey: "code")
                 
                 do {
-                    try context.save()
+                    try self.backContext.save()
                 } catch let error as NSError {
                     print("Could not save \(error)")
                 }
