@@ -83,7 +83,7 @@ class ArrivalTableViewController: UITableViewController {
         
         print("arrival начал загрузку")
         
-        service.getArrivalFlights(parameters: (icao: airportCode, begin: beginUnix, end: endUnix)) { [weak self] (flights, error) in
+        service.getFlights(path: .arrival, parameters: (icao: airportCode, begin: beginUnix, end: endUnix)) { [weak self] (flights, error) in
             
             self?.flights = flights.sorted(by: {$0.arrivalTime! < $1.arrivalTime!})
             self?.createFlightsDict()

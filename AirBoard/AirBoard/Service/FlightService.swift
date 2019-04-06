@@ -20,12 +20,12 @@ class FlightService {
     private let session = URLSession.shared
     
     
-    func getDepartureFlights(parameters: (icao: String, begin: Int, end: Int), callback: @escaping (_ flights: [Flight], Error?) -> Void) {
+    func getFlights(path: Path, parameters: (icao: String, begin: Int, end: Int), callback: @escaping (_ flights: [Flight], Error?) -> Void) {
         
         let paramPath = buildParamPath(with: parameters)
         
         // create full URL
-        guard let url = URL(string: baseUrl + Path.departure.rawValue + paramPath) else {
+        guard let url = URL(string: baseUrl + path.rawValue + paramPath) else {
             callback([], nil)
             return
         }
@@ -45,68 +45,6 @@ class FlightService {
             if let flights = try? JSONDecoder().decode([Flight].self, from: data) {
                 DispatchQueue.main.async {
                     callback(flights, nil)
-                }
-            }
-        }.resume()
-    }
-    
-    func getArrivalFlights(parameters: (icao: String, begin: Int, end: Int), callback: @escaping ([Flight], Error?) -> Void) {
-        
-        let paramPath = buildParamPath(with: parameters)
-        
-        // create full URL
-        guard let url = URL(string: baseUrl + Path.arrival.rawValue + paramPath) else {
-            callback([], nil)
-            return
-        }
-        
-        let urlRequest = URLRequest(url: url)
-        
-        session.dataTask(with: urlRequest) { (data, response, error) in
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    callback([], nil)
-                }
-                return
-            }
-            
-            if let flights = try? JSONDecoder().decode([Flight].self, from: data) {
-                DispatchQueue.main.async {
-                    callback(flights, nil)
-                }
-            }
-        }.resume()
-    }
-    
-    
-    func getAirports(callback: @escaping ([Airport], Error?) -> Void) {
-        
-        guard let url = URL(string: "https://raw.githubusercontent.com/ram-nadella/airport-codes/master/airports.json") else {
-            callback([], nil)
-            return
-        }
-        
-        session.dataTask(with: url) { (data, response, error) in
-            
-            guard response != nil else {
-                DispatchQueue.main.async {
-                    callback([], nil)
-                }
-                print("NIL RESPONSE")
-                return
-            }
-            
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    callback([], nil)
-                }
-                print("INVALID  DATA")
-                return
-            }
-            
-            if let airports = try? JSONDecoder().decode([String: Airport].self, from: data) {
-                DispatchQueue.main.async {
-                    callback(airports.compactMap{ $0.value }, nil)
                 }
             }
         }.resume()
