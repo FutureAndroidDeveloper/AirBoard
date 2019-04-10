@@ -110,7 +110,6 @@
         <!--Navigation Controller-->
         <scene sceneID="PU7-j6-3QM">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="djw-9w-Gvs" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="779-0R-AaX" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="W0n-J5-gDn">
@@ -122,6 +121,7 @@
                         <segue destination="QVi-Rs-yjK" kind="relationship" relationship="rootViewController" id="rKj-Lv-Puh"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="djw-9w-Gvs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="934" y="-314"/>
         </scene>
@@ -315,6 +315,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="mle-cu-B6M"/>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="aircraftPhoto" destination="9iM-Ft-E3n" id="5xq-WU-r0m"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uvJ-ZE-SgZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

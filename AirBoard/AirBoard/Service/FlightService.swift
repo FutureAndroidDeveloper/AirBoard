@@ -16,7 +16,7 @@ class FlightService {
     
     // MARK: Properties
     
-    private let baseUrl: String = "https://opensky-network.org/api/"
+    private let baseUrl = "https://opensky-network.org/api/"
     private let session = URLSession.shared
     
     
@@ -39,6 +39,7 @@ class FlightService {
                 DispatchQueue.main.async {
                     callback([], nil)
                 }
+                
                 return
             }
             

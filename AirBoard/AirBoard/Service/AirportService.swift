@@ -11,7 +11,7 @@ import Foundation
 class AirportService {
     
     // Properties
-    private let baseUrl: String = "https://raw.githubusercontent.com/ram-nadella/airport-codes/master/airports.json"
+    private let baseUrl = "https://raw.githubusercontent.com/ram-nadella/airport-codes/master/airports.json"
     private let session = URLSession.shared
     
     func getAirports(callback: @escaping ([Airport], Error?) -> Void) {
