@@ -19,14 +19,14 @@ class FlightService {
     private let baseUrl = "https://opensky-network.org/api/"
     private let session = URLSession.shared
     
-    
-    func getFlights(path: Path, parameters: (icao: String, begin: Int, end: Int), callback: @escaping (_ flights: [Flight], Error?) -> Void) {
+    // TODO: you can make success block and failure like in CoreDataManager and refactor func.
+    func getFlights(path: Path, parameters: (icao: String, begin: Int, end: Int), complition: @escaping (_ flights: [Flight], Error?) -> Void) {
                 
         let paramPath = buildParamPath(with: parameters)
         
         // create full URL
         guard let url = URL(string: baseUrl + path.rawValue + paramPath) else {
-            callback([], nil)
+            complition([], nil)
             return
         }
         
@@ -37,7 +37,7 @@ class FlightService {
             
             guard let data = data else {
                 DispatchQueue.main.async {
-                    callback([], nil)
+                    complition([], nil)
                 }
                 
                 return
@@ -45,7 +45,7 @@ class FlightService {
             
             if let flights = try? JSONDecoder().decode([Flight].self, from: data) {
                 DispatchQueue.main.async {
-                    callback(flights, nil)
+                    complition(flights, nil)
                 }
             }
         }.resume()

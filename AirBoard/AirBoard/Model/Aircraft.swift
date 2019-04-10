@@ -20,18 +20,4 @@ struct Aircraft {
     let engines: String
     let age: Int
     let firstFlight: String
-    
-    init(image: Data, departureIcao: String, arrivalIcao: String, departureCity: String, arrivalCity: String, registration: String, model: String, modelCode: String, engines: String, age: Int, firstFlight: String) {
-        self.image = image
-        self.departureIcao = departureIcao
-        self.arrivalIcao = arrivalIcao
-        self.departureCity = departureCity
-        self.arrivalCity = arrivalCity
-        self.registration = registration
-        self.model = model
-        self.modelCode = modelCode
-        self.engines = engines
-        self.age = age
-        self.firstFlight = firstFlight
-    }
 }
