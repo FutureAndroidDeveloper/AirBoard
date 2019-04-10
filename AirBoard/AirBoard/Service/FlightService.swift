@@ -21,7 +21,7 @@ class FlightService {
     
     
     func getFlights(path: Path, parameters: (icao: String, begin: Int, end: Int), callback: @escaping (_ flights: [Flight], Error?) -> Void) {
-        
+                
         let paramPath = buildParamPath(with: parameters)
         
         // create full URL

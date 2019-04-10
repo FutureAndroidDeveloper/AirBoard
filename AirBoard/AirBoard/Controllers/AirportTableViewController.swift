@@ -13,7 +13,7 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     // MARK: Properties
     var activityIndicatorView: UIActivityIndicatorView!
     
-    private let service = FlightService()
+    private let service = AirportService()
     private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
     
     private var aiportCode = String()
@@ -161,7 +161,7 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         switch segue.identifier ?? "" {
         case "ShowFlights":
             
-            guard let tabBarController = segue.destination as? ScheduleViewController else {
+            guard let tabBarController = segue.destination as? ScheduleTabBarController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
