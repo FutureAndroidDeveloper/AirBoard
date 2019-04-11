@@ -13,22 +13,10 @@ class DetailViewController: UIViewController {
     // MARK: Properties
     
     @IBOutlet weak var aircraftPhoto: UIImageView!
-    var activityIndicatorView: UIActivityIndicatorView!
     
+    private var activityIndicatorView = UIActivityIndicatorView(style: .gray)
     private let aircraftService = AircraftService()
-    
-    override func loadView() {
-        super.loadView()
-        
-        activityIndicatorView = UIActivityIndicatorView(style: .gray)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-            activityIndicatorView.startAnimating()
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,16 +27,18 @@ class DetailViewController: UIViewController {
         activityIndicatorView.centerYAnchor.constraint(equalTo: aircraftPhoto.centerYAnchor).isActive = true
 //        activityIndicatorView.center = aircraftPhoto.center
         
-        
     }
     
     // MARK: Private Methods
     
     private func loadAircraft() {
+        activityIndicatorView.startAnimating()
+        
         aircraftService.loadImage { [weak self] (imageData) in
             
             if let imageData = imageData {
                 self?.aircraftPhoto.image = UIImage(data: imageData)
+                self?.activityIndicatorView.stopAnimating()
             }
         }
     }

@@ -27,6 +27,8 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     // Sections and index list
     private var airportDict = [String: [Airport]]()
     private var airportSectionTitles = [String]()
+    
+    // TODO: you can calculate index List by data that you received, it will be a best solution
     private let indexList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
     
     // Search
@@ -219,15 +221,13 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     private func loadDataFromDB() {
-        coreDataManager.loadAirportsFromDB { (dataBaseAirports) in
-            
-            if !dataBaseAirports.isEmpty {
-                self.airports = dataBaseAirports
-                self.stopIndicator()
-            } else {
-                self.loadAirports()
-            }
-        }
+        coreDataManager.loadAirportsFromDB(success: { [weak self] data in
+            self?.airports = data
+            self?.stopIndicator()
+        }, failure: { [weak self] error in
+            // TODO: you can create Enum with errors that you want to handle, and pass Enum to failure block.
+            self?.loadAirports()
+        })
     }
     
     private func stopIndicator () {
