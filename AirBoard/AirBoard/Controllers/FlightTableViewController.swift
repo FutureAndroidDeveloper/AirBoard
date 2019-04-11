@@ -12,7 +12,7 @@ class FlightTableViewController: UITableViewController {
 
     // MARK: Properties
     
-    var activityIndicatorView: UIActivityIndicatorView!
+    var activityIndicatorView = UIActivityIndicatorView(style: .gray)
     
     private let service = FlightService()
     private let dateService = DateService()
@@ -26,30 +26,14 @@ class FlightTableViewController: UITableViewController {
     // Sections data
     private var flightsDict = [String: [Flight]]()
     private var flightsSectionTitles = [String]()
-    
-    
-    override func loadView() {
-        super.loadView()
-        activityIndicatorView = UIActivityIndicatorView(style: .gray)
-        tableView.backgroundView = activityIndicatorView
-    }
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tableView.backgroundView = activityIndicatorView
         loadFlights()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if flights.isEmpty {
-            activityIndicatorView.startAnimating()
-            tableView.separatorStyle = .none
-        }
-    }
-    
-
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -97,24 +81,26 @@ class FlightTableViewController: UITableViewController {
     // MARK: Private Methods
     
     private func loadFlights() {
+        activityIndicatorView.startAnimating()
+        tableView.separatorStyle = .none
         
         switch flightType {
-            
         // if flight type is departure, request flight departures from the airport
         case .departure:
-            service.getFlights(path: .departure, parameters: (icao: airportCode, begin: beginUnix, end: endUnix)) { [weak self] (flights, error) in
-                
+            service.getFlights(path: .departure, parameters: (icao: airportCode, begin: beginUnix, end: endUnix), complition: { [weak self] flights in
                 self?.flights = flights.sorted(by: {$0.arrivalTime! < $1.arrivalTime!})
                 self?.createFlightsDict()
-            }
-            
+                }, failure: { error in
+                    NSLog(error.description)
+            })
         // if flight type is arrivals, request flight arrivals to the airport
         case .arrival:
-            service.getFlights(path: .arrival, parameters: (icao: airportCode, begin: beginUnix, end: endUnix)) { [weak self] (flights, error) in
-                
+            service.getFlights(path: .arrival, parameters: (icao: airportCode, begin: beginUnix, end: endUnix), complition: { [weak self] flights in
                 self?.flights = flights.sorted(by: {$0.arrivalTime! < $1.arrivalTime!})
                 self?.createFlightsDict()
-            }
+                }, failure: { error in
+                    NSLog(error.description)
+            })
         }
     }
     

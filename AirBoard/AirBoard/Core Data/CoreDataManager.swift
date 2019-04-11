@@ -11,6 +11,23 @@ import CoreData
 
 class CoreDataManager {
     
+    enum DataBaseError: Error {
+        case LoadDataError
+        case SaveDataError
+        case EmptyDataBase
+        
+        var description: String {
+            switch self {
+            case .LoadDataError:
+                return "Could not load airports."
+            case .SaveDataError:
+                return "Could not save data."
+            case .EmptyDataBase:
+                return "Database is empty."
+            }
+        }
+    }
+    
     private let appDelegate: AppDelegate
     private let backContext: NSManagedObjectContext
     
@@ -20,7 +37,7 @@ class CoreDataManager {
     }
     
     func loadAirportsFromDB(success: @escaping ([Airport]) -> Void,
-                            failure: @escaping (Error) -> Void) {
+                            failure: @escaping (DataBaseError) -> Void) {
         backContext.perform {
             NSLog("Load data from DB")
             do {
@@ -29,16 +46,22 @@ class CoreDataManager {
                 if let data = result as? [CDAirport] {
                     let airports = data.map { Airport(name: $0.name ?? "Unkown", city: $0.city, code: $0.code ?? "Unkown") }
                     
-                    DispatchQueue.main.async {
-                        success(airports)
+                    if airports.isEmpty {
+                        DispatchQueue.main.async {
+                            failure(.EmptyDataBase)
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            success(airports)
+                        }
                     }
                 } else {
-                    NSLog("Could not load airports")
-                    failure(NSError(domain: "LoadAirportsFromDBDomain", code: 401) as Error)
+                    DispatchQueue.main.async {
+                        failure(.LoadDataError)
+                    }
                 }
-            } catch let error as NSError {
-                NSLog("Could not load airports", error)
-                failure(error)
+            } catch {
+                failure(.LoadDataError)
             }
         }
     }

@@ -12,8 +12,6 @@ struct Airport {
     let name: String
     let city: String?
     let code: String
-    
-    // You don't need to declare init in struct by default, do it only if you want to make some additional work in init
 }
 
 extension Airport: Codable {

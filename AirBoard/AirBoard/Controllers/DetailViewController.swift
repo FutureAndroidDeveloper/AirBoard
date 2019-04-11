@@ -34,12 +34,11 @@ class DetailViewController: UIViewController {
     private func loadAircraft() {
         activityIndicatorView.startAnimating()
         
-        aircraftService.loadImage { [weak self] (imageData) in
-            
-            if let imageData = imageData {
-                self?.aircraftPhoto.image = UIImage(data: imageData)
-                self?.activityIndicatorView.stopAnimating()
-            }
-        }
+        aircraftService.loadImage(success: { [weak self] imageData in
+            self?.aircraftPhoto.image = UIImage(data: imageData)
+            self?.activityIndicatorView.stopAnimating()
+            }, failure: { error in
+                NSLog(error.description)
+        })
     }
 }

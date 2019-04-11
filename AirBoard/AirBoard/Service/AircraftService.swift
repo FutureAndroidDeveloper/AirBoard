@@ -36,15 +36,14 @@ class AircraftService {
     private let path = "/photos/random"
     private let session = URLSession.shared
     
-    func loadImage(callback: @escaping (Data?) -> Void) {
+    func loadImage(success: @escaping (Data) -> Void, failure: @escaping (APIError) -> Void) {
         let paramPath = buildParamPath(query: "Airplane", orientation: .landscape)
         
         // create full URL
         guard let url = URL(string: baseUrl + path + paramPath) else {
             DispatchQueue.main.async {
-                callback(nil)
+                failure(.InvalidURL)
             }
-            print("url creating error")
             return
         }
         
@@ -55,33 +54,30 @@ class AircraftService {
             
             guard let data = data else {
                 DispatchQueue.main.async {
-                    callback(nil)
+                    failure(.InvalidData)
                 }
-                print("invalid data")
                 return
             }
             
             // get image url
             guard let image = try? JSONDecoder().decode(Image.self, from: data) else {
                 DispatchQueue.main.async {
-                    callback(nil)
+                    failure(.ImageError)
                 }
-                print("cant decode image urls")
                 return
             }
             
             // create image url from string
             guard let imageUrl = URL(string: image.urls.small) else {
                 DispatchQueue.main.async {
-                    callback(nil)
+                    failure(.InvalidURL)
                 }
-                print("can't create URL from String")
                 return
             }
             
             if let data = try? Data(contentsOf: imageUrl) {
                 DispatchQueue.main.async {
-                    callback(data)
+                    success(data)
                 }
             }
         }.resume()
