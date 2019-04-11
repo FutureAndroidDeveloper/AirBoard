@@ -19,42 +19,33 @@ class CoreDataManager {
         self.backContext = appDelegate.persistentContainer.newBackgroundContext()
     }
     
-    func loadAirportsFromDB(callback: @escaping ([Airport]) -> Void) {
-        
+    func loadAirportsFromDB(success: @escaping ([Airport]) -> Void,
+                            failure: @escaping (Error) -> Void) {
         backContext.perform {
-            print("load Data from DB")
-            
-            var downloadedAirports = [Airport]()
-            
+            NSLog("Load data from DB")
             do {
                 let result = try self.backContext.fetch(CDAirport.fetchRequest())
                 
-                guard let airports = result as? [CDAirport] else {
-                    print("Can not load airports info from Core Data")
-                    DispatchQueue.main.async {
-                        callback(downloadedAirports)
-                    }
+                if let data = result as? [CDAirport] {
+                    let airports = data.map { Airport(name: $0.name ?? "Unkown", city: $0.city, code: $0.code ?? "Unkown") }
                     
-                    return
+                    DispatchQueue.main.async {
+                        success(airports)
+                    }
+                } else {
+                    NSLog("Could not load airports")
+                    failure(NSError(domain: "LoadAirportsFromDBDomain", code: 401) as Error)
                 }
-                
-                for airport in airports {
-                    downloadedAirports.append(Airport(name: airport.name ?? "Unkown", city: airport.city, code: airport.code ?? "Unkown"))
-                }
-                
             } catch let error as NSError {
-                print("Could not save \(error)")
-            }
-            
-            DispatchQueue.main.async {
-                callback(downloadedAirports)
+                NSLog("Could not load airports", error)
+                failure(error)
             }
         }
     }
     
     func saveAirports(airports: [Airport]) {
         backContext.perform {
-            print("Start save data to DB")
+            NSLog("Start save data to DB")
             
             for airport in airports {
                 let cdAirport = CDAirport(context:  self.backContext)
@@ -66,11 +57,11 @@ class CoreDataManager {
                 do {
                     try self.backContext.save()
                 } catch let error as NSError {
-                    print("Could not save \(error)")
+                    NSLog("Could not save", error)
                 }
             }
             
-            print("Finish save data")
+            NSLog("Finish save data")
         }
     }
 }

@@ -17,7 +17,7 @@ class ScheduleTabBarController: UITabBarController {
     
     // MARK: Properties
     
-    var airportCode = String()
+    var airportCode = ""
     
     private let dateService = DateService()
 
