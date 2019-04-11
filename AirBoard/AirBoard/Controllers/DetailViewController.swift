@@ -13,6 +13,17 @@ class DetailViewController: UIViewController {
     // MARK: Properties
     
     @IBOutlet weak var aircraftPhoto: UIImageView!
+    @IBOutlet weak var departureIcaoLabel: UILabel!
+    @IBOutlet weak var arrivalIcaoLabel: UILabel!
+    @IBOutlet weak var departureCityLabel: UILabel!
+    @IBOutlet weak var arrivalCityLabel: UILabel!
+    @IBOutlet weak var numberRegistrationLabel: UILabel!
+    @IBOutlet weak var modelCodeLabel: UILabel!
+    @IBOutlet weak var airplaceIcaoLabel: UILabel!
+    @IBOutlet weak var engineLabel: UILabel!
+    @IBOutlet weak var planeAgeLabel: UILabel!
+    @IBOutlet weak var firstFlightLabel: UILabel!
+    
     var activityIndicatorView: UIActivityIndicatorView!
     
     private let aircraftService = AircraftService()
@@ -35,11 +46,7 @@ class DetailViewController: UIViewController {
         loadAircraft()
         
         aircraftPhoto.addSubview(activityIndicatorView)
-        activityIndicatorView.centerXAnchor.constraint(equalTo: aircraftPhoto.centerXAnchor).isActive = true
-        activityIndicatorView.centerYAnchor.constraint(equalTo: aircraftPhoto.centerYAnchor).isActive = true
-//        activityIndicatorView.center = aircraftPhoto.center
-        
-        
+        activityIndicatorView.center = aircraftPhoto.center
     }
     
     // MARK: Private Methods
