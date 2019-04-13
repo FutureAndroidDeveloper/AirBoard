@@ -15,6 +15,8 @@ class CoreDataManager {
         case LoadDataError
         case SaveDataError
         case EmptyDataBase
+        case FilteringError
+        case NilFileld
         
         var description: String {
             switch self {
@@ -24,6 +26,10 @@ class CoreDataManager {
                 return "Could not save data."
             case .EmptyDataBase:
                 return "Database is empty."
+            case .FilteringError:
+                return "Could not find the requested field"
+            case .NilFileld:
+                return "Requested field is nil"
             }
         }
     }
@@ -85,6 +91,35 @@ class CoreDataManager {
             }
             
             NSLog("Finish save data")
+        }
+    }
+    
+    func fetchCityNameFromDB(with cityIcao: String?, success: @escaping (String) -> Void,
+                     failure: @escaping (DataBaseError) -> Void) {
+        guard let cityIcao = cityIcao else {
+            failure(.NilFileld)
+            return
+        }
+        
+        backContext.perform {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "CDAirport")
+            request.predicate = NSPredicate(format: "code = %@", cityIcao)
+            
+            do {
+                let result = try self.backContext.fetch(request)
+                
+                if !result.isEmpty {
+                    if let airport = result[0] as? CDAirport {
+                        DispatchQueue.main.async {
+                            success(airport.city!)
+                        }
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    failure(.FilteringError)
+                }
+            }
         }
     }
 }

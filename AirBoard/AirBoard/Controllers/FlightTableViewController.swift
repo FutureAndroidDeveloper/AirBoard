@@ -59,23 +59,49 @@ class FlightTableViewController: UITableViewController {
         }
         
         let flightKey = flightsSectionTitles[indexPath.section]
-        
+        cell.accessoryType = .disclosureIndicator
+
         if let flightValues = flightsDict[flightKey] {
             
             switch flightType {
             case .departure:
                 cell.flightTimeLabel.text = Double(flightValues[indexPath.row].departureTime!).getDateFromUTC()
                 cell.flightCityLabel.text = flightValues[indexPath.row].arrival ?? "Unkown"
-                cell.accessoryType = .disclosureIndicator
                 
             case .arrival:
                 cell.flightTimeLabel.text = Double(flightValues[indexPath.row].arrivalTime!).getDateFromUTC()
                 cell.flightCityLabel.text = flightValues[indexPath.row].departure ?? "Unkown"
-                cell.accessoryType = .disclosureIndicator
             }
         }
         
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        switch segue.identifier ?? "" {
+        case "ShowDetail":
+            guard let aircraftDetailViewController = segue.destination as? DetailViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            guard let selectedMealCell = sender as? FlightTableViewCell else {
+                fatalError("Unexpected sender: \(String(describing: sender))")
+            }
+            
+            guard let indexPath = tableView.indexPath(for: selectedMealCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+
+            let flightKey = flightsSectionTitles[indexPath.section]
+            
+            if let flightValues = flightsDict[flightKey] {
+                aircraftDetailViewController.flight = flightValues[indexPath.row]
+            }
+        default:
+            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
+        }
     }
     
     // MARK: Private Methods

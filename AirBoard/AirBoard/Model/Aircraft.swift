@@ -9,15 +9,24 @@
 import Foundation
 
 struct Aircraft {
-    let image: Data
-    let departureIcao: String
-    let arrivalIcao: String
-    let departureCity: String
-    let arrivalCity: String
     let registration: String
     let model: String
-    let modelCode: String
-    let engines: String
-    let age: Int
-    let firstFlight: String
+    let enginesType: String
+    let enginesCount: String
+    let age: String
+    let icaoAirplane: String
+    let planeOwner: String
+}
+
+extension Aircraft: Codable {
+    
+    enum CodingKeys: String, CodingKey {
+        case registration = "numberRegistration"
+        case model = "productionLine"
+        case age = "planeAge"
+        case icaoAirplane = "hexIcaoAirplane"
+        case enginesType
+        case enginesCount
+        case planeOwner
+    }
 }

@@ -12,6 +12,7 @@ enum APIError: Error {
     case InvalidURL
     case InvalidData
     case ImageError
+    case CodableError
     
     var description: String {
         switch self {
@@ -21,6 +22,8 @@ enum APIError: Error {
             return "Received wrong datа."
         case .ImageError:
             return "Couldn't decode image urls."
+        case .CodableError:
+            return "Couldn't decode received data."
         }
     }
 }

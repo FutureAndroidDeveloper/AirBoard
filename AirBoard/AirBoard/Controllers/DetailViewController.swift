@@ -13,25 +13,57 @@ class DetailViewController: UIViewController {
     // MARK: Properties
     
     @IBOutlet weak var aircraftPhoto: UIImageView!
+    @IBOutlet weak var departureIcaoLabel: UILabel!
+    @IBOutlet weak var arrivalIcaoLabel: UILabel!
+    @IBOutlet weak var departureCityLabel: UILabel!
+    @IBOutlet weak var arrivalCityLabel: UILabel!
+    @IBOutlet weak var registrationNumberLabel: UILabel!
+    @IBOutlet weak var modelCodeLabel: UILabel!
+    @IBOutlet weak var airplaneIcaoLabel: UILabel!
+    @IBOutlet weak var engineLabel: UILabel!
+    @IBOutlet weak var ageLabel: UILabel!
+    @IBOutlet weak var ownerLabel: UILabel!
+    
     
     private var activityIndicatorView = UIActivityIndicatorView(style: .gray)
     private let aircraftService = AircraftService()
+    private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
+
+    var flight: Flight!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setDefaultInfo()
         loadAircraft()
+        getCityNames()
         
         aircraftPhoto.addSubview(activityIndicatorView)
-        activityIndicatorView.centerXAnchor.constraint(equalTo: aircraftPhoto.centerXAnchor).isActive = true
-        activityIndicatorView.centerYAnchor.constraint(equalTo: aircraftPhoto.centerYAnchor).isActive = true
-//        activityIndicatorView.center = aircraftPhoto.center
+        activityIndicatorView.center = aircraftPhoto.center
         
+        departureIcaoLabel.text = flight.departure
+        arrivalIcaoLabel.text = flight.arrival
     }
     
     // MARK: Private Methods
     
     private func loadAircraft() {
+        aircraftService.loadAircraft(icao: flight.icao, success: { [weak self] aircraft in
+            
+            self?.registrationNumberLabel.text = aircraft.registration
+            self?.modelCodeLabel.text = aircraft.model
+            self?.airplaneIcaoLabel.text = aircraft.icaoAirplane
+            self?.engineLabel.text = aircraft.enginesType + " x " + aircraft.enginesCount
+            self?.ageLabel.text = aircraft.age.isEmpty ? "N/A" : aircraft.age
+            self?.ownerLabel.text = aircraft.planeOwner.isEmpty ? "N/A" : aircraft.planeOwner
+        }, failure: { error in
+            NSLog(error.description)
+        })
+        
+        loadAircraftImage()
+    }
+    
+    private func loadAircraftImage() {
         activityIndicatorView.startAnimating()
         
         aircraftService.loadImage(success: { [weak self] imageData in
@@ -40,5 +72,32 @@ class DetailViewController: UIViewController {
             }, failure: { error in
                 NSLog(error.description)
         })
+    }
+    
+    private func getCityNames() {
+        coreDataManager.fetchCityNameFromDB(with: flight.departure, success: { [weak self] city in
+            self?.departureCityLabel.text = city
+            }, failure: { error in
+                NSLog(error.description)
+        })
+        
+        coreDataManager.fetchCityNameFromDB(with: flight.arrival, success: { [weak self] city in
+            self?.arrivalCityLabel.text = city
+            }, failure: { error in
+                NSLog(error.description)
+        })
+    }
+    
+    private func setDefaultInfo() {
+        departureIcaoLabel.text = "N/A"
+        arrivalIcaoLabel.text = "N/A"
+        departureCityLabel.text = "N/A"
+        arrivalCityLabel.text = "N/A"
+        registrationNumberLabel.text = "N/A"
+        modelCodeLabel.text = "N/A"
+        airplaneIcaoLabel.text = "N/A"
+        engineLabel.text = "N/A"
+        ageLabel.text = "N/A"
+        ownerLabel.text = "N/A"
     }
 }
