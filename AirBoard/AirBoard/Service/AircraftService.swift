@@ -38,16 +38,23 @@ class AircraftService {
     private let aircraftAccessKey = "e77dd9-351748"
     private let aicraftBaseUrl = "https://aviation-edge.com/v2/public"
     private let aircraftpath = "/airplaneDatabase"
+    
+    private static let imageCache = NSCache<NSString, NSData>()
     private let session = URLSession.shared
     
-    func loadImage(success: @escaping (Data) -> Void, failure: @escaping (APIError) -> Void) {
+    
+    func loadImage(with icao: String, success: @escaping (Data) -> Void, failure: @escaping (APIError) -> Void) {
+        // Check image data in cache
+        if let cachedImage = AircraftService.imageCache.object(forKey: icao as NSString) {
+            success(cachedImage as Data)
+            return
+        }
+        
         let paramPath = buildParamImagePath(query: "Airplane", orientation: .landscape)
         
         // create full URL
         guard let url = URL(string: imageBaseUrl + imagePath + paramPath) else {
-            DispatchQueue.main.async {
-                failure(.InvalidURL)
-            }
+            failure(.InvalidURL)
             return
         }
         
@@ -55,7 +62,6 @@ class AircraftService {
         urlRequest.setValue("Client-ID \(imageAccessKey)", forHTTPHeaderField: "Authorization")
         
         session.dataTask(with: urlRequest) { (data, response, error) in
-            
             guard let data = data else {
                 DispatchQueue.main.async {
                     failure(.InvalidData)
@@ -81,6 +87,7 @@ class AircraftService {
             
             if let data = try? Data(contentsOf: imageUrl) {
                 DispatchQueue.main.async {
+                    AircraftService.imageCache.setObject(data as NSData, forKey: icao as NSString)
                     success(data)
                 }
             }

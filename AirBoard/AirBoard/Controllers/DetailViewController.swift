@@ -26,7 +26,7 @@ class DetailViewController: UIViewController {
     
     
     private var activityIndicatorView = UIActivityIndicatorView(style: .gray)
-    private let aircraftService = AircraftService()
+    private var aircraftService = AircraftService()
     private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
 
     var flight: Flight!
@@ -40,9 +40,6 @@ class DetailViewController: UIViewController {
         
         aircraftPhoto.addSubview(activityIndicatorView)
         activityIndicatorView.center = aircraftPhoto.center
-        
-        departureIcaoLabel.text = flight.departure
-        arrivalIcaoLabel.text = flight.arrival
     }
     
     // MARK: Private Methods
@@ -66,7 +63,7 @@ class DetailViewController: UIViewController {
     private func loadAircraftImage() {
         activityIndicatorView.startAnimating()
         
-        aircraftService.loadImage(success: { [weak self] imageData in
+        aircraftService.loadImage(with: flight.icao, success: { [weak self] imageData in
             self?.aircraftPhoto.image = UIImage(data: imageData)
             self?.activityIndicatorView.stopAnimating()
             }, failure: { error in
@@ -99,5 +96,7 @@ class DetailViewController: UIViewController {
         engineLabel.text = "N/A"
         ageLabel.text = "N/A"
         ownerLabel.text = "N/A"
+        departureIcaoLabel.text = flight.departure
+        arrivalIcaoLabel.text = flight.arrival
     }
 }
