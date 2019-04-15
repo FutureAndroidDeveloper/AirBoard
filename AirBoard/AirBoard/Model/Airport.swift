@@ -12,12 +12,6 @@ struct Airport {
     let name: String
     let city: String?
     let code: String
-    
-    init(name: String, city: String?, code: String) {
-        self.name = name
-        self.city = city
-        self.code = code
-    }
 }
 
 extension Airport: Codable {

@@ -11,9 +11,9 @@ import UIKit
 class AirportTableViewController: UITableViewController, UISearchResultsUpdating {
     
     // MARK: Properties
-    var activityIndicatorView: UIActivityIndicatorView!
+    var activityIndicatorView = UIActivityIndicatorView(style: .gray)
     
-    private let service = FlightService()
+    private let service = AirportService()
     private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
     
     private var aiportCode = String()
@@ -27,43 +27,23 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     // Sections and index list
     private var airportDict = [String: [Airport]]()
     private var airportSectionTitles = [String]()
-    private let indexList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
+    
+    // TODO: you can calculate index List by data that you received, it will be a best solution
+    // FIXED
+    private var indexList = [String]()
     
     // Search
     private var filteredAirports = [Airport]()
     private let searchController = UISearchController(searchResultsController: nil)
-    
-    
-    override func loadView() {
-        super.loadView()
-        
-        activityIndicatorView = UIActivityIndicatorView(style: .gray)
-        tableView.backgroundView = activityIndicatorView
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.rowHeight = 100
-
-        filteredAirports = airports
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
-        
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-
+        tableView.backgroundView = activityIndicatorView
+        setUpSearchController()
         loadDataFromDB()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if airports.isEmpty {
-            activityIndicatorView.startAnimating()
-            tableView.separatorStyle = .none
-        }
     }
     
 //
@@ -161,7 +141,7 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         switch segue.identifier ?? "" {
         case "ShowFlights":
             
-            guard let tabBarController = segue.destination as? ScheduleViewController else {
+            guard let tabBarController = segue.destination as? ScheduleTabBarController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
             
@@ -183,11 +163,28 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     // MARK: Private Methods
     
     private func loadAirports() {
-        service.getAirports { [weak self] (airports, error) in
+        service.getAirports(success: { [weak self] airports in
             self?.airports = airports.sorted(by: { $0.name < $1.name })
             self?.coreDataManager.saveAirports(airports: self!.airports)
             self?.stopIndicator()
-        }
+            }, failure: { error in
+                NSLog(error.description)
+        })
+    }
+    
+    private func loadDataFromDB() {
+        activityIndicatorView.startAnimating()
+        tableView.separatorStyle = .none
+        
+        // TODO: you can create Enum with errors that you want to handle, and pass Enum to failure block.
+        // FIXED
+        coreDataManager.loadAirportsFromDB(success: { [weak self] data in
+            self?.airports = data
+            self?.stopIndicator()
+            }, failure: { [weak self] error in
+                NSLog(error.description)
+                self?.loadAirports()
+        })
     }
 
     private func createAirportsDict() {
@@ -215,23 +212,21 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         airportSectionTitles = [String](airportDict.keys)
         airportSectionTitles = airportSectionTitles.sorted(by: { $0 < $1 })
         
+        indexList = airportSectionTitles
+        
         tableView.reloadData()
-    }
-    
-    private func loadDataFromDB() {
-        coreDataManager.loadAirportsFromDB { (dataBaseAirports) in
-            
-            if !dataBaseAirports.isEmpty {
-                self.airports = dataBaseAirports
-                self.stopIndicator()
-            } else {
-                self.loadAirports()
-            }
-        }
     }
     
     private func stopIndicator () {
         self.activityIndicatorView.stopAnimating()
         self.tableView.separatorStyle = .singleLine
+    }
+    
+    private func setUpSearchController() {
+        filteredAirports = airports
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
     }
 }
