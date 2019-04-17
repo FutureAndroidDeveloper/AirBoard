@@ -16,12 +16,14 @@ class FlightTableViewController: UITableViewController {
     
     private let service = FlightService()
     private let dateService = DateService()
+    private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
     private var flights = [Flight]()
     
     var flightType = FlightType.departure
     var airportCode = String()
     var beginUnix = Int()
     var endUnix = Int()
+    var cityName = Optional(String())
     
     // Sections data
     private var flightsDict = [String: [Flight]]()
@@ -66,11 +68,13 @@ class FlightTableViewController: UITableViewController {
             switch flightType {
             case .departure:
                 cell.flightTimeLabel.text = Double(flightValues[indexPath.row].departureTime!).getDateFromUTC()
-                cell.flightCityLabel.text = flightValues[indexPath.row].arrival ?? "Unkown"
+                getCityName(icao: flightValues[indexPath.row].arrival)
+                cell.flightCityLabel.text = cityName ?? "N/A"
                 
             case .arrival:
                 cell.flightTimeLabel.text = Double(flightValues[indexPath.row].arrivalTime!).getDateFromUTC()
-                cell.flightCityLabel.text = flightValues[indexPath.row].departure ?? "Unkown"
+                getCityName(icao: flightValues[indexPath.row].departure)
+                cell.flightCityLabel.text = cityName ?? "N/A"
             }
         }
         
@@ -106,6 +110,15 @@ class FlightTableViewController: UITableViewController {
     
     // MARK: Private Methods
     
+    private func getCityName(icao: String?) {
+        coreDataManager.syncFetchCityNameFromDB(with: icao, success: { [weak self] city in
+            self?.cityName = city
+        }, failure: { [weak self] error in
+            NSLog(error.description)
+            self?.cityName = nil
+        })
+    }
+    
     private func loadFlights() {
         activityIndicatorView.startAnimating()
         tableView.separatorStyle = .none
@@ -137,12 +150,21 @@ class FlightTableViewController: UITableViewController {
         // Make a step one day in length and write this date in the dictionary.
         while currentUnixDay <= endUnix {
             flightsSectionTitles.append(dateService.convert(unix: currentUnixDay))
-            
             currentUnixDay += unixDay
         }
+        
+        flightsSectionTitles.reverse()
     }
     
     private func createFlightsDict() {
+        
+        switch flightType {
+        case .departure:
+            flights.sort(by: { $0.departureTime! < $1.departureTime! })
+        case .arrival:
+            flights.sort(by: { $0.arrivalTime! < $1.arrivalTime! })
+        }
+        
         // Get the date and create dictionary
         for flight in flights {
             

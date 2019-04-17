@@ -94,6 +94,21 @@ class CoreDataManager {
         }
     }
     
+    func syncFetchCityNameFromDB(with cityIcao: String?, success: @escaping (String) -> Void,
+                                 failure: @escaping (DataBaseError) -> Void) {
+        guard let cityIcao = cityIcao else {
+            failure(.NilFileld)
+            return
+        }
+        
+        guard let airport = filteredFetch(icao: cityIcao, context: appDelegate.persistentContainer.viewContext) else {
+            failure(.FilteringError)
+            return
+        }
+        
+        success(airport.city!)
+    }
+    
     func fetchCityNameFromDB(with cityIcao: String?, success: @escaping (String) -> Void,
                      failure: @escaping (DataBaseError) -> Void) {
         guard let cityIcao = cityIcao else {
@@ -102,24 +117,35 @@ class CoreDataManager {
         }
         
         backContext.perform {
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "CDAirport")
-            request.predicate = NSPredicate(format: "code = %@", cityIcao)
             
-            do {
-                let result = try self.backContext.fetch(request)
-                
-                if !result.isEmpty {
-                    if let airport = result[0] as? CDAirport {
-                        DispatchQueue.main.async {
-                            success(airport.city!)
-                        }
-                    }
-                }
-            } catch {
+            guard let airport = self.filteredFetch(icao: cityIcao, context: self.backContext) else {
                 DispatchQueue.main.async {
                     failure(.FilteringError)
                 }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                success(airport.city!)
             }
         }
+    }
+    
+    private func filteredFetch(icao: String, context: NSManagedObjectContext) -> CDAirport? {
+        var resultAirport: CDAirport?
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "CDAirport")
+        request.predicate = NSPredicate(format: "code = %@", icao)
+        
+        do {
+            let result = try context.fetch(request)
+            
+            if !result.isEmpty {
+                if let airport = result[0] as? CDAirport {
+                    resultAirport = airport
+                }
+            }
+        } catch { }
+        
+        return resultAirport
     }
 }

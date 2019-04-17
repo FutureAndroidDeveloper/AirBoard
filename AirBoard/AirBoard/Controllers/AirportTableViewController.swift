@@ -11,7 +11,8 @@ import UIKit
 class AirportTableViewController: UITableViewController, UISearchResultsUpdating {
     
     // MARK: Properties
-    var activityIndicatorView = UIActivityIndicatorView(style: .gray)
+    private var listIndexBoxCounter = 0
+    private var activityIndicatorView = UIActivityIndicatorView(style: .gray)
     
     private let service = AirportService()
     private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
@@ -36,28 +37,18 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
     private var filteredAirports = [Airport]()
     private let searchController = UISearchController(searchResultsController: nil)
 
+    private var myCustomView: ListIndexBacklightView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.rowHeight = 100
+        tableView.rowHeight = 126
         tableView.backgroundView = activityIndicatorView
         setUpSearchController()
         loadDataFromDB()
+        
+        drawListIndexBox()
     }
-    
-//
-//    func test() {
-//        guard let view = self.navigationController?.view else {
-//            fatalError("cant get nav controller as view")
-//        }
-//
-//        let myCustomView = ListIndexBacklightView(frame: CGRect(x: 100, y: 100, width: 50, height: 50))
-//
-//
-//        view.addSubview(myCustomView)
-//    }
-
     
     func updateSearchResults(for searchController: UISearchController) {
         
@@ -133,6 +124,19 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         }
 
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        
+        myCustomView.letterLabel.text = title
+        
+        myCustomView.isHidden = false
+        tableView.scrollToRow(at: IndexPath(row: 0, section: index), at: .top, animated: true)
+        
+        listIndexBoxCounter += 1
+        hideIndexListBoxAfter()
+        
+        return -1
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -228,5 +232,27 @@ class AirportTableViewController: UITableViewController, UISearchResultsUpdating
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    private func hideIndexListBoxAfter() {
+        // Hide list index box after scrolling to section
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            self.listIndexBoxCounter -= 1
+            
+            //If several asynchronous calls are made for the block, then after the last asynchronous call, the block will be hidden.
+            if self.listIndexBoxCounter == 0 {
+                self.myCustomView.isHidden = true
+            }
+        }
+    }
+    
+    private func drawListIndexBox() {
+        guard let view = self.navigationController?.view else {
+            fatalError("cant get nav controller as view")
+        }
+        
+        myCustomView = ListIndexBacklightView(frame: CGRect(origin: CGPoint(x: self.view.frame.width - 70, y: 120), size: CGSize(width: 40, height: 40)))
+        view.addSubview(myCustomView)
+        myCustomView.isHidden = true
     }
 }
