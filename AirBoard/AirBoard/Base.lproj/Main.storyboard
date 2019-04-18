@@ -386,6 +386,70 @@
             </objects>
             <point key="canvasLocation" x="4152.8000000000002" y="-314.39280359820094"/>
         </scene>
+        <!--Map View Controller-->
+        <scene sceneID="LMN-7L-2er">
+            <objects>
+                <viewController id="Vvr-ZB-UfB" customClass="MapViewController" customModule="AirBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="icD-ia-T9G">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DeC-oB-nFn" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="20" width="375" height="627"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="30" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3WX-oZ-Dyw">
+                                        <rect key="frame" x="304" y="44" width="33" height="30"/>
+                                        <color key="backgroundColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="+">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="plusTapped:" destination="Vvr-ZB-UfB" eventType="touchUpInside" id="Yh8-x6-Cvh"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="30" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amf-Q8-zYX">
+                                        <rect key="frame" x="304" y="78" width="33" height="30"/>
+                                        <color key="backgroundColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="-">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="minusTapped:" destination="Vvr-ZB-UfB" eventType="touchUpInside" id="Bac-9Q-gUc"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="amf-Q8-zYX" secondAttribute="trailing" constant="38" id="057-bf-bWf"/>
+                                    <constraint firstAttribute="trailing" secondItem="3WX-oZ-Dyw" secondAttribute="trailing" constant="38" id="3xg-8O-Op1"/>
+                                    <constraint firstItem="3WX-oZ-Dyw" firstAttribute="leading" secondItem="DeC-oB-nFn" secondAttribute="leading" constant="304" id="NP5-uT-tY2"/>
+                                    <constraint firstItem="3WX-oZ-Dyw" firstAttribute="top" secondItem="DeC-oB-nFn" secondAttribute="top" constant="44" id="Pm9-Q1-pqk"/>
+                                    <constraint firstItem="amf-Q8-zYX" firstAttribute="top" secondItem="3WX-oZ-Dyw" secondAttribute="bottom" constant="4" id="gFH-qN-q5a"/>
+                                    <constraint firstItem="amf-Q8-zYX" firstAttribute="leading" secondItem="DeC-oB-nFn" secondAttribute="leading" constant="304" id="uQe-V4-RJw"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="DeC-oB-nFn" firstAttribute="leading" secondItem="4XN-cG-iDe" secondAttribute="leading" id="1pN-k9-giw"/>
+                            <constraint firstItem="DeC-oB-nFn" firstAttribute="top" secondItem="4XN-cG-iDe" secondAttribute="top" id="NIs-na-TW0"/>
+                            <constraint firstItem="DeC-oB-nFn" firstAttribute="trailing" secondItem="4XN-cG-iDe" secondAttribute="trailing" id="YyL-Hc-fcz"/>
+                            <constraint firstItem="4XN-cG-iDe" firstAttribute="bottom" secondItem="DeC-oB-nFn" secondAttribute="bottom" constant="20" id="t8A-hm-Qv5"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="4XN-cG-iDe"/>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="DeC-oB-nFn" id="azJ-WV-AKD"/>
+                        <outlet property="minusZoomButton" destination="amf-Q8-zYX" id="Vqj-dW-WuR"/>
+                        <outlet property="plusZoomButton" destination="3WX-oZ-Dyw" id="IUi-MD-WJK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K0d-eP-cbp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5048.8000000000002" y="-314.39280359820094"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Standart Image" width="161" height="166"/>

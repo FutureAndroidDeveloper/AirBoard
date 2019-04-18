@@ -170,7 +170,7 @@ class FlightTableViewController: UITableViewController {
             
             let flightKey = dateService.convert(unix: flight.arrivalTime ?? 0 )
             
-            if var _ = flightsDict[flightKey] {
+            if let _ = flightsDict[flightKey] {
                 flightsDict[flightKey]?.append(flight)
             } else {
                 flightsDict[flightKey] = [flight]
