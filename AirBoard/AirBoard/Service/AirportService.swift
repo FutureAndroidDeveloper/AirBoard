@@ -10,7 +10,7 @@ import Foundation
 
 class AirportService {
     
-    // Properties
+    // MARK: Properties
     private let baseUrl = "https://raw.githubusercontent.com/ram-nadella/airport-codes/master/airports.json"
     private let session = URLSession.shared
     

@@ -18,6 +18,7 @@
 		D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B12248F40D00A5FA76 /* FlightService.swift */; };
 		D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D1490E8E224CB987008F3576 /* AirBoard.xcdatamodeld */; };
 		D17050982267802B0079F85C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17050972267802B0079F85C /* MapViewController.swift */; };
+		D18747F5226871F800FC0202 /* AirportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18747F4226871F800FC0202 /* AirportViewModel.swift */; };
 		D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A483EB224515F80035E852 /* AppDelegate.swift */; };
 		D1A483F1224515F80035E852 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1A483EF224515F80035E852 /* Main.storyboard */; };
 		D1A483F3224515F90035E852 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1A483F2224515F90035E852 /* Assets.xcassets */; };
@@ -60,6 +61,7 @@
 		D12BF1B12248F40D00A5FA76 /* FlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightService.swift; sourceTree = "<group>"; };
 		D1490E8F224CB987008F3576 /* AirBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AirBoard.xcdatamodel; sourceTree = "<group>"; };
 		D17050972267802B0079F85C /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		D18747F4226871F800FC0202 /* AirportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportViewModel.swift; sourceTree = "<group>"; };
 		D1A483E8224515F80035E852 /* AirBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1A483EB224515F80035E852 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D1A483F0224515F80035E852 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -161,6 +163,23 @@
 			path = "Core Data";
 			sourceTree = "<group>";
 		};
+		D18747F22268717000FC0202 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D1A483F7224515F90035E852 /* Info.plist */,
+				D1A483EB224515F80035E852 /* AppDelegate.swift */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D18747F3226871D600FC0202 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				D18747F4226871F800FC0202 /* AirportViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
 		D1A483DF224515F80035E852 = {
 			isa = PBXGroup;
 			children = (
@@ -184,18 +203,18 @@
 		D1A483EA224515F80035E852 /* AirBoard */ = {
 			isa = PBXGroup;
 			children = (
+				D18747F3226871D600FC0202 /* View Model */,
 				D1014F502251E85B006CE5FC /* Custom View */,
 				D1490E95224CC179008F3576 /* Core Data */,
 				D1038131224BB32A009BE46B /* Service */,
 				D1038130224BB302009BE46B /* Model */,
 				D1E16A412254C46F00D00AB2 /* Controllers */,
-				D103812C224BAB02009BE46B /* AirportTableViewCell.swift */,
 				D1BE063A2252371600FC0640 /* FlightTableViewCell.swift */,
+				D103812C224BAB02009BE46B /* AirportTableViewCell.swift */,
 				D1A483EF224515F80035E852 /* Main.storyboard */,
 				D1A483F2224515F90035E852 /* Assets.xcassets */,
+				D18747F22268717000FC0202 /* Supporting Files */,
 				D1A483F4224515F90035E852 /* LaunchScreen.storyboard */,
-				D1A483F7224515F90035E852 /* Info.plist */,
-				D1A483EB224515F80035E852 /* AppDelegate.swift */,
 			);
 			path = AirBoard;
 			sourceTree = "<group>";
@@ -402,6 +421,7 @@
 				D1E634C5225902620000756F /* AirportService.swift in Sources */,
 				D103812B224B8AFC009BE46B /* Airport.swift in Sources */,
 				D103812D224BAB02009BE46B /* AirportTableViewCell.swift in Sources */,
+				D18747F5226871F800FC0202 /* AirportViewModel.swift in Sources */,
 				D103812F224BABBD009BE46B /* AirportTableViewController.swift in Sources */,
 				D1CA5A17225E10A000ABD3E7 /* Aircraft.swift in Sources */,
 				D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */,
@@ -581,7 +601,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 49GPYK54FQ;
-				INFOPLIST_FILE = AirBoard/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/AirBoard/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -600,7 +620,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 49GPYK54FQ;
-				INFOPLIST_FILE = AirBoard/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/AirBoard/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

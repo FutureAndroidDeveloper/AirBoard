@@ -9,30 +9,30 @@
 import Foundation
 import CoreData
 
-class CoreDataManager {
+enum DataBaseError: Error {
+    case LoadDataError
+    case SaveDataError
+    case EmptyDataBase
+    case FilteringError
+    case NilFileld
     
-    enum DataBaseError: Error {
-        case LoadDataError
-        case SaveDataError
-        case EmptyDataBase
-        case FilteringError
-        case NilFileld
-        
-        var description: String {
-            switch self {
-            case .LoadDataError:
-                return "Could not load airports."
-            case .SaveDataError:
-                return "Could not save data."
-            case .EmptyDataBase:
-                return "Database is empty."
-            case .FilteringError:
-                return "Could not find the requested field"
-            case .NilFileld:
-                return "Requested field is nil"
-            }
+    var description: String {
+        switch self {
+        case .LoadDataError:
+            return "Could not load airports."
+        case .SaveDataError:
+            return "Could not save data."
+        case .EmptyDataBase:
+            return "Database is empty."
+        case .FilteringError:
+            return "Could not find the requested field"
+        case .NilFileld:
+            return "Requested field is nil"
         }
     }
+}
+
+class CoreDataManager {
     
     private let appDelegate: AppDelegate
     private let backContext: NSManagedObjectContext
@@ -85,8 +85,8 @@ class CoreDataManager {
                 
                 do {
                     try self.backContext.save()
-                } catch let error as NSError {
-                    NSLog("Could not save", error)
+                } catch {
+                    NSLog(DataBaseError.SaveDataError.description)
                 }
             }
             
@@ -124,7 +124,6 @@ class CoreDataManager {
                 }
                 return
             }
-            
             DispatchQueue.main.async {
                 success(airport.city!)
             }
