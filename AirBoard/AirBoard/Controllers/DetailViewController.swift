@@ -34,12 +34,21 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUpIndicator()
         setDefaultInfo()
         loadAircraft()
         getCityNames()
-        
-        aircraftPhoto.addSubview(activityIndicatorView)
-        activityIndicatorView.center = aircraftPhoto.center
+    }
+    
+    // MARK: Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.destination is MapViewController
+        {
+            let detailViewController = segue.destination as? MapViewController
+            detailViewController?.flight = self.flight
+        }
     }
     
     // MARK: Private Methods
@@ -98,5 +107,16 @@ class DetailViewController: UIViewController {
         ownerLabel.text = "N/A"
         departureIcaoLabel.text = flight.departure
         arrivalIcaoLabel.text = flight.arrival
+    }
+    
+    private func setUpIndicator() {
+        aircraftPhoto.addSubview(activityIndicatorView)
+        
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        let horizontalConstraint = activityIndicatorView.centerXAnchor.constraint(equalTo: aircraftPhoto.centerXAnchor)
+        let verticalConstraint = activityIndicatorView.centerYAnchor.constraint(equalTo: aircraftPhoto.centerYAnchor)
+        let widthConstraint = activityIndicatorView.widthAnchor.constraint(equalToConstant: 40)
+        let heightConstraint = activityIndicatorView.heightAnchor.constraint(equalToConstant: 40)
+        view.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
     }
 }

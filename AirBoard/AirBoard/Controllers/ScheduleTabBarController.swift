@@ -58,10 +58,10 @@ class ScheduleTabBarController: UITabBarController {
         switch flightType {
         case .departure:
             controller.title = "Departures"
-            controller.tabBarItem = UITabBarItem(title: "Departures", image: nil, tag: 0)
+            controller.tabBarItem = UITabBarItem(title: "Departures", image: #imageLiteral(resourceName: "departure"), tag: 0)
         case .arrival:
             controller.title = "Arrivals"
-            controller.tabBarItem = UITabBarItem(title: "Arrivals", image: nil, tag: 1)
+            controller.tabBarItem = UITabBarItem(title: "Arrivals", image: #imageLiteral(resourceName: "arrival"), tag: 1)
         }
 
         // sending the airport code
