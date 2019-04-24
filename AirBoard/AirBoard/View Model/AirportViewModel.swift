@@ -17,70 +17,74 @@ class AirportViewModel {
     // MARK: Properties
     weak var delegate: AirportsViewModelDelegate?
     
-    private var airports: [Airport]
-    var airportsToDisplay: [String: [Airport]]
-    var sectionTitles: [String]
+    var data = [String: [Airport]]() {
+        didSet {
+            delegate?.reciveData()
+        }
+    }
+    var sectionTitles: [String] {
+        get {
+            return data.keys.sorted()
+        }
+    }
     
-    private let airportService: AirportService
+    private var airports = [Airport]()
+    private let airportService = AirportService()
     private let coreDataManager: CoreDataManager
     
     init(appDelegate: AppDelegate) {
         coreDataManager = CoreDataManager(appDelegate: appDelegate)
-        airportService = AirportService()
-        airports = []
-        airportsToDisplay = [:]
-        sectionTitles = []
     }
     
     func getData() {
-        if airports.isEmpty {
+        if data.isEmpty {
             loadDataFromDataBase()
         }
     }
     
     func searchAirports(cityName: String) {
         if cityName.isEmpty {
-            airportsToDisplay.removeAll()
-            prepareToDisplay()
+            data.removeAll()
         } else {
             let filteredAirports = airports.filter { $0.name.lowercased().contains(cityName.lowercased()) }
-            airportsToDisplay = ["Founded": filteredAirports]
-            sectionTitles = ["Founded"]
+            data = ["Founded": filteredAirports]
         }
-        
-        delegate?.reciveData()
     }
     
     // MARK: Private methods
     
     private func loadDataFromDataBase() {
         coreDataManager.loadAirportsFromDB(success: { [weak self] data in
-            self?.airports = data
-            self?.prepareToDisplay()
-            self?.delegate?.reciveData()
+            guard let self = self else {
+                return
+            }
+            
+            self.data = self.convertToData(airports: data)
+            
             }, failure: { [weak self] error in
                 NSLog(error.description)
                 self?.loadAirports()
-        })
+            })
     }
 
     private func loadAirports() {
         airportService.getAirports(success: { [weak self] airports in
-            self?.airports = airports.sorted(by: { $0.name < $1.name })
-            self?.coreDataManager.saveAirports(airports: self!.airports)
-            self?.prepareToDisplay()
-            self?.delegate?.reciveData()
+            guard let self = self else {
+                return
+            }
+            
+            self.coreDataManager.saveAirports(airports: self.airports)
+            self.data = self.convertToData(airports: airports.sorted(by: { $0.name < $1.name }))
+            
             }, failure: { error in
                 NSLog(error.description)
-        })
+            })
     }
     
-    private func prepareToDisplay() {
-        if airports.isEmpty {
-            return
-        }
-        
+    private func convertToData(airports: [Airport]) -> [String: [Airport]] {
         // Get the first letter in airport name and create dictionary
+        var data = [String: [Airport]]()
+        
         for airport in airports {
             guard let firstChar = airport.name.first else {
                 fatalError("cant get first char - \(airport.name)")
@@ -88,14 +92,13 @@ class AirportViewModel {
             
             let airportKey = String(firstChar)
             
-            if var _ = airportsToDisplay[airportKey] {
-                airportsToDisplay[airportKey]?.append(airport)
+            if var _ = data[airportKey] {
+                data[airportKey]?.append(airport)
             } else {
-                airportsToDisplay[airportKey] = [airport]
+                data[airportKey] = [airport]
             }
         }
         
-        // Get the section titles from the dictionary's keys and sort them in ascending order
-        sectionTitles = airportsToDisplay.keys.sorted()
+        return data
     }
 }
