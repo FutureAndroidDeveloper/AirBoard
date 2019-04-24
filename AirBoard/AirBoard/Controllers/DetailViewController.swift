@@ -116,6 +116,9 @@ class DetailViewController: UIViewController {
         
         // ВЫНОСИТЬ ЭТО
         
+        aircraftPhoto.layer.cornerRadius = self.view.frame.height / 10.0
+        aircraftPhoto.layer.masksToBounds = true
+        
         if let departureTime = flight.departureTime, let arrivalTime = flight.arrivalTime {
             departureTimeLabel.text = Double(departureTime).getDateFromUTC()
             arrivalTimeLabel.text = Double(arrivalTime).getDateFromUTC()

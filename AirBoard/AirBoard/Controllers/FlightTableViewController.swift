@@ -11,44 +11,41 @@ import UIKit
 class FlightTableViewController: UITableViewController {
 
     // MARK: Properties
-    
-    var activityIndicatorView = UIActivityIndicatorView(style: .gray)
-    
-    private let service = FlightService()
-    private let dateService = DateService()
-    private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
-    private var flights = [Flight]()
+    private var activityIndicatorView = UIActivityIndicatorView(style: .gray)
+    private let viewModel = FlightViewModel(appDeleagte: UIApplication.shared.delegate as! AppDelegate)
     
     var flightType = FlightType.departure
     var airportCode = String()
-    var beginUnix = Int()
-    var endUnix = Int()
-    var cityName = Optional(String())
     
-    // Sections data
-    private var flightsDict = [String: [Flight]]()
-    private var flightsSectionTitles = [String]()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel.delegate = self
         tableView.backgroundView = activityIndicatorView
-        loadFlights()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        activityIndicatorView.startAnimating()
+        tableView.separatorStyle = .none
+        viewModel.getFlights(flightType: flightType, airportCode: airportCode)
     }
     
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return flightsSectionTitles.count
+        return viewModel.flightsSectionTitles.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return flightsSectionTitles[section]
+        return viewModel.flightsSectionTitles[section]
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let flightKey = flightsSectionTitles[section]
-        guard let flightValues = flightsDict[flightKey] else { return 0 }
+        let flightKey = viewModel.flightsSectionTitles[section]
+        guard let flightValues = viewModel.flightsToDisplay[flightKey] else { return 0 }
         
         return flightValues.count
     }
@@ -60,26 +57,24 @@ class FlightTableViewController: UITableViewController {
             fatalError("FlightCell cell error")
         }
         
-        let flightKey = flightsSectionTitles[indexPath.section]
+        let flightKey = viewModel.flightsSectionTitles[indexPath.section]
         cell.accessoryType = .disclosureIndicator
 
-        if let flightValues = flightsDict[flightKey] {
-            
+        if let flightValues = viewModel.flightsToDisplay[flightKey] {
             switch flightType {
             case .departure:
                 cell.flightTimeLabel.text = Double(flightValues[indexPath.row].departureTime!).getDateFromUTC()
-                getCityName(icao: flightValues[indexPath.row].arrival)
-                cell.flightCityLabel.text = cityName ?? "N/A"
-                
             case .arrival:
                 cell.flightTimeLabel.text = Double(flightValues[indexPath.row].arrivalTime!).getDateFromUTC()
-                getCityName(icao: flightValues[indexPath.row].departure)
-                cell.flightCityLabel.text = cityName ?? "N/A"
             }
+            
+            cell.flightCityLabel.text = flightValues[indexPath.row].city ?? "N/A"
         }
         
         return cell
     }
+    
+    // MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -98,9 +93,9 @@ class FlightTableViewController: UITableViewController {
                 fatalError("The selected cell is not being displayed by the table")
             }
 
-            let flightKey = flightsSectionTitles[indexPath.section]
+            let flightKey = viewModel.flightsSectionTitles[indexPath.section]
             
-            if let flightValues = flightsDict[flightKey] {
+            if let flightValues = viewModel.flightsToDisplay[flightKey] {
                 aircraftDetailViewController.flight = flightValues[indexPath.row]
             }
         default:
@@ -110,80 +105,15 @@ class FlightTableViewController: UITableViewController {
     
     // MARK: Private Methods
     
-    private func getCityName(icao: String?) {
-        coreDataManager.syncFetchCityNameFromDB(with: icao, success: { [weak self] city in
-            self?.cityName = city
-        }, failure: { [weak self] error in
-            NSLog(error.description)
-            self?.cityName = nil
-        })
-    }
-    
-    private func loadFlights() {
-        activityIndicatorView.startAnimating()
-        tableView.separatorStyle = .none
-        
-        switch flightType {
-        // if flight type is departure, request flight departures from the airport
-        case .departure:
-            service.getFlights(path: .departure, parameters: (icao: airportCode, begin: beginUnix, end: endUnix), complition: { [weak self] flights in
-                self?.flights = flights.sorted(by: {$0.arrivalTime! < $1.arrivalTime!})
-                self?.createFlightsDict()
-                }, failure: { error in
-                    NSLog(error.description)
-            })
-        // if flight type is arrivals, request flight arrivals to the airport
-        case .arrival:
-            service.getFlights(path: .arrival, parameters: (icao: airportCode, begin: beginUnix, end: endUnix), complition: { [weak self] flights in
-                self?.flights = flights.sorted(by: {$0.arrivalTime! < $1.arrivalTime!})
-                self?.createFlightsDict()
-                }, failure: { error in
-                    NSLog(error.description)
-            })
-        }
-    }
-    
-    private func createSectionTitles() {
-        let unixDay = 86400
-        var currentUnixDay = beginUnix
-        
-        // Make a step one day in length and write this date in the dictionary.
-        while currentUnixDay <= endUnix {
-            flightsSectionTitles.append(dateService.convert(unix: currentUnixDay))
-            currentUnixDay += unixDay
-        }
-        
-        flightsSectionTitles.reverse()
-    }
-    
-    private func createFlightsDict() {
-        
-        switch flightType {
-        case .departure:
-            flights.sort(by: { $0.departureTime! < $1.departureTime! })
-        case .arrival:
-            flights.sort(by: { $0.arrivalTime! < $1.arrivalTime! })
-        }
-        
-        // Get the date and create dictionary
-        for flight in flights {
-            
-            let flightKey = dateService.convert(unix: flight.arrivalTime ?? 0 )
-            
-            if let _ = flightsDict[flightKey] {
-                flightsDict[flightKey]?.append(flight)
-            } else {
-                flightsDict[flightKey] = [flight]
-            }
-        }
-        
-        createSectionTitles()
-        stopIndicator()
-        tableView.reloadData()
-    }
-    
     private func stopIndicator () {
         self.activityIndicatorView.stopAnimating()
         self.tableView.separatorStyle = .singleLine
+    }
+}
+
+extension FlightTableViewController: FlightsViewModelDelegate {
+    func reciveData() {
+        tableView.reloadData()
+        stopIndicator()
     }
 }

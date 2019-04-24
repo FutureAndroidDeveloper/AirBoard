@@ -14,6 +14,7 @@ struct Flight {
     let departureTime: Int?
     let arrivalTime: Int?
     let icao: String
+    var city: String?
 }
 
 extension Flight: Decodable {
@@ -24,5 +25,6 @@ extension Flight: Decodable {
         case departureTime = "firstSeen"
         case arrivalTime = "lastSeen"
         case icao = "icao24"
+        case city
     }
 }

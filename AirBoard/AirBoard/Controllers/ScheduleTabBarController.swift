@@ -16,10 +16,7 @@ enum FlightType: CaseIterable {
 class ScheduleTabBarController: UITabBarController {
     
     // MARK: Properties
-    
     var airportCode = ""
-    
-    private let dateService = DateService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +39,6 @@ class ScheduleTabBarController: UITabBarController {
     }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        
         // change navigation item title to the selected tab bar item title
         self.navigationItem.title = item.title
     }
@@ -64,22 +60,9 @@ class ScheduleTabBarController: UITabBarController {
             controller.tabBarItem = UITabBarItem(title: "Arrivals", image: #imageLiteral(resourceName: "arrival"), tag: 1)
         }
 
-        // sending the airport code
+        // sending the necessary information
         controller.airportCode = self.airportCode
-        
-        // sending request type
         controller.flightType = flightType
-        
-        // get current Date
-        let currentDate = dateService.getCurrentDate()
-        
-        // get start and end Date
-        let beginDate = dateService.subract(from: currentDate, days: 2)
-        let endDate = currentDate.addingTimeInterval(24 * 60 * 60 - 1)
-        
-        // pass Unix timestamp
-        controller.beginUnix = Int(beginDate.timeIntervalSince1970)
-        controller.endUnix = Int(endDate.timeIntervalSince1970)
         
         return controller
     }

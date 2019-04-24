@@ -17,6 +17,7 @@
 		D12BF1B02248F2E500A5FA76 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1AF2248F2E500A5FA76 /* Flight.swift */; };
 		D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B12248F40D00A5FA76 /* FlightService.swift */; };
 		D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D1490E8E224CB987008F3576 /* AirBoard.xcdatamodeld */; };
+		D16D45DF227072DA00F13211 /* FlightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D45DE227072DA00F13211 /* FlightViewModel.swift */; };
 		D17050982267802B0079F85C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17050972267802B0079F85C /* MapViewController.swift */; };
 		D18747F5226871F800FC0202 /* AirportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18747F4226871F800FC0202 /* AirportViewModel.swift */; };
 		D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A483EB224515F80035E852 /* AppDelegate.swift */; };
@@ -60,6 +61,7 @@
 		D12BF1AF2248F2E500A5FA76 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flight.swift; sourceTree = "<group>"; };
 		D12BF1B12248F40D00A5FA76 /* FlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightService.swift; sourceTree = "<group>"; };
 		D1490E8F224CB987008F3576 /* AirBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AirBoard.xcdatamodel; sourceTree = "<group>"; };
+		D16D45DE227072DA00F13211 /* FlightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightViewModel.swift; sourceTree = "<group>"; };
 		D17050972267802B0079F85C /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D18747F4226871F800FC0202 /* AirportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportViewModel.swift; sourceTree = "<group>"; };
 		D1A483E8224515F80035E852 /* AirBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				D18747F4226871F800FC0202 /* AirportViewModel.swift */,
+				D16D45DE227072DA00F13211 /* FlightViewModel.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 				D103812D224BAB02009BE46B /* AirportTableViewCell.swift in Sources */,
 				D18747F5226871F800FC0202 /* AirportViewModel.swift in Sources */,
 				D103812F224BABBD009BE46B /* AirportTableViewController.swift in Sources */,
+				D16D45DF227072DA00F13211 /* FlightViewModel.swift in Sources */,
 				D1CA5A17225E10A000ABD3E7 /* Aircraft.swift in Sources */,
 				D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */,
 				D1CA5A13225B887E00ABD3E7 /* DetailViewController.swift in Sources */,
