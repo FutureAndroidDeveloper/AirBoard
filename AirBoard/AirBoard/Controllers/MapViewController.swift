@@ -65,27 +65,31 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        directionButton.isHidden = true
+        
         // 15
         plusZoomButton.layer.cornerRadius = 15
         minusZoomButton.layer.cornerRadius = 15
 
         // Create a GMSCameraPosition that tells the map to display the
         // coordinate -33.86,151.20 at zoom level 6.
-        let camera = GMSCameraPosition(latitude: -33.86, longitude: 151.20, zoom: 6.0)
-        mapView.camera = camera
+//        let camera = GMSCameraPosition(latitude: -33.86, longitude: 151.20, zoom: 6.0)
+//        mapView.camera = camera
         mapView.settings.compassButton = true
         mapView.settings.myLocationButton = true
         
-        mapView.bringSubviewToFront(plusZoomButton)
-        mapView.bringSubviewToFront(minusZoomButton)
-        mapView.bringSubviewToFront(directionButton)
+//        mapView.bringSubviewToFront(plusZoomButton)
+//        mapView.bringSubviewToFront(minusZoomButton)
+//        mapView.bringSubviewToFront(directionButton)
         
-        // Creates a marker in the center of the map.
-        let marker = GMSMarker(position: camera.target)
-        marker.isDraggable = true
-        marker.title = "PASHA"
-        marker.snippet = "Postavi"
-        marker.map = mapView
+        openSkyDirection()
+        
+//        // Creates a marker in the center of the map.
+//        let marker = GMSMarker(position: camera.target)
+//        marker.isDraggable = true
+//        marker.title = "PASHA"
+//        marker.snippet = "Postavi"
+//        marker.map = mapView
     }
     
     @IBAction func plusTapped(_ sender: UIButton) {
@@ -100,8 +104,6 @@ class MapViewController: UIViewController {
 //        getDirection()
 //        drawLine()
         openSkyDirection()
-        let camera = GMSCameraPosition(latitude: 50.1055522, longitude: 8.661708000000001, zoom: 6.0)
-        mapView.camera = camera
     }
     
     
@@ -138,7 +140,7 @@ class MapViewController: UIViewController {
             DispatchQueue.main.async {
                 let polyline = GMSPolyline(path: path)
                 polyline.geodesic = true
-                polyline.strokeColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+                polyline.strokeColor = #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)
                 polyline.strokeWidth = 4
                 polyline.map = self.mapView
                 
@@ -148,18 +150,24 @@ class MapViewController: UIViewController {
                     let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
                     
                     let airplaneMarker = GMSMarker(position: coordinate)
-                    airplaneMarker.icon = #imageLiteral(resourceName: "miniEmpty-2")
+                    airplaneMarker.icon = #imageLiteral(resourceName: "airplanePosition")
                     airplaneMarker.title = self.flight.icao
                     airplaneMarker.map = self.mapView
+                    airplaneMarker.snippet = "Latitude: \(latitude)\nLongitude: \(longitude)"
                 }
                 
                 let startMarker = GMSMarker()
                 startMarker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees((points.first?.latitude!)!), longitude: CLLocationDegrees((points.first?.longitude!)!))
                 startMarker.title = self.flight.departure
                 
+                let camera = GMSCameraPosition(latitude: CLLocationDegrees((points.first?.latitude!)!), longitude: CLLocationDegrees((points.first?.longitude!)!), zoom: 6.0)
+                self.mapView.camera = camera
+                
+                
                 let lastMarker = GMSMarker()
                 lastMarker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees((points.last?.latitude!)!), longitude: CLLocationDegrees((points.last?.longitude!)!))
-                lastMarker.title = self.flight.arrival
+                lastMarker.title = "Barcelona"
+                lastMarker.snippet = "Icao code: LEBL\nArrival 09:19 PM"
                 
                 startMarker.map = self.mapView
                 lastMarker.map = self.mapView

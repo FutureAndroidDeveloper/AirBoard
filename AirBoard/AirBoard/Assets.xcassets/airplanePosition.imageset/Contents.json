@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "airplane-512.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "airplanePosition.png",
       "scale" : "2x"
     },
     {

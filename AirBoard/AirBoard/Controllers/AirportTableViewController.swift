@@ -149,7 +149,7 @@ class AirportTableViewController: UITableViewController {
             fatalError("cant get nav controller as view")
         }
         
-        listIndexHelpBox = ListIndexBacklightView(frame: CGRect(origin: CGPoint(x: self.view.frame.width - 70, y: 120), size: CGSize(width: 50, height: 50)))
+        listIndexHelpBox = ListIndexBacklightView(frame: CGRect(origin: CGPoint(x: self.view.frame.width - 70, y: 100), size: CGSize(width: 40, height: 40)))
         view.addSubview(listIndexHelpBox)
         listIndexHelpBox.isHidden = true
     }

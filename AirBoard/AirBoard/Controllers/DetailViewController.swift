@@ -17,13 +17,15 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var arrivalIcaoLabel: UILabel!
     @IBOutlet weak var departureCityLabel: UILabel!
     @IBOutlet weak var arrivalCityLabel: UILabel!
+    @IBOutlet weak var departureTimeLabel: UILabel!
+    @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var arrivalTimeLabel: UILabel!
     @IBOutlet weak var registrationNumberLabel: UILabel!
     @IBOutlet weak var modelCodeLabel: UILabel!
     @IBOutlet weak var airplaneIcaoLabel: UILabel!
     @IBOutlet weak var engineLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var ownerLabel: UILabel!
-    
     
     private var activityIndicatorView = UIActivityIndicatorView(style: .gray)
     private var aircraftService = AircraftService()
@@ -105,8 +107,25 @@ class DetailViewController: UIViewController {
         engineLabel.text = "N/A"
         ageLabel.text = "N/A"
         ownerLabel.text = "N/A"
+        departureTimeLabel.text = "N/A"
+        durationLabel.text = "N/A"
+        arrivalTimeLabel.text = "N/A"
+        
         departureIcaoLabel.text = flight.departure
         arrivalIcaoLabel.text = flight.arrival
+        
+        // ВЫНОСИТЬ ЭТО
+        
+        if let departureTime = flight.departureTime, let arrivalTime = flight.arrivalTime {
+            departureTimeLabel.text = Double(departureTime).getDateFromUTC()
+            arrivalTimeLabel.text = Double(arrivalTime).getDateFromUTC()
+            
+            let difference = arrivalTime - departureTime
+            let hours = difference / (60 * 60)
+            let minutes = difference % (60 * 60) / 60
+            
+            durationLabel.text = String(format: "%02d", hours) + ":" + String(format: "%02d", minutes)
+        }
     }
     
     private func setUpIndicator() {
