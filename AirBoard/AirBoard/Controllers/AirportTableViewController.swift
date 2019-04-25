@@ -49,7 +49,7 @@ class AirportTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let airportKey = viewModel.sectionTitles[section]
-        guard let airportValues = viewModel.airportsToDisplay[airportKey] else { return 0 }
+        guard let airportValues = viewModel.data[airportKey] else { return 0 }
 
         return airportValues.count
     }
@@ -63,14 +63,11 @@ class AirportTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "AirportCell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AirportCell", for: indexPath) as! AirportTableViewCell
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AirportTableViewCell else {
-            fatalError("cell error")
-        }
         let airportKey = viewModel.sectionTitles[indexPath.section]
         
-        if let airportValues = viewModel.airportsToDisplay[airportKey] {
+        if let airportValues = viewModel.data[airportKey] {
             cell.airportNameLabel.text = airportValues[indexPath.row].name
             cell.cityLabel.text = "\(airportValues[indexPath.row].city ?? "Undefined")"
             cell.codeLabel.text = airportValues[indexPath.row].code

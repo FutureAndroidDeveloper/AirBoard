@@ -17,7 +17,6 @@ class FlightTableViewController: UITableViewController {
     var flightType = FlightType.departure
     var airportCode = String()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
