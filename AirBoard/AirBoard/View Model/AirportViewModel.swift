@@ -45,6 +45,7 @@ class AirportViewModel {
     func searchAirports(cityName: String) {
         if cityName.isEmpty {
             data.removeAll()
+            self.data = self.convertToData(airports: airports)
         } else {
             let filteredAirports = airports.filter { $0.name.lowercased().contains(cityName.lowercased()) }
             data = ["Founded": filteredAirports]
@@ -59,6 +60,7 @@ class AirportViewModel {
                 return
             }
             
+            self.airports = data
             self.data = self.convertToData(airports: data)
             
             }, failure: { [weak self] error in

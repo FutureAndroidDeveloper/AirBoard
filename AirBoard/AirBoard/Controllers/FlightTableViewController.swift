@@ -35,7 +35,7 @@ class FlightTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.flightsSectionTitles.count
+        return viewModel.flightsSectionTitles.count //3
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -44,7 +44,7 @@ class FlightTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let flightKey = viewModel.flightsSectionTitles[section]
-        guard let flightValues = viewModel.flightsToDisplay[flightKey] else { return 0 }
+        guard let flightValues = viewModel.data[flightKey] else { return 0 }
         
         return flightValues.count
     }
@@ -59,7 +59,7 @@ class FlightTableViewController: UITableViewController {
         let flightKey = viewModel.flightsSectionTitles[indexPath.section]
         cell.accessoryType = .disclosureIndicator
 
-        if let flightValues = viewModel.flightsToDisplay[flightKey] {
+        if let flightValues = viewModel.data[flightKey] {
             switch flightType {
             case .departure:
                 cell.flightTimeLabel.text = Double(flightValues[indexPath.row].departureTime!).getDateFromUTC()
@@ -94,7 +94,7 @@ class FlightTableViewController: UITableViewController {
 
             let flightKey = viewModel.flightsSectionTitles[indexPath.section]
             
-            if let flightValues = viewModel.flightsToDisplay[flightKey] {
+            if let flightValues = viewModel.data[flightKey] {
                 aircraftDetailViewController.flight = flightValues[indexPath.row]
             }
         default:

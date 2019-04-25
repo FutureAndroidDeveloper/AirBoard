@@ -18,34 +18,47 @@ class FlightViewModel {
     weak var delegate: FlightsViewModelDelegate?
     
     private var flights = [Flight]()
-    private var beginUnix: Int
-    private var endUnix: Int
+    private var beginUnix = 0
+    private var endUnix = 0
     private var flightType: FlightType!
     private var airportCode: String!
     
-    var flightsToDisplay: [String: [Flight]]
-    var flightsSectionTitles: [String]
+    var data = [String: [Flight]]() {
+        didSet {
+            delegate?.reciveData()
+        }
+    }
+    var flightsSectionTitles: [String] {
+        get {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "EEEE, MMMM d"
+            let time = TimeZone(secondsFromGMT: 0)
+            dateFormatter.timeZone = time
+            dateFormatter.defaultDate = Date()
+            
+            var dateArray = [Date]()
+            
+            for date in data.keys {
+                dateArray.append(dateFormatter.date(from: date)!)
+            }
+            
+            return dateArray.sorted(by: { $0 > $1 }).map { dateFormatter.string(from: $0) }
+        }
+    }
     
-    private let flightService: FlightService
-    private let dateService: DateService
+    private let flightService = FlightService()
+    private let dateService = DateService()
     private let coreDataManager: CoreDataManager
     
     init(appDeleagte: AppDelegate) {
-        flightService = FlightService()
-        dateService = DateService()
         coreDataManager = CoreDataManager(appDelegate: appDeleagte)
-        
-        beginUnix = 0
-        endUnix = 0
-        flightsToDisplay = [:]
-        flightsSectionTitles = []
     }
     
     func getFlights(flightType: FlightType, airportCode: String) {
         self.flightType = flightType
         self.airportCode = airportCode
         
-        if flightsToDisplay.isEmpty {
+        if data.isEmpty {
             setTimeFrames()
             loadFlights()
         } else {
@@ -74,26 +87,37 @@ class FlightViewModel {
         // if flight type is departure, request flight departures from the airport
         case .departure:
             flightService.getFlights(path: .departure, parameters: (icao: airportCode, begin: beginUnix, end: endUnix), complition: { [weak self] flights in
-                self?.flights = flights
-                self?.prepareToDisplay()
-                self?.delegate?.reciveData()
+                guard let self = self else {
+                    return
+                }
+                
+                self.flights = flights
+                self.setCityNames()
+                self.data = self.convertToData(flights: self.flights)
+                
                 }, failure: { error in
                     NSLog(error.description)
             })
         // if flight type is arrivals, request flight arrivals to the airport
         case .arrival:
             flightService.getFlights(path: .arrival, parameters: (icao: airportCode, begin: beginUnix, end: endUnix), complition: { [weak self] flights in
-                self?.flights = flights
-                self?.prepareToDisplay()
-                self?.delegate?.reciveData()
+                guard let self = self else {
+                    return
+                }
+                
+                self.flights = flights
+                self.setCityNames()
+                self.data = self.convertToData(flights: self.flights)
+                
                 }, failure: { error in
                     NSLog(error.description)
             })
         }
     }
     
-    private func prepareToDisplay() {
-        setCityNames()
+    private func convertToData(flights: [Flight]) -> [String: [Flight]] {
+        var data = [String: [Flight]]()
+        createSectionTitles(for: &data)
         
         // Get the date and create dictionary
         for flight in flights {
@@ -101,27 +125,26 @@ class FlightViewModel {
             // grouping flights by sections
             let flightKey = dateService.convert(unix: flight.arrivalTime ?? 0 )
             
-            if let _ = flightsToDisplay[flightKey] {
-                flightsToDisplay[flightKey]?.append(flight)
+            if let _ = data[flightKey] {
+                data[flightKey]?.append(flight)
             } else {
-                flightsToDisplay[flightKey] = [flight]
+                data[flightKey] = [flight]
             }
         }
         
-        createSectionTitles()
+        return data
     }
     
-    private func createSectionTitles() {
+    private func createSectionTitles(for flight: inout [String: [Flight]]) {
         let unixDay = 86400
         var currentUnixDay = beginUnix
         
         // Make a step one day in length and write this date in the array.
         while currentUnixDay <= endUnix {
-            flightsSectionTitles.append(dateService.convert(unix: currentUnixDay))
+            let title = dateService.convert(unix: currentUnixDay)
+            flight[title] = []
             currentUnixDay += unixDay
         }
-        
-        flightsSectionTitles.reverse()
     }
     
     private func setCityNames() {
@@ -136,9 +159,14 @@ class FlightViewModel {
             }
             
             coreDataManager.syncFetchCityNameFromDB(with: icao, success: { [weak self] city in
-                self?.flights[flightIndex].city = city
-                }, failure: { error in
-                    // pass
+                guard let self = self else {
+                    return
+                }
+                
+                self.flights[flightIndex].city = city
+                
+            }, failure: { error in
+                // pass
             })
         }
     }
