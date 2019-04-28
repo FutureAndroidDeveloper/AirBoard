@@ -126,25 +126,18 @@ class DetailViewModel {
     }
     
     private func setDefaultValues() {
-        data.departureIcao = "N/A"
-        data.arrivalIcao = "N/A"
         data.departureCity = "N/A"
         data.arrivalCity = "N/A"
-        
         data.registrationNumber = "N/A"
         data.model = "N/A"
         data.icaoAirplane = "N/A"
         data.engine = "N/A"
         data.age = "N/A"
         data.owner = "N/A"
-        
         data.departureTime = "N/A"
         data.durationTime = "N/A"
         data.arrivalTime = "N/A"
-        
-        if let departure = flight!.departure, let arrival = flight!.arrival {
-            self.data.departureIcao = departure
-            self.data.arrivalIcao = arrival
-        }
+        data.departureIcao = flight?.departure ?? "N/A"
+        data.arrivalIcao = flight?.arrival ?? "N/A"
     }
 }
