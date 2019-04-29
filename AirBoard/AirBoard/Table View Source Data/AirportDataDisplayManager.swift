@@ -8,10 +8,13 @@
 
 import UIKit
 
+protocol AirportDataSourceDelegate: class {
+    func reciveHelpBox(label: String, index: Int)
+}
+
 class AirportDataDisplayManager: NSObject, UITableViewDataSource {
     
     // MARK: Properties
-    
     private let viewModel: AirportViewModel
     weak var delegate: AirportDataSourceDelegate?
     

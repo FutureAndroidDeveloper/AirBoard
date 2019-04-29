@@ -8,13 +8,9 @@
 
 import UIKit
 
-protocol AirportDataSourceDelegate: class {
-    func reciveHelpBox(label: String, index: Int)
-}
-
 class AirportTableViewController: UITableViewController {
     
-    //MARK: Properties
+    // MARK: Properties
     private var listIndexBoxCounter = 0
     
     private let viewModel = AirportViewModel(appDelegate: UIApplication.shared.delegate as! AppDelegate)
@@ -49,28 +45,21 @@ class AirportTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
-        switch segue.identifier ?? "" {
-        case "ShowFlights":
-            
-            guard let tabBarController = segue.destination as? ScheduleTabBarController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
-            
-            guard let selectedAirportCell = sender as? AirportTableViewCell else {
-                fatalError("Unexpected sender: \(String(describing: sender))")
-            }
-            
-            //getting the airport code
-            if let code = selectedAirportCell.codeLabel.text {
-                tabBarController.airportCode = code
-            }
-            
-        default:
-            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
+        guard let tabBarController = segue.destination as? ScheduleTabBarController else {
+            fatalError("Unexpected destination: \(segue.destination)")
+        }
+        
+        guard let selectedAirportCell = sender as? AirportTableViewCell else {
+            fatalError("Unexpected sender: \(String(describing: sender))")
+        }
+        
+        //getting the airport code
+        if let code = selectedAirportCell.codeLabel.text {
+            tabBarController.airportCode = code
         }
     }
     
-    //MARK: Private Methods
+    // MARK: Private Methods
     
     private func updateHelpBox(with label: String, index: Int) {
         listIndexHelpBox.letterLabel.text = label

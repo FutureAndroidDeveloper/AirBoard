@@ -51,7 +51,7 @@ class DetailViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let mapViewController = segue.destination as? MapViewController else {
-            fatalError("Segue destination")
+            fatalError("Unexpected destination: \(segue.destination)")
         }
         
         mapViewController.flight = self.flight

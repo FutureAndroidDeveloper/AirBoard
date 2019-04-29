@@ -37,6 +37,7 @@
 		D1CA5A19225E130500ABD3E7 /* AircraftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CA5A18225E130500ABD3E7 /* AircraftService.swift */; };
 		D1E634C5225902620000756F /* AirportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E634C4225902620000756F /* AirportService.swift */; };
 		D1EE7B1B2248B496008931A8 /* HTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EE7B1A2248B496008931A8 /* HTTPClientTests.swift */; };
+		D1FCD91D22770447002A8E39 /* FlightDataDisplayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FCD91C22770447002A8E39 /* FlightDataDisplayManager.swift */; };
 		F628E1356938942E1E2C4757 /* Pods_AirBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7241437D7E7ECB486298732 /* Pods_AirBoard.framework */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +89,7 @@
 		D1CA5A18225E130500ABD3E7 /* AircraftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AircraftService.swift; sourceTree = "<group>"; };
 		D1E634C4225902620000756F /* AirportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportService.swift; sourceTree = "<group>"; };
 		D1EE7B1A2248B496008931A8 /* HTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientTests.swift; sourceTree = "<group>"; };
+		D1FCD91C22770447002A8E39 /* FlightDataDisplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightDataDisplayManager.swift; sourceTree = "<group>"; };
 		DB1C85179ED8C9692E89D6B7 /* Pods_AirBoardTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AirBoardTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB68D8D1436115FF98E1E34A /* Pods-AirBoard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirBoard.debug.xcconfig"; path = "Target Support Files/Pods-AirBoard/Pods-AirBoard.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,6 +137,8 @@
 		D1014F502251E85B006CE5FC /* Custom View */ = {
 			isa = PBXGroup;
 			children = (
+				D1BE063A2252371600FC0640 /* FlightTableViewCell.swift */,
+				D103812C224BAB02009BE46B /* AirportTableViewCell.swift */,
 				D1014F512251E915006CE5FC /* ListIndexBackLightView.xib */,
 				D1014F532251EABD006CE5FC /* ListIndexBacklightView.swift */,
 			);
@@ -214,19 +218,17 @@
 		D1A483EA224515F80035E852 /* AirBoard */ = {
 			isa = PBXGroup;
 			children = (
+				D1FCD91E22770CC4002A8E39 /* Table View Source Data */,
 				D18747F3226871D600FC0202 /* View Model */,
 				D1014F502251E85B006CE5FC /* Custom View */,
 				D1490E95224CC179008F3576 /* Core Data */,
 				D1038131224BB32A009BE46B /* Service */,
 				D1038130224BB302009BE46B /* Model */,
 				D1E16A412254C46F00D00AB2 /* Controllers */,
-				D1BE063A2252371600FC0640 /* FlightTableViewCell.swift */,
-				D103812C224BAB02009BE46B /* AirportTableViewCell.swift */,
 				D1A483EF224515F80035E852 /* Main.storyboard */,
 				D1A483F2224515F90035E852 /* Assets.xcassets */,
 				D18747F22268717000FC0202 /* Supporting Files */,
 				D1A483F4224515F90035E852 /* LaunchScreen.storyboard */,
-				D158C05B2276DA43005A6838 /* AirportDataDisplayManager.swift */,
 			);
 			path = AirBoard;
 			sourceTree = "<group>";
@@ -251,6 +253,15 @@
 				D17050972267802B0079F85C /* MapViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D1FCD91E22770CC4002A8E39 /* Table View Source Data */ = {
+			isa = PBXGroup;
+			children = (
+				D158C05B2276DA43005A6838 /* AirportDataDisplayManager.swift */,
+				D1FCD91C22770447002A8E39 /* FlightDataDisplayManager.swift */,
+			);
+			path = "Table View Source Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -431,6 +442,7 @@
 			files = (
 				D1BE063F225245C000FC0640 /* ScheduleTabBarController.swift in Sources */,
 				D1E634C5225902620000756F /* AirportService.swift in Sources */,
+				D1FCD91D22770447002A8E39 /* FlightDataDisplayManager.swift in Sources */,
 				D103812B224B8AFC009BE46B /* Airport.swift in Sources */,
 				D103812D224BAB02009BE46B /* AirportTableViewCell.swift in Sources */,
 				D18747F5226871F800FC0202 /* AirportViewModel.swift in Sources */,

@@ -78,8 +78,8 @@ class MapViewController: UIViewController {
         mapView.settings.compassButton = true
         mapView.settings.myLocationButton = true
         
-//        mapView.bringSubviewToFront(plusZoomButton)
-//        mapView.bringSubviewToFront(minusZoomButton)
+        mapView.bringSubviewToFront(plusZoomButton)
+        mapView.bringSubviewToFront(minusZoomButton)
 //        mapView.bringSubviewToFront(directionButton)
         
         openSkyDirection()

@@ -13,6 +13,7 @@ class DateService {
     func convert(unix timestamp: Int) -> String {
         let date = Date(timeIntervalSince1970: Double(timestamp))
         let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "EEEE, MMMM d"
         
         return formatter.string(from: date)

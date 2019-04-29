@@ -120,10 +120,16 @@ class FlightViewModel {
         
         // Get the date and create dictionary
         for flight in flights {
+            var flightKey = ""
+        
+            switch flightType! {
+            case .departure:
+                flightKey = dateService.convert(unix: flight.departureTime ?? 0 )
+            case .arrival:
+                flightKey = dateService.convert(unix: flight.arrivalTime ?? 0 )
+            }
             
             // grouping flights by sections
-            let flightKey = dateService.convert(unix: flight.arrivalTime ?? 0 )
-            
             if let _ = data[flightKey] {
                 data[flightKey]?.append(flight)
             } else {
