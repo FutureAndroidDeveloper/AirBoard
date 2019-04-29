@@ -8,23 +8,30 @@
 
 import UIKit
 
+protocol AirportDataSourceDelegate: class {
+    func reciveHelpBox(label: String, index: Int)
+}
+
 class AirportTableViewController: UITableViewController {
     
     //MARK: Properties
     private var listIndexBoxCounter = 0
     
     private let viewModel = AirportViewModel(appDelegate: UIApplication.shared.delegate as! AppDelegate)
+    private var dataSource: AirportDataDisplayManager!
     private var activityIndicatorView = UIActivityIndicatorView(style: .gray)
     private let searchController = UISearchController(searchResultsController: nil)
-    private var listIndexHelpBox: ListIndexBacklightView!
+    private var listIndexHelpBox = ListIndexBacklightView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         viewModel.delegate = self
+        dataSource = AirportDataDisplayManager(viewModel: viewModel)
+        dataSource.delegate = self
+        tableView.dataSource = dataSource
         tableView.backgroundView = activityIndicatorView
         setUpSearchController()
-        drawListIndexBox()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,57 +44,7 @@ class AirportTableViewController: UITableViewController {
         viewModel.getData()
     }
     
-    //MARK: Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.sectionTitles.count
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.sectionTitles[section]
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let airportKey = viewModel.sectionTitles[section]
-        guard let airportValues = viewModel.data[airportKey] else { return 0 }
-
-        return airportValues.count
-    }
-        
-    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if viewModel.sectionTitles.count == 1 {
-            return nil
-        }
-        
-        return viewModel.sectionTitles
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AirportCell", for: indexPath) as! AirportTableViewCell
-        
-        let airportKey = viewModel.sectionTitles[indexPath.section]
-        
-        if let airportValues = viewModel.data[airportKey] {
-            cell.airportNameLabel.text = airportValues[indexPath.row].name
-            cell.cityLabel.text = "\(airportValues[indexPath.row].city ?? "Undefined")"
-            cell.codeLabel.text = airportValues[indexPath.row].code
-            cell.accessoryType = .disclosureIndicator
-        }
-
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        listIndexHelpBox.letterLabel.text = title
-        listIndexHelpBox.isHidden = false
-        tableView.scrollToRow(at: IndexPath(row: 0, section: index), at: .top, animated: true)
-        listIndexBoxCounter += 1
-        hideIndexListBoxAfter()
-        
-        return -1
-    }
-    
-    //MARK: Navigation
+    // MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -113,8 +70,15 @@ class AirportTableViewController: UITableViewController {
         }
     }
     
-    
     //MARK: Private Methods
+    
+    private func updateHelpBox(with label: String, index: Int) {
+        listIndexHelpBox.letterLabel.text = label
+        listIndexHelpBox.isHidden = false
+        tableView.scrollToRow(at: IndexPath(row: 0, section: index), at: .top, animated: true)
+        listIndexBoxCounter += 1
+        hideIndexListBoxAfter()
+    }
     
     private func stopIndicator () {
         self.activityIndicatorView.stopAnimating()
@@ -149,6 +113,15 @@ class AirportTableViewController: UITableViewController {
         listIndexHelpBox = ListIndexBacklightView(frame: CGRect(origin: CGPoint(x: self.view.frame.width - 70, y: 100), size: CGSize(width: 40, height: 40)))
         view.addSubview(listIndexHelpBox)
         listIndexHelpBox.isHidden = true
+        
+//        view.addSubview(listIndexHelpBox)
+////        listIndexHelpBox.isHidden = true
+//
+//        listIndexHelpBox.translatesAutoresizingMaskIntoConstraints = false
+//        listIndexHelpBox.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+//        listIndexHelpBox.topAnchor.constraint(equalTo: view.topAnchor, constant: 40).isActive = true
+//        listIndexHelpBox.widthAnchor.constraint(equalToConstant: self.view.frame.width / 10).isActive = true
+//        listIndexHelpBox.heightAnchor.constraint(equalToConstant: self.view.frame.width / 10).isActive = true
     }
 }
 
@@ -162,5 +135,11 @@ extension AirportTableViewController: AirportsViewModelDelegate {
 extension AirportTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.searchAirports(cityName: searchController.searchBar.text!)
+    }
+}
+
+extension AirportTableViewController: AirportDataSourceDelegate {
+    func reciveHelpBox(label: String, index: Int) {
+        updateHelpBox(with: label, index: index)
     }
 }

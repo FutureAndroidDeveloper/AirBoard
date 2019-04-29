@@ -32,8 +32,7 @@ class FlightViewModel {
         get {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "EEEE, MMMM d"
-            let time = TimeZone(secondsFromGMT: 0)
-            dateFormatter.timeZone = time
+            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
             dateFormatter.defaultDate = Date()
             
             var dateArray = [Date]()

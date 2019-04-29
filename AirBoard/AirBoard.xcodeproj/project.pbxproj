@@ -17,6 +17,7 @@
 		D12BF1B02248F2E500A5FA76 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1AF2248F2E500A5FA76 /* Flight.swift */; };
 		D12BF1B22248F40D00A5FA76 /* FlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12BF1B12248F40D00A5FA76 /* FlightService.swift */; };
 		D1490E90224CB987008F3576 /* AirBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D1490E8E224CB987008F3576 /* AirBoard.xcdatamodeld */; };
+		D158C05C2276DA43005A6838 /* AirportDataDisplayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D158C05B2276DA43005A6838 /* AirportDataDisplayManager.swift */; };
 		D16D45DF227072DA00F13211 /* FlightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D45DE227072DA00F13211 /* FlightViewModel.swift */; };
 		D17050982267802B0079F85C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17050972267802B0079F85C /* MapViewController.swift */; };
 		D18747F5226871F800FC0202 /* AirportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18747F4226871F800FC0202 /* AirportViewModel.swift */; };
@@ -63,6 +64,7 @@
 		D12BF1AF2248F2E500A5FA76 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flight.swift; sourceTree = "<group>"; };
 		D12BF1B12248F40D00A5FA76 /* FlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightService.swift; sourceTree = "<group>"; };
 		D1490E8F224CB987008F3576 /* AirBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AirBoard.xcdatamodel; sourceTree = "<group>"; };
+		D158C05B2276DA43005A6838 /* AirportDataDisplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportDataDisplayManager.swift; sourceTree = "<group>"; };
 		D16D45DE227072DA00F13211 /* FlightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightViewModel.swift; sourceTree = "<group>"; };
 		D17050972267802B0079F85C /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D18747F4226871F800FC0202 /* AirportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportViewModel.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				D1A483F2224515F90035E852 /* Assets.xcassets */,
 				D18747F22268717000FC0202 /* Supporting Files */,
 				D1A483F4224515F90035E852 /* LaunchScreen.storyboard */,
+				D158C05B2276DA43005A6838 /* AirportDataDisplayManager.swift */,
 			);
 			path = AirBoard;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				D1CA5A11225B765200ABD3E7 /* FlightTableViewController.swift in Sources */,
 				D18CECC72271FB03003B9DA2 /* DetailInfo.swift in Sources */,
 				D1CA5A19225E130500ABD3E7 /* AircraftService.swift in Sources */,
+				D158C05C2276DA43005A6838 /* AirportDataDisplayManager.swift in Sources */,
 				D17050982267802B0079F85C /* MapViewController.swift in Sources */,
 				D18CECC52271D685003B9DA2 /* DetailViewModel.swift in Sources */,
 				D1A483EC224515F80035E852 /* AppDelegate.swift in Sources */,
