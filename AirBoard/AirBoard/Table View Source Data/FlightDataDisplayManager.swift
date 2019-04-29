@@ -15,33 +15,34 @@ protocol FlightDataSourceDelegate: class {
 class FlightDataDisplayManager: NSObject, UITableViewDataSource {
     
     // MARK: Properties
-    private let flightType: FlightType
-    private let viewModel: FlightViewModel
     weak var delegate: FlightDataSourceDelegate?
     
-    init(viewModel: FlightViewModel, flightType: FlightType) {
+    private let flightType: FlightType
+    var data = [String: [Flight]]()
+    var flightsSectionTitles = [String]()
+    
+    init(flightType: FlightType) {
         self.flightType = flightType
-        self.viewModel = viewModel
     }
     
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if viewModel.data.values.flatMap({ $0 }).isEmpty {
+        if data.values.flatMap({ $0 }).isEmpty {
             delegate?.reciveEmptyData()
             return 0
         }
         
-        return viewModel.flightsSectionTitles.count
+        return flightsSectionTitles.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.flightsSectionTitles[section]
+        return flightsSectionTitles[section]
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let flightKey = viewModel.flightsSectionTitles[section]
-        guard let flightValues = viewModel.data[flightKey] else { return 0 }
+        let flightKey = flightsSectionTitles[section]
+        guard let flightValues = data[flightKey] else { return 0 }
         
         if flightValues.isEmpty {
             return 1
@@ -54,13 +55,13 @@ class FlightDataDisplayManager: NSObject, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "FlightCell", for: indexPath) as! FlightTableViewCell
         
-        let flightKey = viewModel.flightsSectionTitles[indexPath.section]
-        guard let flightValues = viewModel.data[flightKey] else {
+        let flightKey = flightsSectionTitles[indexPath.section]
+        guard let flightValues = data[flightKey] else {
             NSLog("Cell error")
             fatalError()
         }
         
-        if !flightValues.isEmpty  {
+        if !flightValues.isEmpty {
             switch flightType {
             case .departure:
                 cell.flightTimeLabel.text = Double(flightValues[indexPath.row].departureTime!).getDateFromUTC()
@@ -70,6 +71,11 @@ class FlightDataDisplayManager: NSObject, UITableViewDataSource {
             
             cell.flightCityLabel.text = flightValues[indexPath.row].city ?? "N/A"
             cell.accessoryType = .disclosureIndicator
+            
+            if let noInfoLabel = cell.viewWithTag(404) {
+                noInfoLabel.removeFromSuperview()
+            }
+            
         } else {
             let label = createNoInfoLabel()
             cell.addSubview(label)
@@ -91,6 +97,7 @@ class FlightDataDisplayManager: NSObject, UITableViewDataSource {
     
     private func createNoInfoLabel() -> UILabel {
         let noInfoLabel = UILabel()
+        noInfoLabel.tag = 404
         
         switch flightType {
         case .departure:

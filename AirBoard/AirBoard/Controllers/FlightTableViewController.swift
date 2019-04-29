@@ -23,7 +23,7 @@ class FlightTableViewController: UITableViewController {
         super.viewDidLoad()
         
         viewModel.delegate = self
-        dataSource = FlightDataDisplayManager(viewModel: viewModel, flightType: flightType)
+        dataSource = FlightDataDisplayManager(flightType: flightType)
         dataSource.delegate = self
         tableView.dataSource = dataSource
         tableView.backgroundView = activityIndicatorView
@@ -83,6 +83,8 @@ class FlightTableViewController: UITableViewController {
 
 extension FlightTableViewController: FlightsViewModelDelegate {
     func reciveData() {
+        dataSource.data = viewModel.data
+        dataSource.flightsSectionTitles = viewModel.flightsSectionTitles
         tableView.reloadData()
         stopIndicator()
     }

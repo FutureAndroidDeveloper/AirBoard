@@ -14,8 +14,8 @@ class AirportTableViewController: UITableViewController {
     private var listIndexBoxCounter = 0
     
     private let viewModel = AirportViewModel(appDelegate: UIApplication.shared.delegate as! AppDelegate)
-    private var dataSource: AirportDataDisplayManager!
-    private var activityIndicatorView = UIActivityIndicatorView(style: .gray)
+    private let dataSource = AirportDataDisplayManager()
+    private let activityIndicatorView = UIActivityIndicatorView(style: .gray)
     private let searchController = UISearchController(searchResultsController: nil)
     private var listIndexHelpBox = ListIndexBacklightView()
     
@@ -23,7 +23,6 @@ class AirportTableViewController: UITableViewController {
         super.viewDidLoad()
         
         viewModel.delegate = self
-        dataSource = AirportDataDisplayManager(viewModel: viewModel)
         dataSource.delegate = self
         tableView.dataSource = dataSource
         tableView.backgroundView = activityIndicatorView
@@ -96,7 +95,7 @@ class AirportTableViewController: UITableViewController {
     // TODO: Make flexible size and space
     private func drawListIndexBox() {
         guard let view = self.navigationController?.view else {
-            fatalError("cant get nav controller as view")
+            fatalError("Cant get navigation controller as view")
         }
         
         listIndexHelpBox = ListIndexBacklightView(frame: CGRect(origin: CGPoint(x: self.view.frame.width - 70, y: 100), size: CGSize(width: 40, height: 40)))
@@ -116,6 +115,7 @@ class AirportTableViewController: UITableViewController {
 
 extension AirportTableViewController: AirportsViewModelDelegate {
     func reciveData() {
+        dataSource.data = viewModel.data
         tableView.reloadData()
         stopIndicator()
     }

@@ -15,44 +15,46 @@ protocol AirportDataSourceDelegate: class {
 class AirportDataDisplayManager: NSObject, UITableViewDataSource {
     
     // MARK: Properties
-    private let viewModel: AirportViewModel
     weak var delegate: AirportDataSourceDelegate?
     
-    init(viewModel: AirportViewModel) {
-        self.viewModel = viewModel
+    var data = [String: [Airport]]()
+    private var sectionTitles: [String] {
+        get {
+            return data.keys.sorted()
+        }
     }
-    
+
     // MARK: Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.sectionTitles.count
+        return sectionTitles.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.sectionTitles[section]
+        return sectionTitles[section]
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let airportKey = viewModel.sectionTitles[section]
-        guard let airportValues = viewModel.data[airportKey] else { return 0 }
+        let airportKey = sectionTitles[section]
+        guard let airportValues = data[airportKey] else { return 0 }
         
         return airportValues.count
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if viewModel.sectionTitles.count == 1 {
+        if sectionTitles.count == 1 {
             return nil
         }
         
-        return viewModel.sectionTitles
+        return sectionTitles
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AirportCell", for: indexPath) as! AirportTableViewCell
         
-        let airportKey = viewModel.sectionTitles[indexPath.section]
+        let airportKey = sectionTitles[indexPath.section]
         
-        if let airportValues = viewModel.data[airportKey] {
+        if let airportValues = data[airportKey] {
             cell.airportNameLabel.text = airportValues[indexPath.row].name
             cell.cityLabel.text = "\(airportValues[indexPath.row].city ?? "Undefined")"
             cell.codeLabel.text = airportValues[indexPath.row].code
