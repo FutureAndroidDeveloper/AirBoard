@@ -32,7 +32,9 @@ class AirportTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tableView.rowHeight = 126
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 110
+        
         activityIndicatorView.startAnimating()
         tableView.separatorStyle = .none
         drawListIndexBox()
@@ -53,7 +55,7 @@ class AirportTableViewController: UITableViewController {
         }
         
         //getting the airport code
-        if let code = selectedAirportCell.codeLabel.text {
+        if let code = selectedAirportCell.icaoLabel.text {
             tabBarController.airportCode = code
         }
     }
