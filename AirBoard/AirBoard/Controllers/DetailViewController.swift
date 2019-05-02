@@ -54,7 +54,8 @@ class DetailViewController: UIViewController {
             fatalError("Unexpected destination: \(segue.destination)")
         }
         
-        mapViewController.flight = self.flight
+        mapViewController.flight = flight
+        mapViewController.detailInfo = viewModel.data
     }
     
     // MARK: Private Methods
@@ -93,6 +94,5 @@ extension DetailViewController: DetailViewModelDelegate {
         departureTimeLabel.text = viewModel.data.departureTime
         durationLabel.text = viewModel.data.durationTime
         arrivalTimeLabel.text = viewModel.data.arrivalTime
-
     }
 }

@@ -55,8 +55,8 @@ class AirportTableViewController: UITableViewController {
         }
         
         //getting the airport code
-        if let code = selectedAirportCell.icaoLabel.text {
-            tabBarController.airportCode = code
+        if let code = selectedAirportCell.icaoLabel.text?.split(separator: " ").last {
+            tabBarController.airportCode = String(code)
         }
     }
     

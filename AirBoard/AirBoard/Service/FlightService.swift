@@ -36,12 +36,9 @@ class FlightService {
     }
     
     // MARK: Properties
-    
     private let baseUrl = "https://opensky-network.org/api/"
     private let session = URLSession.shared
     
-    // TODO: you can make success block and failure like in CoreDataManager and refactor func.
-    // FIXED
     func getFlights(path: Path, parameters: (icao: String, begin: Int, end: Int), complition: @escaping ([Flight]) -> Void,
                     failure: @escaping (APIError) -> Void) {
                 
