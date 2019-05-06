@@ -493,10 +493,19 @@
                                             <action selector="minusTapped:" destination="Vvr-ZB-UfB" eventType="touchUpInside" id="Bac-9Q-gUc"/>
                                         </connections>
                                     </button>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Vnd-N1-5DV">
+                                        <rect key="frame" x="22" y="593" width="331" height="31"/>
+                                        <connections>
+                                            <action selector="sliderValueChanged:" destination="Vvr-ZB-UfB" eventType="valueChanged" id="fnn-7g-8z3"/>
+                                        </connections>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="3WX-oZ-Dyw" firstAttribute="width" secondItem="amf-Q8-zYX" secondAttribute="width" id="00k-9l-OI4"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="Vnd-N1-5DV" secondAttribute="bottom" constant="16" id="0Xe-BB-zkw"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="Vnd-N1-5DV" secondAttribute="trailing" constant="16" id="D6F-D2-UII"/>
+                                    <constraint firstItem="Vnd-N1-5DV" firstAttribute="leading" secondItem="DeC-oB-nFn" secondAttribute="leadingMargin" constant="16" id="Iw6-fR-hhS"/>
                                     <constraint firstItem="amf-Q8-zYX" firstAttribute="top" secondItem="3WX-oZ-Dyw" secondAttribute="bottom" constant="12" id="hJ3-dV-sBb"/>
                                     <constraint firstItem="3WX-oZ-Dyw" firstAttribute="height" secondItem="amf-Q8-zYX" secondAttribute="height" id="lcJ-h8-A5L"/>
                                 </constraints>
@@ -518,11 +527,12 @@
                         <outlet property="mapView" destination="DeC-oB-nFn" id="azJ-WV-AKD"/>
                         <outlet property="minusZoomButton" destination="amf-Q8-zYX" id="Vqj-dW-WuR"/>
                         <outlet property="plusZoomButton" destination="3WX-oZ-Dyw" id="IUi-MD-WJK"/>
+                        <outlet property="slider" destination="Vnd-N1-5DV" id="UYs-vV-sEU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K0d-eP-cbp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5031" y="-314"/>
+            <point key="canvasLocation" x="5029.6000000000004" y="-314.39280359820094"/>
         </scene>
     </scenes>
     <resources>
