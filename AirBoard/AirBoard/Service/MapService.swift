@@ -14,14 +14,12 @@ class MapService {
     private let baseUrl = "https://dev.kirill.klimenkov:1029384756gexa@opensky-network.org/api/tracks/all"
     private let session = URLSession.shared
     
-    func loadDirection(for flight: Flight,
-                        success: @escaping ([Path]) -> Void,
-                        failure: @escaping (APIError) -> Void) {
+    func loadDirection(for flight: Flight, completion: @escaping (Result<[Path], APIError>) -> Void) {
         let paramPath = buildParamPath(with: (icao: flight.icao, departureTime: flight.departureTime ?? 0))
         
         // create full URL
         guard let url = URL(string: baseUrl + paramPath) else {
-            failure(.InvalidURL)
+            completion(.failure(.InvalidURL))
             return
         }
         
@@ -30,20 +28,20 @@ class MapService {
         session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
             guard let data = data else {
                 DispatchQueue.main.async {
-                    failure(.InvalidData)
+                    completion(.failure(.InvalidData))
                 }
                 return
             }
             
             guard let track = try? JSONDecoder().decode(Track.self, from: data) else {
                 DispatchQueue.main.async {
-                    failure(.CodableError)
+                    completion(.failure(.CodableError))
                 }
                 return
             }
             
             DispatchQueue.main.async {
-                success(track.path)
+                completion(.success(track.path))
             }
         }).resume()
     }

@@ -55,32 +55,37 @@ class AirportViewModel {
     // MARK: Private methods
     
     private func loadDataFromDataBase() {
-        coreDataManager.loadAirportsFromDB(success: { [weak self] data in
+        coreDataManager.loadAirportsFromDB { [weak self] result in
             guard let self = self else {
                 return
             }
             
-            self.airports = data
-            self.data = self.convertToData(airports: data)
-            
-            }, failure: { [weak self] error in
+            switch result {
+            case .success(let data):
+                self.airports = data
+                self.data = self.convertToData(airports: data)
+            case .failure(let error):
                 NSLog(error.description)
-                self?.loadAirports()
-            })
+                self.loadAirports()
+            }
+        }
     }
-
+    
     private func loadAirports() {
-        airportService.getAirports(success: { [weak self] airports in
+        airportService.getAirports { [weak self] result in
             guard let self = self else {
                 return
             }
             
-            self.coreDataManager.saveAirports(airports: self.airports)
-            self.data = self.convertToData(airports: airports.sorted(by: { $0.name < $1.name }))
-            
-            }, failure: { error in
+            switch result {
+            case .success(let airports):
+                self.coreDataManager.saveAirports(airports: airports)
+                self.airports = airports.sorted(by: { $0.name < $1.name })
+                self.data = self.convertToData(airports: airports.sorted(by: { $0.name < $1.name }))
+            case .failure(let error):
                 NSLog(error.description)
-            })
+            }
+        }
     }
     
     private func convertToData(airports: [Airport]) -> [String: [Airport]] {

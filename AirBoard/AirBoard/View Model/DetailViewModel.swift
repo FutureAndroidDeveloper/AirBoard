@@ -53,40 +53,44 @@ class DetailViewModel {
             return
         }
         
-        aircraftService.loadAircraft(icao: flight.icao, success: { [weak self] aircraft in
+        aircraftService.loadAircraft(icao: flight.icao) { [weak self] result in
             guard let self = self else {
                 return
             }
             
-            self.data.registrationNumber = aircraft.registration.isEmpty ? "N/A" : aircraft.registration
-            self.data.model = aircraft.model.isEmpty ? "N/A" : aircraft.model
-            self.data.icaoAirplane = aircraft.icaoAirplane.isEmpty ? "N/A" : aircraft.icaoAirplane
-
-            if !aircraft.enginesType.isEmpty && !aircraft.enginesCount.isEmpty {
-                self.data.engine = aircraft.enginesType + " x " + aircraft.enginesCount
-            } else {
-                self.data.engine = "N/A"
-            }
-            
-            self.data.age = aircraft.age.isEmpty ? "N/A" : aircraft.age
-            self.data.owner = aircraft.planeOwner.isEmpty ? "N/A" : aircraft.planeOwner
-            
-            }, failure: { error in
+            switch result {
+            case .success(let aircraft):
+                self.data.registrationNumber = aircraft.registration.isEmpty ? "N/A" : aircraft.registration
+                self.data.model = aircraft.model.isEmpty ? "N/A" : aircraft.model
+                self.data.icaoAirplane = aircraft.icaoAirplane.isEmpty ? "N/A" : aircraft.icaoAirplane
+                
+                if !aircraft.enginesType.isEmpty && !aircraft.enginesCount.isEmpty {
+                    self.data.engine = aircraft.enginesType + " x " + aircraft.enginesCount
+                } else {
+                    self.data.engine = "N/A"
+                }
+                
+                self.data.age = aircraft.age.isEmpty ? "N/A" : aircraft.age
+                self.data.owner = aircraft.planeOwner.isEmpty ? "N/A" : aircraft.planeOwner
+            case .failure(let error):
                 NSLog(error.description)
-        })
+            }
+        }
     }
     
     private func loadAircraftImage() {
-        aircraftService.loadImage(with: flight!.icao, success: { [weak self] imageData in
+        aircraftService.loadImage(with: flight!.icao) { [weak self] result in
             guard let self = self else {
                 return
             }
             
-            self.data.imageData = imageData
-            
-            }, failure: { error in
+            switch result {
+            case .success(let imageData):
+                self.data.imageData = imageData
+            case .failure(let error):
                 NSLog(error.description)
-        })
+            }
+        }
     }
     
     private func getFlightTime() {
@@ -103,26 +107,31 @@ class DetailViewModel {
     }
     
     private func getCityNames() {
-        coreDataManager.fetchCityNameFromDB(with: flight!.departure, success: { [weak self] city in
+        coreDataManager.fetchCityNameFromDB(with: flight!.departure) { [weak self] result in
             guard let self = self else {
                 return
             }
             
-            self.data.departureCity = city
-            
-            }, failure: { error in
+            switch result {
+            case .success(let city):
+                self.data.departureCity = city
+            case .failure(let error):
                 NSLog(error.description)
-        })
+            }
+        }
         
-        coreDataManager.fetchCityNameFromDB(with: flight!.arrival, success: { [weak self] city in
+        coreDataManager.fetchCityNameFromDB(with: flight!.arrival) { [weak self] result in
             guard let self = self else {
                 return
             }
             
-            self.data.arrivalCity = city
-            }, failure: { error in
+            switch result {
+            case .success(let city):
+                self.data.arrivalCity = city
+            case .failure(let error):
                 NSLog(error.description)
-        })
+            }
+        }
     }
     
     private func setDefaultValues() {

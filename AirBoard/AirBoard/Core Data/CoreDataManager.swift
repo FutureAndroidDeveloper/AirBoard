@@ -42,8 +42,7 @@ class CoreDataManager {
         self.backContext = appDelegate.persistentContainer.newBackgroundContext()
     }
     
-    func loadAirportsFromDB(success: @escaping ([Airport]) -> Void,
-                            failure: @escaping (DataBaseError) -> Void) {
+    func loadAirportsFromDB(completion: @escaping (Result<[Airport], DataBaseError>) -> Void) {
         backContext.perform {
             NSLog("Load data from DB")
             do {
@@ -54,20 +53,20 @@ class CoreDataManager {
                     
                     if airports.isEmpty {
                         DispatchQueue.main.async {
-                            failure(.EmptyDataBase)
+                            completion(.failure(.EmptyDataBase))
                         }
                     } else {
                         DispatchQueue.main.async {
-                            success(airports)
+                            completion(.success(airports.sorted(by: { $0.name < $1.name })))
                         }
                     }
                 } else {
                     DispatchQueue.main.async {
-                        failure(.LoadDataError)
+                        completion(.failure(.LoadDataError))
                     }
                 }
             } catch {
-                failure(.LoadDataError)
+                completion(.failure(.LoadDataError))
             }
         }
     }
@@ -82,37 +81,34 @@ class CoreDataManager {
                 cdAirport.setValue(airport.name, forKey: "name")
                 cdAirport.setValue(airport.city, forKey: "city")
                 cdAirport.setValue(airport.code, forKey: "code")
-                
-                do {
-                    try self.backContext.save()
-                } catch {
-                    NSLog(DataBaseError.SaveDataError.description)
-                }
             }
             
+            do {
+                try self.backContext.save()
+            } catch {
+                NSLog(DataBaseError.SaveDataError.description)
+            }
             NSLog("Finish save data")
         }
     }
     
-    func syncFetchCityNameFromDB(with cityIcao: String?, success: @escaping (String) -> Void,
-                                 failure: @escaping (DataBaseError) -> Void) {
+    func syncFetchCityNameFromDB(with cityIcao: String?, completion: @escaping (Result<String, DataBaseError>) -> Void) {
         guard let cityIcao = cityIcao else {
-            failure(.NilFileld)
+            completion(.failure(.NilFileld))
             return
         }
         
         guard let airport = filteredFetch(icao: cityIcao, context: appDelegate.persistentContainer.viewContext) else {
-            failure(.FilteringError)
+            completion(.failure(.FilteringError))
             return
         }
         
-        success(airport.city!)
+        completion(.success(airport.city!))
     }
     
-    func fetchCityNameFromDB(with cityIcao: String?, success: @escaping (String) -> Void,
-                     failure: @escaping (DataBaseError) -> Void) {
+    func fetchCityNameFromDB(with cityIcao: String?, completion: @escaping (Result<String, DataBaseError>) -> Void) {
         guard let cityIcao = cityIcao else {
-            failure(.NilFileld)
+            completion(.failure(.NilFileld))
             return
         }
         
@@ -120,12 +116,12 @@ class CoreDataManager {
             
             guard let airport = self.filteredFetch(icao: cityIcao, context: self.backContext) else {
                 DispatchQueue.main.async {
-                    failure(.FilteringError)
+                    completion(.failure(.FilteringError))
                 }
                 return
             }
             DispatchQueue.main.async {
-                success(airport.city!)
+                completion(.success(airport.city!))
             }
         }
     }

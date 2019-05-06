@@ -39,14 +39,13 @@ class FlightService {
     private let baseUrl = "https://opensky-network.org/api/"
     private let session = URLSession.shared
     
-    func getFlights(path: Path, parameters: (icao: String, begin: Int, end: Int), complition: @escaping ([Flight]) -> Void,
-                    failure: @escaping (APIError) -> Void) {
+    func getFlights(path: Path, parameters: (icao: String, begin: Int, end: Int), completion: @escaping (Result<[Flight], APIError>) -> Void) {
                 
         let paramPath = buildParamPath(with: parameters)
         
         // create full URL
         guard let url = URL(string: baseUrl + path.rawValue + paramPath) else {
-            failure(.InvalidURL)
+            completion(.failure(.InvalidURL))
             return
         }
         
@@ -56,14 +55,14 @@ class FlightService {
         session.dataTask(with: urlRequest) { (data, response, error) in
             guard let data = data else {
                 DispatchQueue.main.async {
-                    failure(.InvalidData)
+                    completion(.failure(.InvalidData))
                 }
                 return
             }
             
             if let flights = try? JSONDecoder().decode([Flight].self, from: data) {
                 DispatchQueue.main.async {
-                    complition(flights)
+                    completion(.success(flights))
                 }
             }
         }.resume()

@@ -35,18 +35,17 @@ class AircraftService {
     private let imageBaseUrl = "https://api.unsplash.com"
     private let imagePath = "/photos/random"
     
-    private let aircraftAccessKey = "e77dd9-351748"
+    private let aircraftAccessKey = "71eebe-f0f532"
     private let aicraftBaseUrl = "https://aviation-edge.com/v2/public"
     private let aircraftpath = "/airplaneDatabase"
     
     private static let imageCache = NSCache<NSString, NSData>()
     private let session = URLSession.shared
     
-    
-    func loadImage(with icao: String, success: @escaping (Data) -> Void, failure: @escaping (APIError) -> Void) {
+    func loadImage(with icao: String, completion: @escaping (Result<Data, APIError>) -> Void) {
         // Check image data in cache
         if let cachedImage = AircraftService.imageCache.object(forKey: icao as NSString) {
-            success(cachedImage as Data)
+            completion(.success(cachedImage as Data))
             return
         }
         
@@ -54,7 +53,7 @@ class AircraftService {
         
         // create full URL
         guard let url = URL(string: imageBaseUrl + imagePath + paramPath) else {
-            failure(.InvalidURL)
+            completion(.failure(.InvalidURL))
             return
         }
         
@@ -64,7 +63,7 @@ class AircraftService {
         session.dataTask(with: urlRequest) { (data, response, error) in
             guard let data = data else {
                 DispatchQueue.main.async {
-                    failure(.InvalidData)
+                    completion(.failure(.InvalidData))
                 }
                 return
             }
@@ -72,7 +71,7 @@ class AircraftService {
             // get image url
             guard let image = try? JSONDecoder().decode(Image.self, from: data) else {
                 DispatchQueue.main.async {
-                    failure(.ImageError)
+                    completion(.failure(.ImageError))
                 }
                 return
             }
@@ -80,7 +79,7 @@ class AircraftService {
             // create image url from string
             guard let imageUrl = URL(string: image.urls.small) else {
                 DispatchQueue.main.async {
-                    failure(.InvalidURL)
+                    completion(.failure(.InvalidURL))
                 }
                 return
             }
@@ -88,19 +87,19 @@ class AircraftService {
             if let data = try? Data(contentsOf: imageUrl) {
                 DispatchQueue.main.async {
                     AircraftService.imageCache.setObject(data as NSData, forKey: icao as NSString)
-                    success(data)
+                    completion(.success(data))
                 }
             }
         }.resume()
     }
     
-    func loadAircraft(icao: String, success: @escaping (Aircraft) -> Void, failure: @escaping (APIError) -> Void) {
+    func loadAircraft(icao: String, completion: @escaping (Result<Aircraft, APIError>) -> Void) {
         let paramPath = buildParamAircraftPath(key: aircraftAccessKey, icao: icao)
         
         // create full URL
         guard let url = URL(string: aicraftBaseUrl + aircraftpath + paramPath) else {
             DispatchQueue.main.async {
-                failure(.InvalidURL)
+                completion(.failure(.InvalidURL))
             }
             return
         }
@@ -111,7 +110,7 @@ class AircraftService {
             
             guard let data = data else {
                 DispatchQueue.main.async {
-                    failure(.InvalidData)
+                    completion(.failure(.InvalidData))
                 }
                 return
             }
@@ -119,13 +118,13 @@ class AircraftService {
             // get aircraft info
             guard let aircraft = try? JSONDecoder().decode([Aircraft].self, from: data) else {
                 DispatchQueue.main.async {
-                    failure(.CodableError)
+                    completion(.failure(.CodableError))
                 }
                 return
             }
             
             DispatchQueue.main.async {
-                success(aircraft.first!)
+                completion(.success(aircraft.first!))
             }
         }.resume()
     }

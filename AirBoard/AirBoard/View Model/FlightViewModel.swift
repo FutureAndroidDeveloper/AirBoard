@@ -85,32 +85,36 @@ class FlightViewModel {
         switch flightType! {
         // if flight type is departure, request flight departures from the airport
         case .departure:
-            flightService.getFlights(path: .departure, parameters: (icao: airportCode, begin: beginUnix, end: endUnix), complition: { [weak self] flights in
+            flightService.getFlights(path: .departure, parameters: (icao: airportCode, begin: beginUnix, end: endUnix)) { [weak self] result in
                 guard let self = self else {
                     return
                 }
                 
-                self.flights = flights
-                self.setCityNames()
-                self.data = self.convertToData(flights: self.flights)
-                
-                }, failure: { error in
+                switch result {
+                case .success(let flights):
+                    self.flights = flights
+                    self.setCityNames()
+                    self.data = self.convertToData(flights: self.flights)
+                case .failure(let error):
                     NSLog(error.description)
-            })
+                }
+            }
         // if flight type is arrivals, request flight arrivals to the airport
         case .arrival:
-            flightService.getFlights(path: .arrival, parameters: (icao: airportCode, begin: beginUnix, end: endUnix), complition: { [weak self] flights in
+            flightService.getFlights(path: .departure, parameters: (icao: airportCode, begin: beginUnix, end: endUnix)) { [weak self] result in
                 guard let self = self else {
                     return
                 }
                 
-                self.flights = flights
-                self.setCityNames()
-                self.data = self.convertToData(flights: self.flights)
-                
-                }, failure: { error in
+                switch result {
+                case .success(let flights):
+                    self.flights = flights
+                    self.setCityNames()
+                    self.data = self.convertToData(flights: self.flights)
+                case .failure(let error):
                     NSLog(error.description)
-            })
+                }
+            }
         }
     }
     
@@ -163,16 +167,18 @@ class FlightViewModel {
                 icao = flights[flightIndex].departure
             }
             
-            coreDataManager.syncFetchCityNameFromDB(with: icao, success: { [weak self] city in
+            coreDataManager.syncFetchCityNameFromDB(with: icao) { [weak self] result in
                 guard let self = self else {
                     return
                 }
                 
-                self.flights[flightIndex].city = city
-                
-            }, failure: { error in
-                // pass
-            })
+                switch result {
+                case .success(let city):
+                    self.flights[flightIndex].city = city
+                case .failure(let error):
+                    NSLog(error.description)
+                }
+            }
         }
     }
 }

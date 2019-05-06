@@ -68,17 +68,18 @@ class MapViewController: UIViewController {
     }
     
     private func loadAircraftDirection() {
-        mapService.loadDirection(for: flight, success: { [weak self] path in
+        mapService.loadDirection(for: flight) { [weak self] result in
             guard let self = self else {
                 return
             }
-            self.path = path
             
-            print(path.count)
-            
-        }, failure: { error in
-            NSLog(error.description)
-        })
+            switch result {
+            case .success(let path):
+                self.path = path
+            case .failure(let error):
+                NSLog(error.description)
+            }
+        }
     }
     
     private func buildDirection() {
