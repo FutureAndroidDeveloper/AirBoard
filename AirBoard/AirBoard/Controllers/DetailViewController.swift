@@ -17,6 +17,9 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var arrivalIcaoLabel: UILabel!
     @IBOutlet weak var departureCityLabel: UILabel!
     @IBOutlet weak var arrivalCityLabel: UILabel!
+    @IBOutlet weak var departureTimeLabel: UILabel!
+    @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var arrivalTimeLabel: UILabel!
     @IBOutlet weak var registrationNumberLabel: UILabel!
     @IBOutlet weak var modelCodeLabel: UILabel!
     @IBOutlet weak var airplaneIcaoLabel: UILabel!
@@ -24,79 +27,72 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var ownerLabel: UILabel!
     
-    
     private var activityIndicatorView = UIActivityIndicatorView(style: .gray)
-    private var aircraftService = AircraftService()
-    private let coreDataManager = CoreDataManager(appDelegate: UIApplication.shared.delegate as! AppDelegate)
-
+    private let viewModel = DetailViewModel(appDelegate: UIApplication.shared.delegate as! AppDelegate)
+    
     var flight: Flight!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        setDefaultInfo()
-        loadAircraft()
-        getCityNames()
+        setUpIndicator()
+        aircraftPhoto.layer.cornerRadius = self.view.frame.height / 10.0
+        aircraftPhoto.layer.masksToBounds = true
+        activityIndicatorView.startAnimating()
+        viewModel.loadDetailInfo(for: flight)
+    }
+    
+    // MARK: Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let mapViewController = segue.destination as? MapViewController else {
+            fatalError("Unexpected destination: \(segue.destination)")
+        }
         
-        aircraftPhoto.addSubview(activityIndicatorView)
-        activityIndicatorView.center = aircraftPhoto.center
+        mapViewController.flight = flight
+        mapViewController.detailInfo = viewModel.data
     }
     
     // MARK: Private Methods
     
-    private func loadAircraft() {
-        aircraftService.loadAircraft(icao: flight.icao, success: { [weak self] aircraft in
-            
-            self?.registrationNumberLabel.text = aircraft.registration
-            self?.modelCodeLabel.text = aircraft.model
-            self?.airplaneIcaoLabel.text = aircraft.icaoAirplane
-            self?.engineLabel.text = aircraft.enginesType + " x " + aircraft.enginesCount
-            self?.ageLabel.text = aircraft.age.isEmpty ? "N/A" : aircraft.age
-            self?.ownerLabel.text = aircraft.planeOwner.isEmpty ? "N/A" : aircraft.planeOwner
-        }, failure: { error in
-            NSLog(error.description)
-        })
+    private func setUpIndicator() {
+        aircraftPhoto.addSubview(activityIndicatorView)
         
-        loadAircraftImage()
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        let horizontalConstraint = activityIndicatorView.centerXAnchor.constraint(equalTo: aircraftPhoto.centerXAnchor)
+        let verticalConstraint = activityIndicatorView.centerYAnchor.constraint(equalTo: aircraftPhoto.centerYAnchor)
+        let widthConstraint = activityIndicatorView.widthAnchor.constraint(equalToConstant: 40)
+        let heightConstraint = activityIndicatorView.heightAnchor.constraint(equalToConstant: 40)
+        view.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
     }
-    
-    private func loadAircraftImage() {
-        activityIndicatorView.startAnimating()
+}
+
+extension DetailViewController: DetailViewModelDelegate {
+    func reciveData() {
+        if let imageData = viewModel.data.imageData {
+            aircraftPhoto.image = UIImage(data: imageData)
+            activityIndicatorView.stopAnimating()
+        }
         
-        aircraftService.loadImage(with: flight.icao, success: { [weak self] imageData in
-            self?.aircraftPhoto.image = UIImage(data: imageData)
-            self?.activityIndicatorView.stopAnimating()
-            }, failure: { error in
-                NSLog(error.description)
-        })
-    }
-    
-    private func getCityNames() {
-        coreDataManager.fetchCityNameFromDB(with: flight.departure, success: { [weak self] city in
-            self?.departureCityLabel.text = city
-            }, failure: { error in
-                NSLog(error.description)
-        })
+        departureIcaoLabel.text = viewModel.data.departureIcao
+        arrivalIcaoLabel.text = viewModel.data.arrivalIcao
+        departureCityLabel.text = viewModel.data.departureCity
+        arrivalCityLabel.text = viewModel.data.arrivalCity
         
-        coreDataManager.fetchCityNameFromDB(with: flight.arrival, success: { [weak self] city in
-            self?.arrivalCityLabel.text = city
-            }, failure: { error in
-                NSLog(error.description)
-        })
-    }
-    
-    private func setDefaultInfo() {
-        departureIcaoLabel.text = "N/A"
-        arrivalIcaoLabel.text = "N/A"
-        departureCityLabel.text = "N/A"
-        arrivalCityLabel.text = "N/A"
-        registrationNumberLabel.text = "N/A"
-        modelCodeLabel.text = "N/A"
-        airplaneIcaoLabel.text = "N/A"
-        engineLabel.text = "N/A"
-        ageLabel.text = "N/A"
-        ownerLabel.text = "N/A"
-        departureIcaoLabel.text = flight.departure
-        arrivalIcaoLabel.text = flight.arrival
+        registrationNumberLabel.text = viewModel.data.registrationNumber
+        modelCodeLabel.text = viewModel.data.model
+        airplaneIcaoLabel.text = viewModel.data.icaoAirplane
+        engineLabel.text = viewModel.data.engine
+        ageLabel.text = viewModel.data.age
+        ownerLabel.text = viewModel.data.owner
+        
+        departureTimeLabel.text = viewModel.data.departureTime
+        durationLabel.text = viewModel.data.durationTime
+        arrivalTimeLabel.text = viewModel.data.arrivalTime
     }
 }

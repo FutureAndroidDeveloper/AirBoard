@@ -11,9 +11,10 @@ import UIKit
 class AirportTableViewCell: UITableViewCell {
 
     // MARK: Properties
-    @IBOutlet weak var airportNameLabel: UILabel!
+    @IBOutlet weak var airportLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
-    @IBOutlet weak var codeLabel: UILabel!
+    @IBOutlet weak var icaoLabel: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
