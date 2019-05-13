@@ -11,6 +11,7 @@ import UIKit
 class FlightTableViewCell: UITableViewCell {
     
     // MARK: Properties
+    static let reuseIdentifier = "FlightTableViewCellIdentifier"
     
     @IBOutlet weak var flightTimeLabel: UILabel!
     @IBOutlet weak var flightCityLabel: UILabel!

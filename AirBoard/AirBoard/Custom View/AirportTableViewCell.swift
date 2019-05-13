@@ -11,6 +11,8 @@ import UIKit
 class AirportTableViewCell: UITableViewCell {
 
     // MARK: Properties
+    static var reuseIdentifier = "AirportTableViewCellIdentifier"
+    
     @IBOutlet weak var airportLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var icaoLabel: UILabel!

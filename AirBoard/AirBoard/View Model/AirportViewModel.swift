@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol AirportsViewModelDelegate: class {
+protocol AirportsViewModelDelegate: AnyObject {
     func reciveData()
 }
 

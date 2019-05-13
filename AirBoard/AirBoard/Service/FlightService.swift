@@ -29,7 +29,6 @@ enum APIError: Error {
 }
 
 class FlightService {
-    
     enum Path: String {
         case departure = "flights/departure"
         case arrival = "flights/arrival"

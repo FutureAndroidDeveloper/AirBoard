@@ -18,7 +18,6 @@ struct Flight {
 }
 
 extension Flight: Decodable {
-    
     enum CodingKeys: String, CodingKey {
         case departure = "estDepartureAirport"
         case arrival = "estArrivalAirport"

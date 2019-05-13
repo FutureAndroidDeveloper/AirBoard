@@ -8,15 +8,20 @@
 
 import Foundation
 
-class DateService {
-    
-    func convert(unix timestamp: Int) -> String {
-        let date = Date(timeIntervalSince1970: Double(timestamp))
+extension Int {
+    func unixTimestampToString() -> String {
+        let date = Date(timeIntervalSince1970: Double(self))
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "EEEE, MMMM d"
         
         return formatter.string(from: date)
+    }
+}
+
+extension Date {
+    func subtract(days: Int) -> Date {
+        return self.addingTimeInterval(TimeInterval(-days * 24 * 60 * 60))
     }
     
     func getCurrentDate() -> Date {
@@ -25,10 +30,6 @@ class DateService {
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
         
         return calendar.startOfDay(for: currentDay)
-    }
-    
-    func subract(from date: Date, days: Int) -> Date {
-        return date.addingTimeInterval(TimeInterval(-days * 24 * 60 * 60))
     }
 }
 

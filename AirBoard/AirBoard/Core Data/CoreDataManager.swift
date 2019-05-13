@@ -113,7 +113,6 @@ class CoreDataManager {
         }
         
         backContext.perform {
-            
             guard let airport = self.filteredFetch(icao: cityIcao, context: self.backContext) else {
                 DispatchQueue.main.async {
                     completion(.failure(.FilteringError))

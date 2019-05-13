@@ -23,8 +23,4 @@ struct DetailInfo {
     var engine: String?
     var age: String?
     var owner: String?
-    
-    init() {
-        // empty initialization
-    }
 }
