@@ -12,6 +12,9 @@ class AirportTableViewController: UITableViewController {
     
     // MARK: Properties
     private var listIndexBoxCounter = 0
+    var boxTop : NSLayoutConstraint?
+    var boxTrailing : NSLayoutConstraint?
+    
     
     private let viewModel = AirportViewModel(appDelegate: UIApplication.shared.delegate as! AppDelegate)
     private let dataSource = AirportDataDisplayManager()
@@ -39,6 +42,11 @@ class AirportTableViewController: UITableViewController {
         tableView.separatorStyle = .none
         drawListIndexBox()
         viewModel.getData()
+    }
+    
+    override func viewLayoutMarginsDidChange() {
+        boxTop?.constant = self.view.frame.height / 6
+        boxTrailing?.constant = -(self.view.frame.width / 5)
     }
     
     // MARK: Navigation
@@ -94,24 +102,24 @@ class AirportTableViewController: UITableViewController {
         }
     }
     
-    // TODO: Make flexible size and space
     private func drawListIndexBox() {
         guard let view = self.navigationController?.view else {
             fatalError("Cant get navigation controller as view")
         }
         
-        listIndexHelpBox = ListIndexBacklightView(frame: CGRect(origin: CGPoint(x: self.view.frame.width - 70, y: 100), size: CGSize(width: 40, height: 40)))
-        view.addSubview(listIndexHelpBox)
         listIndexHelpBox.isHidden = true
+        view.addSubview(listIndexHelpBox)
+        listIndexHelpBox.translatesAutoresizingMaskIntoConstraints = false
         
-//        view.addSubview(listIndexHelpBox)
-////        listIndexHelpBox.isHidden = true
-//
-//        listIndexHelpBox.translatesAutoresizingMaskIntoConstraints = false
-//        listIndexHelpBox.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
-//        listIndexHelpBox.topAnchor.constraint(equalTo: view.topAnchor, constant: 40).isActive = true
-//        listIndexHelpBox.widthAnchor.constraint(equalToConstant: self.view.frame.width / 10).isActive = true
-//        listIndexHelpBox.heightAnchor.constraint(equalToConstant: self.view.frame.width / 10).isActive = true
+        boxTop = listIndexHelpBox.topAnchor.constraint(equalTo: view.topAnchor, constant: self.view.frame.height / 6)
+        boxTop?.isActive = true
+        boxTrailing = listIndexHelpBox.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -(self.view.frame.width / 5))
+        boxTrailing?.isActive = true
+        
+        listIndexHelpBox.widthAnchor.constraint(equalToConstant: self.view.frame.width / 10).isActive = true
+        listIndexHelpBox.heightAnchor.constraint(equalToConstant: self.view.frame.width / 10).isActive = true
+        
+        listIndexHelpBox.letterLabel.font = UIFont.systemFont(ofSize: self.view.frame.width / 11)
     }
 }
 
