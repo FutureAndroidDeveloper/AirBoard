@@ -19,7 +19,6 @@ class MapViewController: UIViewController {
     var flight: Flight!
     var detailInfo: DetailInfo!
     let mapService = MapService()
-    let dateService = DateService()
     var airplaneMarker = GMSMarker()
     
     var path = [Path]() {
@@ -53,7 +52,7 @@ class MapViewController: UIViewController {
             return
         }
         
-        let date = dateService.convert(unix: airplanePoint.time)
+        let date = airplanePoint.time.unixTimestampToString()
         let time = Double(airplanePoint.time).getDateFromUTC()
         airplaneMarker.position = CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
         airplaneMarker.snippet = "Date: \(date)\nTime: \(time)\nLatitude: \(latitude)\nLongitude: \(longitude)"
@@ -122,7 +121,7 @@ class MapViewController: UIViewController {
         createMarker(point: firstPoint, icon: nil, title: detailInfo.departureCity!, snippet: "Icao code: \(detailInfo.departureIcao!)\nDeparture: \(detailInfo.departureTime!)").map = mapView
         createMarker(point: lastPoint, icon: nil, title: detailInfo.arrivalCity!, snippet: "Icao code: \(detailInfo.arrivalIcao!)\nArrival: \(detailInfo.arrivalTime!)").map = mapView
         
-        let date = dateService.convert(unix: firstPoint.time)
+        let date = firstPoint.time.unixTimestampToString()
         let time = Double(firstPoint.time).getDateFromUTC()
         airplaneMarker = createMarker(point: firstPoint, icon: #imageLiteral(resourceName: "airplanePosition"), title: flight.icao, snippet: "Date: \(date)\nTime: \(time)\nLatitude: X\nLongitude: Y")
         airplaneMarker.map = mapView

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AirportDataSourceDelegate: class {
+protocol AirportDataSourceDelegate: AnyObject {
     func reciveHelpBox(label: String, index: Int)
 }
 
@@ -50,7 +50,7 @@ class AirportDataDisplayManager: NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AirportCell", for: indexPath) as! AirportTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: AirportTableViewCell.reuseIdentifier, for: indexPath) as! AirportTableViewCell
         
         let airportKey = sectionTitles[indexPath.section]
         

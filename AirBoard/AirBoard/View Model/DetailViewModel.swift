@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DetailViewModelDelegate: class {
+protocol DetailViewModelDelegate: AnyObject {
     func reciveData()
 }
 

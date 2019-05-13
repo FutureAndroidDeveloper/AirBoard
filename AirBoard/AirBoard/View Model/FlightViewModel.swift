@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol FlightsViewModelDelegate: class {
+protocol FlightsViewModelDelegate: AnyObject {
     func reciveData()
 }
 
@@ -46,7 +46,6 @@ class FlightViewModel {
     }
     
     private let flightService = FlightService()
-    private let dateService = DateService()
     private let coreDataManager: CoreDataManager
     
     init(appDeleagte: AppDelegate) {
@@ -69,10 +68,10 @@ class FlightViewModel {
     
     private func setTimeFrames() {
         // get current Date
-        let currentDate = dateService.getCurrentDate()
+        let currentDate = Date().getCurrentDate()
         
         // get start and end Date
-        let beginDate = dateService.subract(from: currentDate, days: 2)
+        let beginDate = currentDate.subtract(days: 2)
         let endDate = currentDate.addingTimeInterval(24 * 60 * 60 - 1)
         
         // set Unix timestamp
@@ -128,9 +127,13 @@ class FlightViewModel {
         
             switch flightType! {
             case .departure:
-                flightKey = dateService.convert(unix: flight.departureTime ?? 0 )
+                if let departureTime = flight.departureTime {
+                    flightKey = departureTime.unixTimestampToString()
+                }
             case .arrival:
-                flightKey = dateService.convert(unix: flight.arrivalTime ?? 0 )
+                if let arrivalTime = flight.arrivalTime {
+                    flightKey = arrivalTime.unixTimestampToString()
+                }
             }
             
             // grouping flights by sections
@@ -150,7 +153,7 @@ class FlightViewModel {
         
         // Make a step one day in length and write this date in the array.
         while currentUnixDay <= endUnix {
-            let title = dateService.convert(unix: currentUnixDay)
+            let title = currentUnixDay.unixTimestampToString()
             flight[title] = []
             currentUnixDay += unixDay
         }

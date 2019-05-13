@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol FlightDataSourceDelegate: class {
+protocol FlightDataSourceDelegate: AnyObject {
     func reciveEmptyData()
 }
 
@@ -53,7 +53,7 @@ class FlightDataDisplayManager: NSObject, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FlightCell", for: indexPath) as! FlightTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: FlightTableViewCell.reuseIdentifier, for: indexPath) as! FlightTableViewCell
         
         let flightKey = flightsSectionTitles[indexPath.section]
         guard let flightValues = data[flightKey] else {

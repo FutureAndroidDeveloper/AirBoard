@@ -15,7 +15,6 @@ struct Airport {
 }
 
 extension Airport: Codable {
-    
     enum CodingKeys: String, CodingKey {
         case name
         case city
